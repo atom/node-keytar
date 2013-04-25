@@ -8,6 +8,9 @@ describe "keytar", ->
   beforeEach ->
     keytar.deletePassword(service, account)
 
+  afterEach ->
+    keytar.deletePassword(service, account)
+
   describe "addPassword(service, account, password)", ->
     it "returns true when the service, account, and password are specified", ->
       expect(keytar.addPassword(service, account, password)).toBe true
