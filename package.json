@@ -1,0 +1,29 @@
+{
+  "main": "./lib/keytar.js",
+  "name": "keytar",
+  "readme": "README.md",
+  "description": "Bindings to Mac OS X Keychain",
+  "version": "0.1.0",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/atom/node-keytar.git"
+  },
+  "bugs": {
+    "url": "https://github.com/atom/node-keytar/issues"
+  },
+  "scripts": {
+    "prepublish": "grunt coffee",
+    "test": "jasmine-node --captureExceptions --coffee spec/"
+  },
+  "devDependencies": {
+    "jasmine-node": "~1.5.0",
+    "grunt": "~0.4.1",
+    "grunt-contrib-coffee": "~0.6.6",
+    "grunt-cli": "~0.1.7",
+    "grunt-shell": "~0.2.2",
+    "coffee-script": "~1.6.2"
+  },
+  "dependencies": {
+    "bindings": "~1.1.0"
+  }
+}

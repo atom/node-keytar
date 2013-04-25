@@ -1,0 +1,6 @@
+/node_modules
+/build
+/lib
+*.log
+*~
+.node-version
