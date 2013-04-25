@@ -23,3 +23,9 @@ describe "keytar", ->
       expect(keytar.addPassword(service, account, password)).toBe true
       expect(keytar.deletePassword(service, account)).toBe true
       expect(keytar.deletePassword(service, account)).toBe false
+
+  describe "replacePassword(service, account, password)", ->
+    it "returns true when the password for the service and account has been deleted and readded", ->
+      expect(keytar.addPassword(service, account, password)).toBe true
+      expect(keytar.replacePassword(service, account, 'another secret')).toBe true
+      expect(keytar.getPassword(service, account)).toBe 'another secret'
