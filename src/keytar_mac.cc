@@ -46,11 +46,10 @@ Handle<Value> GetPassword(const Arguments& args) {
                                                   &password,
                                                   NULL);
   HandleScope scope;
-  if (status == errSecSuccess) {
-    return scope.Close(String::NewSymbol((const char*)password, passwordLength));
-  } else {
+  if (status != errSecSuccess)
     return scope.Close(Null());
-  }
+
+  return scope.Close(String::NewSymbol((const char*)password, passwordLength));
 }
 
 Handle<Value> DeletePassword(const Arguments& args) {
