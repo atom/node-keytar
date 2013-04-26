@@ -18,6 +18,14 @@ module.exports = (grunt) ->
           stderr: true
           failOnError: true
 
+      clean:
+        command: 'rm -fr build lib'
+        options:
+          stdout: true
+          stderr: true
+          failOnError: true
+
+
       test:
         command: 'npm test'
         options:
@@ -29,3 +37,4 @@ module.exports = (grunt) ->
   grunt.loadNpmTasks('grunt-shell')
   grunt.registerTask('default', ['coffee', 'shell:rebuild'])
   grunt.registerTask('test', ['default', 'shell:test'])
+  grunt.registerTask('clean', ['shell:clean'])
