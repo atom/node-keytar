@@ -1,7 +1,6 @@
 {
   "main": "./lib/keytar.js",
   "name": "keytar",
-  "readme": "README.md",
   "description": "Bindings to Mac OS X Keychain",
   "version": "0.5.0",
   "licenses": [
