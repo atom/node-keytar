@@ -30,6 +30,7 @@
     "coffee-script": "~1.6.2"
   },
   "dependencies": {
-    "bindings": "~1.1.0"
+    "bindings": "~1.1.0",
+    "rimraf": "~2.1.4"
   }
 }
