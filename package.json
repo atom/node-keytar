@@ -2,7 +2,7 @@
   "main": "./lib/keytar.js",
   "name": "keytar",
   "description": "Bindings to Mac OS X Keychain",
-  "version": "0.7.0",
+  "version": "0.8.0",
   "licenses": [
     {
       "type": "MIT",
