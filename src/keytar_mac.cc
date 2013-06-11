@@ -6,21 +6,6 @@
 using namespace v8;
 using ::std::string;
 
-extern Handle<Value> GetPassword(const Arguments& args);
-extern Handle<Value> AddPassword(const Arguments& args);
-extern Handle<Value> DeletePassword(const Arguments& args);
-
-void init(Handle<Object> exports) {
-  exports->Set(String::NewSymbol("getPassword"),
-      FunctionTemplate::New(GetPassword)->GetFunction());
-  exports->Set(String::NewSymbol("addPassword"),
-      FunctionTemplate::New(AddPassword)->GetFunction());
-  exports->Set(String::NewSymbol("deletePassword"),
-      FunctionTemplate::New(DeletePassword)->GetFunction());
-}
-
-NODE_MODULE(keytar, init)
-
 Handle<Value> AddPassword(const Arguments& args) {
   String::Utf8Value utf8Service(Local<String>::Cast(args[0]));
   string service(*utf8Service);
@@ -94,3 +79,14 @@ Handle<Value> DeletePassword(const Arguments& args) {
   HandleScope scope;
   return scope.Close(v8::Boolean::New(status == errSecSuccess));
 }
+
+void init(Handle<Object> exports) {
+  exports->Set(String::NewSymbol("getPassword"),
+      FunctionTemplate::New(GetPassword)->GetFunction());
+  exports->Set(String::NewSymbol("addPassword"),
+      FunctionTemplate::New(AddPassword)->GetFunction());
+  exports->Set(String::NewSymbol("deletePassword"),
+      FunctionTemplate::New(DeletePassword)->GetFunction());
+}
+
+NODE_MODULE(keytar, init)
