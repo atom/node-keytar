@@ -67,5 +67,4 @@ This is a simple convenience function that internally calls
 
 `password` - The string password.
 
-
 Returns `true` on success, `false` on failure.
