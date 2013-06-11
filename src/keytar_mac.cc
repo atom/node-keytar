@@ -3,8 +3,8 @@
 #include <string>
 #include <Security/Security.h>
 
-using namespace std;
 using namespace v8;
+using ::std::string;
 
 extern Handle<Value> GetPassword(const Arguments& args);
 extern Handle<Value> AddPassword(const Arguments& args);
