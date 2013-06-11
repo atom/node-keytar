@@ -19,15 +19,15 @@
   "homepage": "http://atom.github.io/node-keytar",
   "scripts": {
     "prepublish": "grunt coffee",
-    "test": "jasmine-node --captureExceptions --coffee spec/"
+    "test": "jasmine-focused --captureExceptions --coffee spec/"
   },
   "devDependencies": {
-    "jasmine-node": "~1.5.0",
     "grunt": "~0.4.1",
     "grunt-contrib-coffee": "~0.6.6",
     "grunt-cli": "~0.1.7",
     "grunt-shell": "~0.2.2",
-    "coffee-script": "~1.6.2"
+    "coffee-script": "~1.6.2",
+    "jasmine-focused": "~0.2.0"
   },
   "dependencies": {
     "bindings": "~1.1.0",
