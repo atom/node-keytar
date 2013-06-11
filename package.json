@@ -16,6 +16,7 @@
   "bugs": {
     "url": "https://github.com/atom/node-keytar/issues"
   },
+  "homepage": "http://atom.github.io/node-keytar",
   "scripts": {
     "prepublish": "grunt coffee",
     "test": "jasmine-node --captureExceptions --coffee spec/"
