@@ -1,0 +1,118 @@
+<!doctype html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="chrome=1">
+    <title>node-keytar by atom</title>
+
+    <link rel="stylesheet" href="stylesheets/styles.css">
+    <link rel="stylesheet" href="stylesheets/pygment_trac.css">
+    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
+    <!--[if lt IE 9]>
+    <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+  </head>
+  <body>
+    <div class="wrapper">
+      <header>
+        <h1>node-keytar</h1>
+        <p>Mac OS X Keychain Node Module</p>
+
+        <p class="view"><a href="https://github.com/atom/node-keytar">View the Project on GitHub <small>atom/node-keytar</small></a></p>
+
+
+        <ul>
+          <li><a href="https://github.com/atom/node-keytar/zipball/master">Download <strong>ZIP File</strong></a></li>
+          <li><a href="https://github.com/atom/node-keytar/tarball/master">Download <strong>TAR Ball</strong></a></li>
+          <li><a href="https://github.com/atom/node-keytar">View On <strong>GitHub</strong></a></li>
+        </ul>
+      </header>
+      <section>
+        <h1>
+<a name="keytar---keychain-node-module" class="anchor" href="#keytar---keychain-node-module"><span class="octicon octicon-link"></span></a>keytar - Keychain Node Module</h1>
+
+<p>A native Node module to get, add, replace, and delete passwords in the
+Mac OS X Keychain.</p>
+
+<h2>
+<a name="installing" class="anchor" href="#installing"><span class="octicon octicon-link"></span></a>Installing</h2>
+
+<div class="highlight"><pre>npm install keytar
+</pre></div>
+
+<h2>
+<a name="building" class="anchor" href="#building"><span class="octicon octicon-link"></span></a>Building</h2>
+
+<ul>
+<li>Clone the repository</li>
+<li>Run <code>npm install</code>
+</li>
+<li>Run <code>grunt</code> to compile the native and CoffeeScript code</li>
+<li>Run <code>grunt test</code> to run the specs</li>
+</ul><h2>
+<a name="docs" class="anchor" href="#docs"><span class="octicon octicon-link"></span></a>Docs</h2>
+
+<div class="highlight"><pre><span class="nv">keytar = </span><span class="nx">require</span> <span class="s">'keytar'</span>
+</pre></div>
+
+<h3>
+<a name="getpasswordservice-account" class="anchor" href="#getpasswordservice-account"><span class="octicon octicon-link"></span></a>getPassword(service, account)</h3>
+
+<p>Get the stored password for the <code>service</code> and <code>account</code>.</p>
+
+<p><code>service</code> - The string service name.</p>
+
+<p><code>account</code> - The string account name.</p>
+
+<p>Returns the string password or <code>null</code> on failures.</p>
+
+<h3>
+<a name="addpasswordservice-account-password" class="anchor" href="#addpasswordservice-account-password"><span class="octicon octicon-link"></span></a>addPassword(service, account, password)</h3>
+
+<p>Add the <code>password</code> for the <code>service</code> and <code>account</code> to the keychain.</p>
+
+<p><code>service</code> - The string service name.</p>
+
+<p><code>account</code> - The string account name.</p>
+
+<p><code>password</code> - The string password.</p>
+
+<p>Returns <code>true</code> on success, <code>false</code> on failure.</p>
+
+<h3>
+<a name="deletepasswordservice-account" class="anchor" href="#deletepasswordservice-account"><span class="octicon octicon-link"></span></a>deletePassword(service, account)</h3>
+
+<p>Delete the stored password for the <code>service</code> and <code>account</code>.</p>
+
+<p><code>service</code> - The string service name.</p>
+
+<p><code>account</code> - The string account name.</p>
+
+<p>Returns the string password or <code>null</code> on failures.</p>
+
+<h3>
+<a name="replacepasswordservice-account-password" class="anchor" href="#replacepasswordservice-account-password"><span class="octicon octicon-link"></span></a>replacePassword(service, account, password)</h3>
+
+<p>Replace the <code>password</code> for the <code>service</code> and <code>account</code> in the keychain.</p>
+
+<p>This is a simple convenience function that internally calls
+<code>deletePassword(service, account)</code> followed by
+<code>addPassword(service, account, password)</code>.</p>
+
+<p><code>service</code> - The string service name.</p>
+
+<p><code>account</code> - The string account name.</p>
+
+<p><code>password</code> - The string password.</p>
+
+<p>Returns <code>true</code> on success, <code>false</code> on failure.</p>
+      </section>
+      <footer>
+        <p>This project is maintained by <a href="https://github.com/atom">atom</a></p>
+        <p><small>Hosted on GitHub Pages &mdash; Theme by <a href="https://github.com/orderedlist">orderedlist</a></small></p>
+      </footer>
+    </div>
+    <script src="javascripts/scale.fix.js"></script>
+    
+  </body>
+</html>
