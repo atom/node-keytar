@@ -27,10 +27,10 @@
     "grunt-cli": "~0.1.7",
     "grunt-shell": "~0.2.2",
     "coffee-script": "~1.6.2",
-    "jasmine-focused": "~0.2.0"
+    "jasmine-focused": "~0.2.0",
+    "rimraf": "~2.1.4"
   },
   "dependencies": {
-    "bindings": "~1.1.0",
-    "rimraf": "~2.1.4"
+    "bindings": "~1.1.0"
   }
 }
