@@ -1,6 +1,7 @@
-# keytar - Mac OS X Keychain Node Module
+# keytar - Keychain Node Module
 
-Get, add, replace, and delete passwords in the Keychain.
+A native Node module to get, add, replace, and delete passwords in the
+Mac OS X Keychain.
 
 ## Installing
 
