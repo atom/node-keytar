@@ -3,10 +3,18 @@
 #include <string>
 #include <Security/Security.h>
 
-using namespace v8;
+using ::v8::Arguments;
+using ::v8::FunctionTemplate;
+using ::v8::HandleScope;
+using ::v8::Local;
+using ::v8::Object;
+using ::v8::Null;
+using ::v8::String;
+using ::v8::Value;
+
 using ::std::string;
 
-Handle<Value> AddPassword(const Arguments& args) {
+v8::Handle<Value> AddPassword(const Arguments& args) {
   String::Utf8Value utf8Service(Local<String>::Cast(args[0]));
   string service(*utf8Service);
 
@@ -28,7 +36,7 @@ Handle<Value> AddPassword(const Arguments& args) {
   return scope.Close(v8::Boolean::New(status == errSecSuccess));
 }
 
-Handle<Value> GetPassword(const Arguments& args) {
+v8::Handle<Value> GetPassword(const Arguments& args) {
   String::Utf8Value utf8Service(Local<String>::Cast(args[0]));
   string service(*utf8Service);
 
@@ -52,7 +60,7 @@ Handle<Value> GetPassword(const Arguments& args) {
   return scope.Close(String::NewSymbol((const char*)password, passwordLength));
 }
 
-Handle<Value> DeletePassword(const Arguments& args) {
+v8::Handle<Value> DeletePassword(const Arguments& args) {
   String::Utf8Value utf8Service(Local<String>::Cast(args[0]));
   string service(*utf8Service);
 
@@ -80,7 +88,7 @@ Handle<Value> DeletePassword(const Arguments& args) {
   return scope.Close(v8::Boolean::New(status == errSecSuccess));
 }
 
-void init(Handle<Object> exports) {
+void init(v8::Handle<Object> exports) {
   exports->Set(String::NewSymbol("getPassword"),
       FunctionTemplate::New(GetPassword)->GetFunction());
   exports->Set(String::NewSymbol("addPassword"),
