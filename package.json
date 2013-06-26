@@ -19,7 +19,7 @@
   "homepage": "http://atom.github.io/node-keytar",
   "scripts": {
     "prepublish": "grunt clean coffee",
-    "test": "jasmine-focused --captureExceptions --coffee spec/"
+    "test": "grunt test"
   },
   "devDependencies": {
     "grunt": "~0.4.1",
