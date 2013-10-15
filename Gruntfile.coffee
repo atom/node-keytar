@@ -25,6 +25,7 @@ module.exports = (grunt) ->
       filters:
         build:
           include: false
+          namespaces: false
         legal:
           copyright: false
         readability:

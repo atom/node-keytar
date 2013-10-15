@@ -1,7 +1,7 @@
-#include "keytar.h"
-
 #include <node.h>
 using namespace v8;
+
+#include "keytar.h"
 
 namespace {
 
