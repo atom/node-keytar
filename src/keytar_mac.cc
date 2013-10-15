@@ -35,12 +35,13 @@ bool GetPassword(const std::string& service,
     return false;
 
   *password = std::string(reinterpret_cast<const char*>(data), length);
-  SecKeychainItemFreeContent(data);
+  SecKeychainItemFreeContent(NULL, data);
   return true;
 }
 
 bool DeletePassword(const std::string& service,
                     const std::string& account) {
+  SecKeychainItemRef item;
   OSStatus status = SecKeychainFindGenericPassword(NULL,
                                                    service.length(),
                                                    service.data(),
@@ -48,7 +49,12 @@ bool DeletePassword(const std::string& service,
                                                    account.data(),
                                                    NULL,
                                                    NULL,
-                                                   NULL);
+                                                   &item);
+  if (status != errSecSuccess)
+    return false;
+
+  status = SecKeychainItemDelete(item);
+  CFRelease(item);
   return status == errSecSuccess;
 }
 
