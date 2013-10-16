@@ -29,7 +29,7 @@
     "coffee-script": "~1.6.2",
     "jasmine-focused": "~0.15.0",
     "rimraf": "~2.1.4",
-    "node-cpplint": "~0.1.4",
+    "node-cpplint": "~0.1.5",
     "grunt-coffeelint": "0.0.6"
   },
   "dependencies": {
