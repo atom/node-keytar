@@ -21,6 +21,11 @@
             4530,  # C++ exception handler used, but unwind semantics are not enabled
             4506,  # no definition for inline function
           ],
+          'link_settings': {
+            'libraries': [
+              '-lCrypt32.lib',
+            ],
+          },
         }],
       ],
     }
