@@ -25,6 +25,7 @@ module.exports = (grunt) ->
       filters:
         build:
           include: false
+          namespaces: false
         legal:
           copyright: false
         readability:
@@ -39,7 +40,7 @@ module.exports = (grunt) ->
           failOnError: true
 
       test:
-        command: 'jasmine-focused --captureExceptions --coffee spec/'
+        command: 'node node_modules/jasmine-focused/bin/jasmine-focused --captureExceptions --coffee spec/'
         options:
           stdout: true
           stderr: true
