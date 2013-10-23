@@ -18,7 +18,7 @@
   },
   "homepage": "http://atom.github.io/node-keytar",
   "scripts": {
-    "prepublish": "grunt clean lint coffee",
+    "prepublish": "grunt clean coffee lint",
     "test": "grunt test"
   },
   "devDependencies": {
