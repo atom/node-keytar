@@ -4,12 +4,16 @@ describe "keytar", ->
   service = 'keytar tests'
   account = 'buster'
   password = 'secret'
+  account2 = 'buster2'
+  password2 = 'secret2'
 
   beforeEach ->
     keytar.deletePassword(service, account)
+    keytar.deletePassword(service, account2)
 
   afterEach ->
     keytar.deletePassword(service, account)
+    keytar.deletePassword(service, account2)
 
   describe "addPassword(service, account, password)", ->
     it "returns true when the service, account, and password are specified", ->
@@ -32,3 +36,9 @@ describe "keytar", ->
       expect(keytar.addPassword(service, account, password)).toBe true
       expect(keytar.replacePassword(service, account, 'another secret')).toBe true
       expect(keytar.getPassword(service, account)).toBe 'another secret'
+
+  describe "findPasswordForService(service)", ->
+    it "returns the first password for the service", ->
+      expect(keytar.addPassword(service, account, password)).toBe true
+      expect(keytar.addPassword(service, account2, password2)).toBe true
+      expect(keytar.findPasswordForService(service)).toBe password
