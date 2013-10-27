@@ -29,10 +29,20 @@ Handle<Value> DeletePassword(const Arguments& args) {
   return Boolean::New(success);
 }
 
+Handle<Value> FindPassword(const Arguments& args) {
+  std::string password;
+  bool success = keytar::FindPassword(*String::Utf8Value(args[0]), &password);
+  if (success)
+    return String::New(password.data(), password.length());
+  else
+    return Null();
+}
+
 void Init(Handle<Object> exports) {
   NODE_SET_METHOD(exports, "getPassword", GetPassword);
   NODE_SET_METHOD(exports, "addPassword", AddPassword);
   NODE_SET_METHOD(exports, "deletePassword", DeletePassword);
+  NODE_SET_METHOD(exports, "findPassword", FindPassword);
 }
 
 }  // namespace

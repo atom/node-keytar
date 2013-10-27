@@ -69,3 +69,11 @@ This is a simple convenience function that internally calls
 `password` - The string password.
 
 Returns `true` on success, `false` on failure.
+
+### findPassword(service)
+
+Find the first password for the `service` in the keychain.
+
+`service` - The string service name.
+
+Returns the string password or `null` on failures.
