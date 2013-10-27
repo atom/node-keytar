@@ -44,7 +44,7 @@ bool DeletePassword(const std::string& service,
 
 bool FindPasswordForService(const std::string& service,
                             std::string* password) {
-  std::string filter = service + "/*";
+  std::string filter = service + "*";
 
   DWORD count;
   CREDENTIAL** creds;
