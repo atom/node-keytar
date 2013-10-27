@@ -70,7 +70,7 @@ This is a simple convenience function that internally calls
 
 Returns `true` on success, `false` on failure.
 
-### findPasswordForService(service)
+### findPassword(service)
 
 Find the first password for the `service` in the keychain.
 

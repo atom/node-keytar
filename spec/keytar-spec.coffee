@@ -37,8 +37,8 @@ describe "keytar", ->
       expect(keytar.replacePassword(service, account, 'another secret')).toBe true
       expect(keytar.getPassword(service, account)).toBe 'another secret'
 
-  describe "findPasswordForService(service)", ->
+  describe "findPassword(service)", ->
     it "returns the first password for the service", ->
       expect(keytar.addPassword(service, account, password)).toBe true
       expect(keytar.addPassword(service, account2, password2)).toBe true
-      expect(keytar.findPasswordForService(service)).toBe password
+      expect(keytar.findPassword(service)).toBe password

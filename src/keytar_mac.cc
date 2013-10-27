@@ -39,8 +39,7 @@ bool GetPassword(const std::string& service,
   return true;
 }
 
-bool DeletePassword(const std::string& service,
-                    const std::string& account) {
+bool DeletePassword(const std::string& service, const std::string& account) {
   SecKeychainItemRef item;
   OSStatus status = SecKeychainFindGenericPassword(NULL,
                                                    service.length(),
@@ -58,8 +57,7 @@ bool DeletePassword(const std::string& service,
   return status == errSecSuccess;
 }
 
-bool FindPasswordForService(const std::string& service,
-                            std::string* password) {
+bool FindPassword(const std::string& service, std::string* password) {
   SecKeychainItemRef item;
   void *data;
   UInt32 length;

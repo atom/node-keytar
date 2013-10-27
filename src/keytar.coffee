@@ -28,7 +28,7 @@ module.exports =
     keytar.deletePassword(service, account)
     keytar.addPassword(service, account, password)
 
-  findPasswordForService: (service) ->
+  findPassword: (service) ->
     throw new Error("Service is required.") unless service?.length > 0
 
-    keytar.findPasswordForService(service)
+    keytar.findPassword(service)
