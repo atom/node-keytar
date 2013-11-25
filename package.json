@@ -1,7 +1,7 @@
 {
   "main": "./lib/keytar.js",
   "name": "keytar",
-  "description": "Bindings to Mac OS X Keychain",
+  "description": "Bindings to native Mac/Windows password APIs",
   "version": "0.12.0",
   "licenses": [
     {
@@ -17,6 +17,15 @@
     "url": "https://github.com/atom/node-keytar/issues"
   },
   "homepage": "http://atom.github.io/node-keytar",
+  "keywords": [
+    "keychain",
+    "password",
+    "passwords",
+    "credential",
+    "credentials",
+    "vault",
+    "credential vault"
+  ],
   "scripts": {
     "prepublish": "grunt clean coffee lint",
     "test": "grunt test"

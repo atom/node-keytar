@@ -1,7 +1,7 @@
-# keytar - Keychain Node Module
+# keytar - Native Password Node Module
 
 A native Node module to get, add, replace, and delete passwords. On OS X the
-passwords are managed by Keychain, and on Windows they are managed by the
+passwords are managed by the Keychain, and on Windows they are managed by the
 Credential Vault.
 
 ## Installing
