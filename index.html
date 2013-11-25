@@ -3,7 +3,7 @@
   <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="chrome=1">
-    <title>node-keytar by atom</title>
+    <title>keytar by atom</title>
 
     <link rel="stylesheet" href="stylesheets/styles.css">
     <link rel="stylesheet" href="stylesheets/pygment_trac.css">
@@ -15,8 +15,8 @@
   <body>
     <div class="wrapper">
       <header>
-        <h1>node-keytar</h1>
-        <p>Mac OS X Keychain Node Module</p>
+        <h1>keytar</h1>
+        <p>Native Password Node Module</p>
 
         <p class="view"><a href="https://github.com/atom/node-keytar">View the Project on GitHub <small>atom/node-keytar</small></a></p>
 
@@ -29,15 +29,16 @@
       </header>
       <section>
         <h1>
-<a name="keytar---keychain-node-module" class="anchor" href="#keytar---keychain-node-module"><span class="octicon octicon-link"></span></a>keytar - Keychain Node Module</h1>
+<a name="keytar---native-password-node-module" class="anchor" href="#keytar---native-password-node-module"><span class="octicon octicon-link"></span></a>keytar - Native Password Node Module</h1>
 
-<p>A native Node module to get, add, replace, and delete passwords in the
-Mac OS X Keychain.</p>
+<p>A native Node module to get, add, replace, and delete passwords. On OS X the
+passwords are managed by the Keychain, and on Windows they are managed by the
+Credential Vault.</p>
 
 <h2>
 <a name="installing" class="anchor" href="#installing"><span class="octicon octicon-link"></span></a>Installing</h2>
 
-<div class="highlight"><pre>npm install keytar
+<div class="highlight highlight-sh"><pre>npm install keytar
 </pre></div>
 
 <h2>
@@ -52,7 +53,7 @@ Mac OS X Keychain.</p>
 </ul><h2>
 <a name="docs" class="anchor" href="#docs"><span class="octicon octicon-link"></span></a>Docs</h2>
 
-<div class="highlight"><pre><span class="nv">keytar = </span><span class="nx">require</span> <span class="s">'keytar'</span>
+<div class="highlight highlight-coffeescript"><pre><span class="nv">keytar = </span><span class="nx">require</span> <span class="s">'keytar'</span>
 </pre></div>
 
 <h3>
@@ -106,6 +107,15 @@ Mac OS X Keychain.</p>
 <p><code>password</code> - The string password.</p>
 
 <p>Returns <code>true</code> on success, <code>false</code> on failure.</p>
+
+<h3>
+<a name="findpasswordservice" class="anchor" href="#findpasswordservice"><span class="octicon octicon-link"></span></a>findPassword(service)</h3>
+
+<p>Find the first password for the <code>service</code> in the keychain.</p>
+
+<p><code>service</code> - The string service name.</p>
+
+<p>Returns the string password or <code>null</code> on failures.</p>
       </section>
       <footer>
         <p>This project is maintained by <a href="https://github.com/atom">atom</a></p>
