@@ -1,41 +1,45 @@
-#include <node.h>
+#include "nan.h"
 using namespace v8;
 
 #include "keytar.h"
 
 namespace {
 
-Handle<Value> AddPassword(const Arguments& args) {
+NAN_METHOD(AddPassword) {
+  NanScope();
   bool success = keytar::AddPassword(*String::Utf8Value(args[0]),
                                      *String::Utf8Value(args[1]),
                                      *String::Utf8Value(args[2]));
-  return Boolean::New(success);
+  NanReturnValue(Boolean::New(success));
 }
 
-Handle<Value> GetPassword(const Arguments& args) {
+NAN_METHOD(GetPassword) {
+  NanScope();
   std::string password;
   bool success = keytar::GetPassword(*String::Utf8Value(args[0]),
                                      *String::Utf8Value(args[1]),
                                      &password);
   if (success)
-    return String::New(password.data(), password.length());
+    NanReturnValue(String::New(password.data(), password.length()));
   else
-    return Null();
+    NanReturnNull();
 }
 
-Handle<Value> DeletePassword(const Arguments& args) {
+NAN_METHOD(DeletePassword) {
+  NanScope();
   bool success = keytar::DeletePassword(*String::Utf8Value(args[0]),
                                         *String::Utf8Value(args[1]));
-  return Boolean::New(success);
+  NanReturnValue(Boolean::New(success));
 }
 
-Handle<Value> FindPassword(const Arguments& args) {
+NAN_METHOD(FindPassword) {
+  NanScope();
   std::string password;
   bool success = keytar::FindPassword(*String::Utf8Value(args[0]), &password);
   if (success)
-    return String::New(password.data(), password.length());
+    NanReturnValue(String::New(password.data(), password.length()));
   else
-    return Null();
+    NanReturnNull();
 }
 
 void Init(Handle<Object> exports) {
