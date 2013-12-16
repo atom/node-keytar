@@ -2,6 +2,7 @@
   'targets': [
     {
       'target_name': 'keytar',
+      'include_dirs': [ '<!(node -e "require(\'nan\')")' ],
       'sources': [
         'src/main.cc',
         'src/keytar.h',

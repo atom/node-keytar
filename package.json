@@ -39,7 +39,8 @@
     "jasmine-focused": "~0.15.0",
     "rimraf": "~2.1.4",
     "node-cpplint": "~0.1.5",
-    "grunt-coffeelint": "0.0.6"
+    "grunt-coffeelint": "0.0.6",
+    "nan": "0.6.0"
   },
   "dependencies": {
     "bindings": "~1.1.0"
