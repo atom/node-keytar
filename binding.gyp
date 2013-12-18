@@ -2,6 +2,7 @@
   'targets': [
     {
       'target_name': 'keytar',
+      'include_dirs': [ '<!(node -e "require(\'nan\')")' ],
       'sources': [
         'src/main.cc',
         'src/keytar.h',
@@ -11,6 +12,11 @@
           'sources': [
             'src/keytar_mac.cc',
           ],
+          'link_settings': {
+            'libraries': [
+              '$(SDKROOT)/System/Library/Frameworks/AppKit.framework',
+            ],
+          },
         }],
         ['OS=="win"', {
           'sources': [
