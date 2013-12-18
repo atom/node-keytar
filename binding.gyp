@@ -12,6 +12,11 @@
           'sources': [
             'src/keytar_mac.cc',
           ],
+          'link_settings': {
+            'libraries': [
+              '$(SDKROOT)/System/Library/Frameworks/AppKit.framework',
+            ],
+          },
         }],
         ['OS=="win"', {
           'sources': [
