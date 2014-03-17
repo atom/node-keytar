@@ -8,5 +8,5 @@ node_js:
 notifications:
   email: false
 
-before_install: sudo apt-get install gnome-keyring libgnome-keyring-dev
-script: ./script/cibuild
+before_install: sudo apt-get install xvfb gnome-keyring libgnome-keyring-dev
+script: xvfb-run ./script/cibuild
