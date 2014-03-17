@@ -28,6 +28,11 @@
             4506,  # no definition for inline function
           ],
         }],
+        ['OS not in ["mac", "win"]', {
+          'sources': [
+            'src/keytar_posix.cc',
+          ],
+        }],
       ],
     }
   ]
