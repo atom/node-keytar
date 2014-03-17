@@ -72,7 +72,7 @@ Returns `true` on success, `false` on failure.
 
 ### findPassword(service)
 
-Find the first password for the `service` in the keychain.
+Find a password of the `service` in the keychain.
 
 `service` - The string service name.
 
