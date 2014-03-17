@@ -8,5 +8,5 @@ node_js:
 notifications:
   email: false
 
-before_install: sudo apt-get install libgnome-keyring-dev
+before_install: sudo apt-get install libgnome-keyring-dev && gnome-keyring-daemon
 script: grunt test
