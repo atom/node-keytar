@@ -1,0 +1,8 @@
+#!/bin/bash
+
+sudo service dbus start
+eval $(gnome-keyring-daemon)
+export GNOME_KEYRING_CONTROL GNOME_KEYRING_PID GPG_AGENT_INFO SSH_AUTH_SOCK
+
+# FIXME Find out why we cound not connect to gnome-keyring-daemon.
+# grunt test

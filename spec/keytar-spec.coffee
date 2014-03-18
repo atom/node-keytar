@@ -38,7 +38,8 @@ describe "keytar", ->
       expect(keytar.getPassword(service, account)).toBe 'another secret'
 
   describe "findPassword(service)", ->
-    it "returns the first password for the service", ->
+    it "returns a password of the service", ->
       expect(keytar.addPassword(service, account, password)).toBe true
       expect(keytar.addPassword(service, account2, password2)).toBe true
-      expect(keytar.findPassword(service)).toBe password
+      found = keytar.findPassword(service)
+      expect([password, password2].indexOf(found)).toBeGreaterThan -1

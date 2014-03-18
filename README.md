@@ -1,8 +1,8 @@
-# keytar - Native Password Node Module
+# keytar - Node module to manage system keychain
 
-A native Node module to get, add, replace, and delete passwords. On OS X the
-passwords are managed by the Keychain, and on Windows they are managed by the
-Credential Vault.
+A native Node module to get, add, replace, and delete passwords in system's
+keychain. On OS X the passwords are managed by the Keychain, on Linux they are
+managed by Gnome Keyring and on Windows they are managed by Credential Vault.
 
 ## Installing
 
@@ -72,7 +72,7 @@ Returns `true` on success, `false` on failure.
 
 ### findPassword(service)
 
-Find the first password for the `service` in the keychain.
+Find a password for the `service` in the keychain.
 
 `service` - The string service name.
 
