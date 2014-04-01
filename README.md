@@ -10,6 +10,10 @@ managed by Gnome Keyring and on Windows they are managed by Credential Vault.
 npm install keytar
 ```
 
+### On Linux
+
+Currently this library uses the gnome-keyring so you may need to run `sudo apt-get install libgnome-keyring-dev` before `npm install`ing.
+
 ## Building
   * Clone the repository
   * Run `npm install`
