@@ -10,7 +10,7 @@ NAN_METHOD(AddPassword) {
   bool success = keytar::AddPassword(*String::Utf8Value(args[0]),
                                      *String::Utf8Value(args[1]),
                                      *String::Utf8Value(args[2]));
-  NanReturnValue(Boolean::New(success));
+  NanReturnValue(NanNew<Boolean>(success));
 }
 
 NAN_METHOD(GetPassword) {
@@ -20,7 +20,7 @@ NAN_METHOD(GetPassword) {
                                      *String::Utf8Value(args[1]),
                                      &password);
   if (success)
-    NanReturnValue(String::New(password.data(), password.length()));
+    NanReturnValue(NanNew<String>(password.data(), password.length()));
   else
     NanReturnNull();
 }
@@ -29,7 +29,7 @@ NAN_METHOD(DeletePassword) {
   NanScope();
   bool success = keytar::DeletePassword(*String::Utf8Value(args[0]),
                                         *String::Utf8Value(args[1]));
-  NanReturnValue(Boolean::New(success));
+  NanReturnValue(NanNew<Boolean>(success));
 }
 
 NAN_METHOD(FindPassword) {
@@ -37,7 +37,7 @@ NAN_METHOD(FindPassword) {
   std::string password;
   bool success = keytar::FindPassword(*String::Utf8Value(args[0]), &password);
   if (success)
-    NanReturnValue(String::New(password.data(), password.length()));
+    NanReturnValue(NanNew<String>(password.data(), password.length()));
   else
     NanReturnNull();
 }
