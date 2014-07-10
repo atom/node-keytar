@@ -2,7 +2,7 @@
   "main": "./lib/keytar.js",
   "name": "keytar",
   "description": "Bindings to native Mac/Linux/Windows password APIs",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "licenses": [
     {
       "type": "MIT",
