@@ -15,11 +15,6 @@ const GnomeKeyringPasswordSchema kGnomeSchema = {
   }
 };
 
-void PrintError(const gchar* where, GnomeKeyringResult result) {
-  if (result != GNOME_KEYRING_RESULT_OK)
-    fprintf(stderr, "%s: %s\n", where, gnome_keyring_result_to_message(result));
-}
-
 }  // namespace
 
 bool AddPassword(const std::string& service,
@@ -33,7 +28,6 @@ bool AddPassword(const std::string& service,
       "service", service.c_str(),
       "account", account.c_str(),
       NULL);
-  PrintError("AddPassword", result);
   return result == GNOME_KEYRING_RESULT_OK;
 }
 
@@ -47,7 +41,6 @@ bool GetPassword(const std::string& service,
       "service", service.c_str(),
       "account", account.c_str(),
       NULL);
-  PrintError("GetPassword", result);
   if (result != GNOME_KEYRING_RESULT_OK)
     return false;
 
@@ -72,7 +65,6 @@ bool FindPassword(const std::string& service, std::string* password) {
       &raw_passwords,
       "service", service.c_str(),
       NULL);
-  PrintError("FindPassword", result);
   if (result != GNOME_KEYRING_RESULT_OK)
     return false;
 
