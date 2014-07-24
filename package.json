@@ -2,7 +2,7 @@
   "main": "./lib/keytar.js",
   "name": "keytar",
   "description": "Bindings to native Mac/Linux/Windows password APIs",
-  "version": "1.0.1",
+  "version": "2.0.1",
   "licenses": [
     {
       "type": "MIT",
@@ -41,7 +41,7 @@
     "grunt-coffeelint": "0.0.6"
   },
   "dependencies": {
-    "nan": "0.8.0",
+    "nan": "1.2.0",
     "bindings": "~1.1.0"
   }
 }
