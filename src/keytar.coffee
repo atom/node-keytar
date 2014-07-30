@@ -1,4 +1,4 @@
-keytar = require('bindings')('keytar.node')
+keytar = require('../build/Release/keytar.node')
 
 module.exports =
   getPassword: (service, account) ->
