@@ -10,3 +10,6 @@ notifications:
 
 before_install: sudo apt-get install xvfb gnome-keyring libgnome-keyring-dev
 script: xvfb-run ./script/cibuild
+
+git:
+  depth: 10
