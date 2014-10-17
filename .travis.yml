@@ -8,7 +8,8 @@ node_js:
 notifications:
   email: false
 
-before_install: sudo apt-get install xvfb libsecret-1-dev 
+before_install: sudo apt-get update
+install: sudo apt-get install xvfb libsecret-1-dev 
 script: xvfb-run ./script/cibuild
 
 git:
