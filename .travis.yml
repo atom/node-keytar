@@ -8,8 +8,12 @@ node_js:
 notifications:
   email: false
 
-before_install: sudo apt-get update
-install: sudo apt-get install xvfb libsecret-1-dev 
+before_install: 
+  - wget http://launchpadlibrarian.net/159897952/libsecret-1-dev_0.16-0ubuntu1_amd64.deb
+  - wget http://launchpadlibrarian.net/159897953/libsecret-1-0_0.16-0ubuntu1_amd64.deb
+  - wget http://launchpadlibrarian.net/159897970/libsecret-common_0.16-0ubuntu1_all.deb
+  - sudo dpkg -i *.deb
+install: sudo apt-get install xvfb 
 script: xvfb-run ./script/cibuild
 
 git:
