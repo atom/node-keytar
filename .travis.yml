@@ -8,14 +8,6 @@ node_js:
 notifications:
   email: false
 
-before_install: 
-  - wget http://launchpadlibrarian.net/185768722/libglib2.0-0_2.40.2-0ubuntu1_amd64.deb
-  - wget http://launchpadlibrarian.net/182697795/libgcrypt11_1.5.3-2ubuntu4.1_amd64.deb
-  - wget http://launchpadlibrarian.net/159897952/libsecret-1-dev_0.16-0ubuntu1_amd64.deb
-  - wget http://launchpadlibrarian.net/159897953/libsecret-1-0_0.16-0ubuntu1_amd64.deb
-  - wget http://launchpadlibrarian.net/159897970/libsecret-common_0.16-0ubuntu1_all.deb
-  - wget http://launchpadlibrarian.net/159897955/gir1.2-secret-1_0.16-0ubuntu1_amd64.deb
-  - sudo dpkg -i *.deb
 install: sudo apt-get install xvfb 
 script: xvfb-run ./script/cibuild
 
