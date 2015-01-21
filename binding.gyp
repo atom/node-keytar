@@ -35,6 +35,7 @@
           'cflags': [
             '<!(pkg-config --cflags gnome-keyring-1)',
             '-Wno-missing-field-initializers',
+            '-Wno-deprecated-declarations',
           ],
           'link_settings': {
             'ldflags': [
