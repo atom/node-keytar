@@ -41,6 +41,6 @@
     "grunt-coffeelint": "0.0.6"
   },
   "dependencies": {
-    "nan": "1.2.0"
+    "nan": "https://atom.io/download/atom-shell/nan-1.6.1.tgz"
   }
 }
