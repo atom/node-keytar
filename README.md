@@ -14,7 +14,7 @@ npm install keytar
 
 Currently this library uses the gnome-keyring so you may need to run `sudo apt-get install libgnome-keyring-dev` before `npm install`ing.
 
-If you are using a Red Hat based systems you need to run `sudo yum install libgnome-keyring-devel`.
+If you are using a Red Hat-based system you need to run `sudo yum install libgnome-keyring-devel`.
 
 ## Building
   * Clone the repository
