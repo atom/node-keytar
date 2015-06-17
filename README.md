@@ -1,5 +1,8 @@
 # keytar - Node module to manage system keychain
 
+[![Build
+Status](https://travis-ci.org/atom/node-keytar.svg?branch=master)](https://travis-ci.org/atom/node-keytar)
+
 A native Node module to get, add, replace, and delete passwords in system's
 keychain. On OS X the passwords are managed by the Keychain, on Linux they are
 managed by Gnome Keyring and on Windows they are managed by Credential Vault.
