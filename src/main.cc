@@ -20,7 +20,7 @@ NAN_METHOD(GetPassword) {
                                      *String::Utf8Value(info[1]),
                                      &password);
   if (success)
-    info.GetReturnValue().Set(Nan::New<String>(password.data(), password.length())).ToLocalChecked();
+    info.GetReturnValue().Set(Nan::New<String>(password.data(), password.length()).ToLocalChecked());
   else
     info.GetReturnValue().Set(Nan::Null());
 }
@@ -37,7 +37,7 @@ NAN_METHOD(FindPassword) {
   std::string password;
   bool success = keytar::FindPassword(*String::Utf8Value(info[0]), &password);
   if (success)
-    info.GetReturnValue().Set(Nan::New<String>(password.data(), password.length())).ToLocalChecked();
+    info.GetReturnValue().Set(Nan::New<String>(password.data(), password.length()).ToLocalChecked());
   else
     info.GetReturnValue().Set(Nan::Null());
 }
