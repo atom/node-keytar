@@ -6,47 +6,47 @@ using namespace v8;
 namespace {
 
 NAN_METHOD(AddPassword) {
-  NanScope();
-  bool success = keytar::AddPassword(*String::Utf8Value(args[0]),
-                                     *String::Utf8Value(args[1]),
-                                     *String::Utf8Value(args[2]));
-  NanReturnValue(NanNew<Boolean>(success));
+  Nan::HandleScope scope;
+  bool success = keytar::AddPassword(*String::Utf8Value(info[0]),
+                                     *String::Utf8Value(info[1]),
+                                     *String::Utf8Value(info[2]));
+  info.GetReturnValue().Set(Nan::New<Boolean>(success));
 }
 
 NAN_METHOD(GetPassword) {
-  NanScope();
+  Nan::HandleScope scope;
   std::string password;
-  bool success = keytar::GetPassword(*String::Utf8Value(args[0]),
-                                     *String::Utf8Value(args[1]),
+  bool success = keytar::GetPassword(*String::Utf8Value(info[0]),
+                                     *String::Utf8Value(info[1]),
                                      &password);
   if (success)
-    NanReturnValue(NanNew<String>(password.data(), password.length()));
+    info.GetReturnValue().Set(Nan::New<String>(password.data(), password.length())).ToLocalChecked();
   else
-    NanReturnNull();
+    info.GetReturnValue().Set(Nan::Null());
 }
 
 NAN_METHOD(DeletePassword) {
-  NanScope();
-  bool success = keytar::DeletePassword(*String::Utf8Value(args[0]),
-                                        *String::Utf8Value(args[1]));
-  NanReturnValue(NanNew<Boolean>(success));
+  Nan::HandleScope scope;
+  bool success = keytar::DeletePassword(*String::Utf8Value(info[0]),
+                                        *String::Utf8Value(info[1]));
+  info.GetReturnValue().Set(Nan::New<Boolean>(success));
 }
 
 NAN_METHOD(FindPassword) {
-  NanScope();
+  Nan::HandleScope scope;
   std::string password;
-  bool success = keytar::FindPassword(*String::Utf8Value(args[0]), &password);
+  bool success = keytar::FindPassword(*String::Utf8Value(info[0]), &password);
   if (success)
-    NanReturnValue(NanNew<String>(password.data(), password.length()));
+    info.GetReturnValue().Set(Nan::New<String>(password.data(), password.length())).ToLocalChecked();
   else
-    NanReturnNull();
+    info.GetReturnValue().Set(Nan::Null());
 }
 
 void Init(Handle<Object> exports) {
-  NODE_SET_METHOD(exports, "getPassword", GetPassword);
-  NODE_SET_METHOD(exports, "addPassword", AddPassword);
-  NODE_SET_METHOD(exports, "deletePassword", DeletePassword);
-  NODE_SET_METHOD(exports, "findPassword", FindPassword);
+  Nan::SetMethod(exports, "getPassword", GetPassword);
+  Nan::SetMethod(exports, "addPassword", AddPassword);
+  Nan::SetMethod(exports, "deletePassword", DeletePassword);
+  Nan::SetMethod(exports, "findPassword", FindPassword);
 }
 
 }  // namespace
