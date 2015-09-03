@@ -19,10 +19,13 @@ NAN_METHOD(GetPassword) {
   bool success = keytar::GetPassword(*String::Utf8Value(info[0]),
                                      *String::Utf8Value(info[1]),
                                      &password);
-  if (success)
-    info.GetReturnValue().Set(Nan::New<String>(password.data(), password.length()).ToLocalChecked());
-  else
+  if (success) {
+    Local<String> val =
+      Nan::New<String>(password.data(), password.length()).ToLocalChecked();
+    info.GetReturnValue().Set(val);
+  } else {
     info.GetReturnValue().Set(Nan::Null());
+  }
 }
 
 NAN_METHOD(DeletePassword) {
@@ -36,10 +39,13 @@ NAN_METHOD(FindPassword) {
   Nan::HandleScope scope;
   std::string password;
   bool success = keytar::FindPassword(*String::Utf8Value(info[0]), &password);
-  if (success)
-    info.GetReturnValue().Set(Nan::New<String>(password.data(), password.length()).ToLocalChecked());
-  else
+  if (success) {
+    Local<String> val =
+      Nan::New<String>(password.data(), password.length()).ToLocalChecked();
+    info.GetReturnValue().Set(val);
+  } else {
     info.GetReturnValue().Set(Nan::Null());
+  }
 }
 
 void Init(Handle<Object> exports) {
