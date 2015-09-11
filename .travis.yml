@@ -9,6 +9,8 @@ addons:
       - gnome-keyring
       - libgnome-keyring-dev
 
+env:
+  - CC=clang CXX=clang++ npm_config_clang=1
 
 node_js:
   - "0.11"
