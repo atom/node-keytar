@@ -31,18 +31,21 @@
         ['OS not in ["mac", "win"]', {
           'sources': [
             'src/keytar_posix.cc',
+            'src/keytar_gnome.cc',
+            'src/keytar_kde.cc'
           ],
           'cflags': [
-            '<!(pkg-config --cflags gnome-keyring-1)',
+            '<!(pkg-config --cflags gnome-keyring-1 Qt5Core)',
             '-Wno-missing-field-initializers',
             '-Wno-deprecated-declarations',
           ],
           'link_settings': {
             'ldflags': [
-              '<!(pkg-config --libs-only-L --libs-only-other gnome-keyring-1)',
+              '<!(pkg-config --libs-only-L --libs-only-other gnome-keyring-1 Qt5Core)',
             ],
             'libraries': [
-              '<!(pkg-config --libs-only-l gnome-keyring-1)',
+              '<!(pkg-config --libs-only-l gnome-keyring-1 Qt5Core)',
+              '-lKF5Wallet',
             ],
           },
         }],
