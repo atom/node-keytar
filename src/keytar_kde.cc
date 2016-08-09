@@ -1,8 +1,6 @@
 #include "keytar.h"
 #include "keytar_posix.h"
 
-//#include <iostream>
-
 #include <QString>
 #include <kwindowsystem.h>
 #include <kwallet.h>
@@ -21,20 +19,20 @@ namespace keytar {
 bool KAddPassword(const std::string& service,
                   const std::string& account,
                   const std::string& password) {
-
   KWallet::Wallet *wallet;
 
-  if ((wallet = KWallet::Wallet::openWallet(KWallet::Wallet::LocalWallet(), KWindowSystem::activeWindow()))
+  if ((wallet = KWallet::Wallet::openWallet(KWallet::Wallet::LocalWallet(),
+                                            KWindowSystem::activeWindow()))
       && wallet->createFolder(QString(service.c_str()))
       && wallet->setFolder(QString(service.c_str()))
-      && !wallet->writePassword(QString(account.c_str()), QString(password.c_str()))) {
+      && !wallet->writePassword(QString(account.c_str()),
+                                QString(password.c_str()))) {
       // Takes advantage of short-circuit evaluation
       // writePassword returns 0 on success therefore needs ! to convert to true
     return true;
   }
 
   return false;
-
 }
 
 
@@ -49,11 +47,11 @@ bool KAddPassword(const std::string& service,
 bool KGetPassword(const std::string& service,
                   const std::string& account,
                   std::string* password) {
-
   KWallet::Wallet *wallet;
   QString raw_password = NULL;
 
-  if ((wallet = KWallet::Wallet::openWallet(KWallet::Wallet::LocalWallet(), KWindowSystem::activeWindow()))
+  if ((wallet = KWallet::Wallet::openWallet(KWallet::Wallet::LocalWallet(),
+                                            KWindowSystem::activeWindow()))
       && wallet->hasFolder(QString(service.c_str()))
       && wallet->setFolder(QString(service.c_str()))
       && !wallet->readPassword(QString(account.c_str()), raw_password)) {
@@ -78,10 +76,10 @@ bool KGetPassword(const std::string& service,
  *  @return           True or false indicating whether the function was successful.
  */
 bool KDeletePassword(const std::string& service, const std::string& account) {
-
   KWallet::Wallet *wallet;
 
-  if ((wallet = KWallet::Wallet::openWallet(KWallet::Wallet::LocalWallet(), KWindowSystem::activeWindow()))
+  if ((wallet = KWallet::Wallet::openWallet(KWallet::Wallet::LocalWallet(),
+                                            KWindowSystem::activeWindow()))
       && wallet->hasFolder(QString(service.c_str()))
       && wallet->setFolder(QString(service.c_str()))
       && !wallet->removeEntry(QString(account.c_str()))) {
@@ -109,13 +107,13 @@ bool KDeletePassword(const std::string& service, const std::string& account) {
  *  first account in the folder.
  */
 bool KFindPassword(const std::string& service, std::string* password) {
-
   KWallet::Wallet *wallet;
   QString first_entry;
   QString raw_password;
   QStringList entry_list;
 
-  if ((wallet = KWallet::Wallet::openWallet(KWallet::Wallet::LocalWallet(), KWindowSystem::activeWindow()))
+  if ((wallet = KWallet::Wallet::openWallet(KWallet::Wallet::LocalWallet(),
+                                            KWindowSystem::activeWindow()))
       && wallet->hasFolder(QString(service.c_str()))
       && wallet->setFolder(QString(service.c_str()))) {
       // Takes advantage of short-circuit evaluation
@@ -124,7 +122,8 @@ bool KFindPassword(const std::string& service, std::string* password) {
       entry_list.sort();
       first_entry = entry_list.first();
       if (!wallet->readPassword(first_entry, raw_password)) {
-        // readPassword returns 0 on success therefore needs ! to convert to true
+        // readPassword returns 0 on success therefore needs ! to convert to
+        // true
         *password = raw_password.toStdString();
         raw_password.clear();
         return true;

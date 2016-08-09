@@ -3,6 +3,7 @@
   "name": "keytar",
   "description": "Bindings to native Mac/Linux/Windows password APIs",
   "version": "3.0.2",
+  "license": "MIT",
   "licenses": [
     {
       "type": "MIT",
@@ -27,6 +28,9 @@
     "credential vault"
   ],
   "scripts": {
+    "preinstall": "cp binding.gyp binding.gyp.orig && if [ \"$USE_KWALLET\" = 1 ]; then sh use_kwallet.sh; fi",
+    "install": "node-gyp rebuild",
+    "postinstall": "mv binding.gyp.orig binding.gyp",
     "prepublish": "grunt clean coffee lint",
     "test": "grunt test"
   },
@@ -41,6 +45,6 @@
     "grunt-coffeelint": "0.0.6"
   },
   "dependencies": {
-    "nan": "2.3.2"
+    "nan": "~2.3.2"
   }
 }

@@ -3,9 +3,9 @@
 
 #include <gnome-keyring.h>
 
+#ifdef KEYTAR_KWALLET_BACKEND
 #include <QString>
 
-#include <iostream>
 
 namespace keytar_posix {
 
@@ -32,7 +32,6 @@ enum desktop_environment_t {
 
 
 static desktop_environment_t getKdeVersion() {
-
   QString s = qgetenv("KDE_SESSION_VERSION");
   if ( s == "5" ) {
     return PLASMA5_DESKTOP;
@@ -46,7 +45,6 @@ static desktop_environment_t getKdeVersion() {
 
 
 static desktop_environment_t getDesktopEnvironment() {
-
   QByteArray s = qgetenv("XDG_CURRENT_DESKTOP");
   if ( s == "GNOME" ) {
     return GNOME_DESKTOP;
@@ -78,7 +76,6 @@ static desktop_environment_t getDesktopEnvironment() {
 
 
 static keyring_backend_t getKeyringBackend() {
-
   switch (getDesktopEnvironment()) {
     case KDE4_DESKTOP:
       return NO_BACKEND;
@@ -98,9 +95,7 @@ static keyring_backend_t getKeyringBackend() {
       }
       break;
   }
-
 }
-
 }
 
 
@@ -121,7 +116,6 @@ keytar_posix::keyring_backend_t backend = keytar_posix::getKeyringBackend();
 bool AddPassword(const std::string& service,
                  const std::string& account,
                  const std::string& password) {
-
   switch (backend) {
     case keytar_posix::KWALLET_BACKEND:
       return KAddPassword(service, account, password);
@@ -145,7 +139,6 @@ bool AddPassword(const std::string& service,
 bool GetPassword(const std::string& service,
                  const std::string& account,
                  std::string* password) {
-
   switch (backend) {
   case keytar_posix::KWALLET_BACKEND:
     return KGetPassword(service, account, password);
@@ -166,7 +159,6 @@ bool GetPassword(const std::string& service,
  *  @return           True or false indicating whether the function was successful.
  */
 bool DeletePassword(const std::string& service, const std::string& account) {
-
   switch (backend) {
   case keytar_posix::KWALLET_BACKEND:
     return KDeletePassword(service, account);
@@ -190,7 +182,6 @@ bool DeletePassword(const std::string& service, const std::string& account) {
  *  first account in the folder.
  */
 bool FindPassword(const std::string& service, std::string* password) {
-
   switch (backend) {
   case keytar_posix::KWALLET_BACKEND:
     return KFindPassword(service, password);
@@ -203,3 +194,32 @@ bool FindPassword(const std::string& service, std::string* password) {
 }
 
 }  // namespace keytar
+
+#else
+// If KEYTAR_KWALLET_BACKEND not defined, just pass through to gnome-keyring
+// functions
+namespace keytar {
+
+bool AddPassword(const std::string& service,
+                 const std::string& account,
+                 const std::string& password) {
+  return GAddPassword(service, account, password);
+}
+
+bool GetPassword(const std::string& service,
+                 const std::string& account,
+                 std::string* password) {
+  return GGetPassword(service, account, password);
+}
+
+bool DeletePassword(const std::string& service, const std::string& account) {
+  return GDeletePassword(service, account);
+}
+
+bool FindPassword(const std::string& service, std::string* password) {
+  return GFindPassword(service, password);
+}
+
+}  // namespace keytar
+
+#endif  // KEYTAR_KWALLET_BACKEND
