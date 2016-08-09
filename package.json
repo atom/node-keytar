@@ -28,9 +28,9 @@
     "credential vault"
   ],
   "scripts": {
-    "preinstall": "cp binding.gyp binding.gyp.orig && if [ \"$USE_KWALLET\" = 1 ]; then sh use_kwallet.sh; fi",
+    "preinstall": "cp binding.gyp ./script/binding.gyp.orig && if [ \"$USE_KWALLET\" = 1 ]; then sh ./script/use_kwallet.sh; fi",
     "install": "node-gyp rebuild",
-    "postinstall": "mv binding.gyp.orig binding.gyp",
+    "postinstall": "mv ./script/binding.gyp.orig binding.gyp",
     "prepublish": "grunt clean coffee lint",
     "test": "grunt test"
   },
