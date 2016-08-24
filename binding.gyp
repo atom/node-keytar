@@ -33,16 +33,18 @@
             'src/keytar_posix.cc',
           ],
           'cflags': [
-            '<!(pkg-config --cflags gnome-keyring-1)',
+            '<!(pkg-config --cflags libsecret-1)',
+            '<!(pkg-config --cflags glib-2.0)',
             '-Wno-missing-field-initializers',
-            '-Wno-deprecated-declarations',
           ],
           'link_settings': {
             'ldflags': [
-              '<!(pkg-config --libs-only-L --libs-only-other gnome-keyring-1)',
+              '<!(pkg-config --libs-only-L --libs-only-other libsecret-1)',
+              '<!(pkg-config --libs-only-L --libs-only-other glib-2.0)',
             ],
             'libraries': [
-              '<!(pkg-config --libs-only-l gnome-keyring-1)',
+              '<!(pkg-config --libs-only-l libsecret-1)',
+              '<!(pkg-config --libs-only-l glib-2.0)',
             ],
           },
         }],
