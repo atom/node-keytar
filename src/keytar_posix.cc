@@ -8,27 +8,27 @@ namespace keytar {
 const SecretSchema schema = {
     "org.gnome.keyring.NodeKeyTar",
     SECRET_SCHEMA_NONE,
-    { { "service", SECRET_SCHEMA_ATTRIBUTE_STRING },
+    {   { "service", SECRET_SCHEMA_ATTRIBUTE_STRING },
         { "account", SECRET_SCHEMA_ATTRIBUTE_STRING },
-        { "NULL", SECRET_SCHEMA_ATTRIBUTE_STRING } }
+        { "NULL", SECRET_SCHEMA_ATTRIBUTE_STRING }
+    }
 };
 
 bool AddPassword(const std::string& service,
-    const std::string& account,
-    const std::string& password)
-{
+                 const std::string& account,
+                 const std::string& password) {
     GError* error = NULL;
 
     gboolean result = secret_password_store_sync(
-        &schema,
-        NULL, // Default keyring.
-        (service + "/" + account).c_str(), // Display name.
-        password.c_str(),
-        NULL,
-        &error,
-        "service", service.c_str(),
-        "account", account.c_str(),
-        NULL);
+                          &schema,
+                          NULL,  // Default keyring.
+                          (service + "/" + account).c_str(),  // Display name.
+                          password.c_str(),
+                          NULL,
+                          &error,
+                          "service", service.c_str(),
+                          "account", account.c_str(),
+                          NULL);
 
     if (error != NULL) {
         g_error_free(error);
@@ -39,18 +39,17 @@ bool AddPassword(const std::string& service,
 }
 
 bool GetPassword(const std::string& service,
-    const std::string& account,
-    std::string* password)
-{
+                 const std::string& account,
+                 std::string* password) {
     GError* error = NULL;
 
     gchar* raw_password = secret_password_lookup_sync(
-        &schema,
-        NULL,
-        &error,
-        "service", service.c_str(),
-        "account", account.c_str(),
-        NULL);
+                              &schema,
+                              NULL,
+                              &error,
+                              "service", service.c_str(),
+                              "account", account.c_str(),
+                              NULL);
 
     if (error != NULL) {
         g_error_free(error);
@@ -65,17 +64,16 @@ bool GetPassword(const std::string& service,
     return false;
 }
 
-bool DeletePassword(const std::string& service, const std::string& account)
-{
+bool DeletePassword(const std::string& service, const std::string& account) {
     GError* error = NULL;
 
     gboolean result = secret_password_clear_sync(
-        &schema,
-        NULL,
-        &error,
-        "service", service.c_str(),
-        "account", account.c_str(),
-        NULL);
+                          &schema,
+                          NULL,
+                          &error,
+                          "service", service.c_str(),
+                          "account", account.c_str(),
+                          NULL);
 
     if (error != NULL) {
         g_error_free(error);
@@ -85,16 +83,15 @@ bool DeletePassword(const std::string& service, const std::string& account)
     return result == TRUE;
 }
 
-bool FindPassword(const std::string& service, std::string* password)
-{
+bool FindPassword(const std::string& service, std::string* password) {
     GError* error = NULL;
 
     gchar* raw_password = secret_password_lookup_sync(
-        &schema,
-        NULL,
-        &error,
-        "service", service.c_str(),
-        NULL);
+                              &schema,
+                              NULL,
+                              &error,
+                              "service", service.c_str(),
+                              NULL);
 
     if (error != NULL) {
         g_error_free(error);
@@ -109,4 +106,4 @@ bool FindPassword(const std::string& service, std::string* password)
     return false;
 }
 
-} // namespace keytar
+}  // namespace keytar
