@@ -1,6 +1,8 @@
 #!/bin/bash
 
-sudo service dbus start
-eval $(gnome-keyring-daemon)
+echo "123" | passwd --stdin $USER
+
+eval $(/usr/bin/gnome-keyring-daemon --start --components=pkcs11,secrets,ssh)
+python -c "import gnomekeyring;gnomekeyring.unlock_sync(None, '123');"
 
 grunt test
