@@ -7,7 +7,7 @@ addons:
     packages:
       - xvfb
       - gnome-keyring
-      - libgnome-keyring-dev
+      - libsecret
 
 env:
   - CC=clang CXX=clang++ npm_config_clang=1
