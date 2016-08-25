@@ -19,9 +19,6 @@ before_install:
   - sudo apt-get -qq update
   - sudo apt-get install -y xvfb gnome-keyring libsecret-1-0 libsecret-1-dev python-gnomekeyring
 
-before_script:
-  - sudo service dbus start
-
 script: xvfb-run ./script/cibuild
 
 branches:
