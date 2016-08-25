@@ -17,7 +17,7 @@ env:
 
 before_install:
   - sudo apt-get -qq update
-  - sudo apt-get install -y xvfb gnome-keyring libsecret-1-0
+  - sudo apt-get install -y xvfb gnome-keyring libsecret-1-0 libsecret-1-dev
 
 script: xvfb-run ./script/cibuild
 

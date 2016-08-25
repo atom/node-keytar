@@ -34,17 +34,14 @@
           ],
           'cflags': [
             '<!(pkg-config --cflags libsecret-1)',
-            '<!(pkg-config --cflags glib-2.0)',
             '-Wno-missing-field-initializers',
           ],
           'link_settings': {
             'ldflags': [
-              '<!(pkg-config --libs-only-L --libs-only-other libsecret-1)',
-              '<!(pkg-config --libs-only-L --libs-only-other glib-2.0)',
+              '<!(pkg-config --libs-only-L --libs-only-other libsecret-1)'
             ],
             'libraries': [
-              '<!(pkg-config --libs-only-l libsecret-1)',
-              '<!(pkg-config --libs-only-l glib-2.0)',
+              '<!(pkg-config --libs-only-l libsecret-1)'
             ],
           },
         }],
