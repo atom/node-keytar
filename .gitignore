@@ -4,3 +4,7 @@
 *.log
 *~
 .node-version
+.vscode
+*.tgz
+.vagrant
+Vagrantfile

@@ -1,60 +1,61 @@
 #include "nan.h"
-using namespace v8;
-
 #include "keytar.h"
 
-namespace {
-
-NAN_METHOD(AddPassword) {
-  Nan::HandleScope scope;
-  bool success = keytar::AddPassword(*String::Utf8Value(info[0]),
-                                     *String::Utf8Value(info[1]),
-                                     *String::Utf8Value(info[2]));
-  info.GetReturnValue().Set(Nan::New<Boolean>(success));
+void AddPassword(const Nan::FunctionCallbackInfo<v8::Value>& info) {
+    bool success = keytar::AddPassword(
+                       *v8::String::Utf8Value(info[0]),
+                       *v8::String::Utf8Value(info[1]),
+                       *v8::String::Utf8Value(info[2]));
+    info.GetReturnValue().Set(Nan::New<v8::Boolean>(success));
 }
 
-NAN_METHOD(GetPassword) {
-  Nan::HandleScope scope;
-  std::string password;
-  bool success = keytar::GetPassword(*String::Utf8Value(info[0]),
-                                     *String::Utf8Value(info[1]),
-                                     &password);
-  if (success) {
-    Local<String> val =
-      Nan::New<String>(password.data(), password.length()).ToLocalChecked();
-    info.GetReturnValue().Set(val);
-  } else {
-    info.GetReturnValue().Set(Nan::Null());
-  }
+void GetPassword(const Nan::FunctionCallbackInfo<v8::Value>& info) {
+    std::string password;
+
+    bool success = keytar::GetPassword(
+                       *v8::String::Utf8Value(info[0]),
+                       *v8::String::Utf8Value(info[1]),
+                       &password);
+
+    if (success) {
+        v8::Local<v8::String> val = Nan::New<v8::String>(password.data(),
+                                    password.length()).ToLocalChecked();
+        info.GetReturnValue().Set(val);
+    } else {
+        info.GetReturnValue().Set(Nan::Null());
+    }
 }
 
-NAN_METHOD(DeletePassword) {
-  Nan::HandleScope scope;
-  bool success = keytar::DeletePassword(*String::Utf8Value(info[0]),
-                                        *String::Utf8Value(info[1]));
-  info.GetReturnValue().Set(Nan::New<Boolean>(success));
+void DeletePassword(const Nan::FunctionCallbackInfo<v8::Value>& info) {
+    bool success = keytar::DeletePassword(*v8::String::Utf8Value(info[0]),
+                                          *v8::String::Utf8Value(info[1]));
+
+    info.GetReturnValue().Set(Nan::New<v8::Boolean>(success));
 }
 
-NAN_METHOD(FindPassword) {
-  Nan::HandleScope scope;
-  std::string password;
-  bool success = keytar::FindPassword(*String::Utf8Value(info[0]), &password);
-  if (success) {
-    Local<String> val =
-      Nan::New<String>(password.data(), password.length()).ToLocalChecked();
-    info.GetReturnValue().Set(val);
-  } else {
-    info.GetReturnValue().Set(Nan::Null());
-  }
+void FindPassword(const Nan::FunctionCallbackInfo<v8::Value>& info) {
+    std::string password;
+    bool success = keytar::FindPassword(*v8::String::Utf8Value(info[0]),
+                                        &password);
+
+    if (success) {
+        v8::Local<v8::String> val = Nan::New<v8::String>(password.data(),
+                                    password.length()).ToLocalChecked();
+        info.GetReturnValue().Set(val);
+    } else {
+        info.GetReturnValue().Set(Nan::Null());
+    }
 }
 
-void Init(Handle<Object> exports) {
-  Nan::SetMethod(exports, "getPassword", GetPassword);
-  Nan::SetMethod(exports, "addPassword", AddPassword);
-  Nan::SetMethod(exports, "deletePassword", DeletePassword);
-  Nan::SetMethod(exports, "findPassword", FindPassword);
+void Init(v8::Local<v8::Object> exports) {
+    exports->Set(Nan::New("addPassword").ToLocalChecked(),
+                 Nan::New<v8::FunctionTemplate>(AddPassword)->GetFunction());
+    exports->Set(Nan::New("getPassword").ToLocalChecked(),
+                 Nan::New<v8::FunctionTemplate>(GetPassword)->GetFunction());
+    exports->Set(Nan::New("deletePassword").ToLocalChecked(),
+                 Nan::New<v8::FunctionTemplate>(DeletePassword)->GetFunction());
+    exports->Set(Nan::New("findPassword").ToLocalChecked(),
+                 Nan::New<v8::FunctionTemplate>(FindPassword)->GetFunction());
 }
-
-}  // namespace
 
 NODE_MODULE(keytar, Init)

@@ -1,17 +1,7 @@
+sudo: true
+dist: trusty
+
 language: node_js
-
-sudo: false
-
-addons:
-  apt:
-    packages:
-      - xvfb
-      - gnome-keyring
-      - libgnome-keyring-dev
-
-env:
-  - CC=clang CXX=clang++ npm_config_clang=1
-
 node_js:
   - "6.0"
   - "4.0"
@@ -19,14 +9,21 @@ node_js:
   - "0.10"
   - "iojs"
 
-notifications:
-  email: false
-
-script: xvfb-run ./script/cibuild
-
 git:
   depth: 10
+
+env:
+  - CC=clang CXX=clang++ npm_config_clang=1
+
+before_install:
+  - sudo apt-get -qq update
+  - sudo apt-get install -y xvfb gnome-keyring libsecret-1-0 libsecret-1-dev python-gnomekeyring
+
+script: xvfb-run ./script/cibuild
 
 branches:
   only:
     - master
+
+notifications:
+  email: false

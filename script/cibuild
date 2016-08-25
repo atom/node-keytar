@@ -1,8 +1,9 @@
 #!/bin/bash
 
-sudo service dbus start
-eval $(gnome-keyring-daemon)
-export GNOME_KEYRING_CONTROL GNOME_KEYRING_PID GPG_AGENT_INFO SSH_AUTH_SOCK
+sudo sh -c "echo -e "123\n123" | passwd $USER"
 
-# FIXME Find out why we cound not connect to gnome-keyring-daemon.
-# grunt test
+eval $(/usr/bin/gnome-keyring-daemon --start --components=pkcs11,secrets,ssh)
+export GNOME_KEYRING_CONTROL GNOME_KEYRING_PID GPG_AGENT_INFO SSH_AUTH_SOCK
+python -c "import gnomekeyring;gnomekeyring.unlock_sync(None, '123');"
+
+grunt test
