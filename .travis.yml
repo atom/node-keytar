@@ -1,6 +1,6 @@
 language: node_js
 
-sudo: false
+sudo: required
 
 matrix:
   include:
@@ -12,6 +12,8 @@ matrix:
         packages:
         - clang-3.3
         - build-essential
+        - xvfb
+        - gnome-keyring
         - libgnome-keyring-dev
 
 addons:
