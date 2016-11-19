@@ -61,7 +61,7 @@ Delete the stored password for the `service` and `account`.
 
 `account` - The string account name.
 
-Returns the string password or `null` on failures.
+Returns `true` if a password has been deleted, `false` on failure.
 
 ### replacePassword(service, account, password)
 
