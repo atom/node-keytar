@@ -5,7 +5,7 @@ Status](https://travis-ci.org/atom/node-keytar.svg?branch=master)](https://travi
 
 A native Node module to get, add, replace, and delete passwords in system's
 keychain. On OS X the passwords are managed by the Keychain, on Linux they are
-managed by Gnome Keyring and on Windows they are managed by Credential Vault.
+managed by the Secret Service API/libsecret, and on Windows they are managed by Credential Vault.
 
 ## Installing
 
@@ -15,9 +15,13 @@ npm install keytar
 
 ### On Linux
 
-Currently this library uses the gnome-keyring so you may need to run `sudo apt-get install libgnome-keyring-dev` before `npm install`ing.
+Currently this library uses `libsecret` so you may need to install it before `npm install`ing.
 
-If you are using a Red Hat-based system you need to run `sudo yum install libgnome-keyring-devel`.
+Depending on your distribution, you will need to run the following command:
+
+* Debian/Ubuntu: `sudo apt-get install libsecret-1-dev`
+* Red Hat-based: `sudo yum install libsecret-devel`
+* Arch Linux: `sudo pacman -S libsecret`
 
 ## Building
   * Clone the repository
@@ -61,7 +65,7 @@ Delete the stored password for the `service` and `account`.
 
 `account` - The string account name.
 
-Returns the string password or `null` on failures.
+Returns `true` if a password has been deleted, or `false` on failure.
 
 ### replacePassword(service, account, password)
 
