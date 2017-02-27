@@ -1,6 +1,7 @@
 keytar = require '../lib/keytar'
-
+console.log "testing from grunt"
 describe "keytar", ->
+  console.log "describe"
   service = 'keytar tests'
   account = 'buster'
   password = 'secret'
@@ -8,15 +9,18 @@ describe "keytar", ->
   password2 = 'secret2'
 
   beforeEach ->
+    console.log "before"
     keytar.deletePassword(service, account)
     keytar.deletePassword(service, account2)
 
   afterEach ->
+    console.log "after"
     keytar.deletePassword(service, account)
     keytar.deletePassword(service, account2)
 
   describe "addPassword(service, account, password)", ->
     it "returns true when the service, account, and password are specified", ->
+      console.log "add pass"
       expect(keytar.addPassword(service, account, password)).toBe true
 
   describe "getPassword(service, account, password)", ->
