@@ -1,7 +1,6 @@
 #!/bin/bash
-zz
+
 sudo service dbus start
 eval $(gnome-keyring-daemon)
-#export GNOME_KEYRING_CONTROL GNOME_KEYRING_PID GPG_AGENT_INFO SSH_AUTH_SOCK
-echo $SSH_AUTH_SOCK
+
 grunt test
