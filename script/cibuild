@@ -1,7 +1,12 @@
 #!/bin/bash
 
+echo "starting dbus"
 sudo service dbus start
+echo "starting daemon"
 eval $(gnome-keyring-daemon)
+echo "exporting"
+echo $SSH_AUTH_SOCK
 export GNOME_KEYRING_CONTROL GNOME_KEYRING_PID GPG_AGENT_INFO SSH_AUTH_SOCK
 
+echo "testing"
 grunt test
