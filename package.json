@@ -29,10 +29,11 @@
   "scripts": {
     "lint": "npm run cpplint",
     "cpplint": "node-cpplint --filters legal-copyright,build-include,build-namespaces src/*.cc",
-    "test": "npm run lint && npm build . && jasmine-focused --captureExceptions spec/"
+    "test": "npm run lint && npm build . && mocha spec/"
   },
   "devDependencies": {
-    "jasmine-focused": "~1.x",
+    "chai": "^3.5.0",
+    "mocha": "^3.2.0",
     "node-cpplint": "~0.1.5",
     "node-gyp": "^3.6.0"
   },

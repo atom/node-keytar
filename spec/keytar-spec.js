@@ -1,3 +1,4 @@
+var assert = require('chai').assert
 var keytar = require('../')
 
 describe("keytar sync", function() {
@@ -19,40 +20,40 @@ describe("keytar sync", function() {
 
   describe("addPasswordSync(service, account, password)", function() {
     it("returns true when the service, account, and password are specified", function() {
-      expect(keytar.addPasswordSync(service, account, password)).toBe(true)
+      assert.equal(keytar.addPasswordSync(service, account, password), true)
     })
   })
 
   describe("getPasswordSync(service, account, password)", function() {
     it("returns the password for service and account", function() {
-      expect(keytar.addPasswordSync(service, account, password)).toBe(true)
-      expect(keytar.getPasswordSync(service, account)).toBe(password)
+      assert.equal(keytar.addPasswordSync(service, account, password), true)
+      assert.equal(keytar.getPasswordSync(service, account), password)
     })
   })
 
   describe("deletePasswordSync(service, account)", function() {
     it("returns true when the password for the service and account has been deleted", function() {
-      expect(keytar.deletePasswordSync(service, account)).toBe(false)
-      expect(keytar.addPasswordSync(service, account, password)).toBe(true)
-      expect(keytar.deletePasswordSync(service, account)).toBe(true)
-      expect(keytar.deletePasswordSync(service, account)).toBe(false)
+      assert.equal(keytar.deletePasswordSync(service, account), false)
+      assert.equal(keytar.addPasswordSync(service, account, password), true)
+      assert.equal(keytar.deletePasswordSync(service, account), true)
+      assert.equal(keytar.deletePasswordSync(service, account), false)
     })
   })
 
   describe("replacePasswordSync(service, account, password)", function() {
     it("returns true when the password for the service and account has been deleted and readded", function() {
-      expect(keytar.addPasswordSync(service, account, password)).toBe(true)
-      expect(keytar.replacePasswordSync(service, account, 'another secret')).toBe(true)
-      expect(keytar.getPasswordSync(service, account)).toBe('another secret')
+      assert.equal(keytar.addPasswordSync(service, account, password), true)
+      assert.equal(keytar.replacePasswordSync(service, account, 'another secret'), true)
+      assert.equal(keytar.getPasswordSync(service, account), 'another secret')
     })
   })
 
   describe("findPasswordSync(service)", function() {
     it("returns a password of the service", function() {
-      expect(keytar.addPasswordSync(service, account, password)).toBe(true)
-      expect(keytar.addPasswordSync(service, account2, password2)).toBe(true)
+      assert.equal(keytar.addPasswordSync(service, account, password), true)
+      assert.equal(keytar.addPasswordSync(service, account2, password2), true)
       var found = keytar.findPasswordSync(service)
-      expect([password, password2].indexOf(found)).toBeGreaterThan(-1)
+      assert.isAbove([password, password2].indexOf(found), -1)
     })
   })
 })
