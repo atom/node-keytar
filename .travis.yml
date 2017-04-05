@@ -1,27 +1,19 @@
 language: node_js
 
-sudo: required
+os: osx
+os: linux
 
-matrix:
-  include:
-  - os: osx
-  - os: linux
-    dist: trusty
-    addons:
-      apt:
-        packages:
-        - clang-3.3
-        - build-essential
-        - xvfb
-        - gnome-keyring
-        - libgnome-keyring-dev
+required: required
 
 addons:
   apt:
     packages:
+      - clang-3.3
+      - build-essential
       - xvfb
       - gnome-keyring
       - libgnome-keyring-dev
+      - libsecret-1-dev
 
 env:
   - CC=clang CXX=clang++ npm_config_clang=1
@@ -34,11 +26,9 @@ node_js:
 notifications:
   email: false
 
-script: xvfb-run ./script/cibuild
+script:
+  - if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then xvfb-run ./script/cibuild; fi
+  - if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then npm test; fi
 
 git:
   depth: 10
-
-branches:
-  only:
-    - master
