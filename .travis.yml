@@ -1,9 +1,15 @@
 language: node_js
 
-os: osx
-os: linux
+os:
+  - linux
+  - osx
+node_js:
+  - "7.0"
+  - "6.0"
+  - "4.0"
 
-required: required
+
+sudo: required
 
 addons:
   apt:
@@ -17,11 +23,6 @@ addons:
 
 env:
   - CC=clang CXX=clang++ npm_config_clang=1
-
-node_js:
-  - "7.0"
-  - "6.0"
-  - "4.0"
 
 notifications:
   email: false
