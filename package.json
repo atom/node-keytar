@@ -27,18 +27,14 @@
     "credential vault"
   ],
   "scripts": {
-    "prepublish": "grunt clean coffee lint",
-    "test": "grunt test"
+    "lint": "npm run cpplint",
+    "cpplint": "node-cpplint --filters legal-copyright,build-include,build-namespaces src/*.cc",
+    "test": "npm run lint && npm build . && jasmine-focused --captureExceptions spec/"
   },
   "devDependencies": {
-    "grunt": "~0.4.1",
-    "grunt-contrib-coffee": "~0.9.0",
-    "grunt-cli": "~0.1.7",
-    "grunt-shell": "~0.2.2",
     "jasmine-focused": "~1.x",
-    "rimraf": "~2.1.4",
     "node-cpplint": "~0.1.5",
-    "grunt-coffeelint": "0.0.6"
+    "node-gyp": "^3.6.0"
   },
   "dependencies": {
     "nan": "2.5.1"
