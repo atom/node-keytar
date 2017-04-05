@@ -2,6 +2,18 @@ language: node_js
 
 sudo: false
 
+os: osx
+matrix:
+  include:
+  - os: linux
+    dist: trusty
+    addons:
+      apt:
+        packages:
+        - clang-3.3
+        - build-essential
+        - libgnome-keyring-dev
+
 addons:
   apt:
     packages:
