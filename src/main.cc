@@ -49,10 +49,10 @@ NAN_METHOD(FindPassword) {
 }
 
 void Init(Handle<Object> exports) {
-  Nan::SetMethod(exports, "getPassword", GetPassword);
-  Nan::SetMethod(exports, "addPassword", AddPassword);
-  Nan::SetMethod(exports, "deletePassword", DeletePassword);
-  Nan::SetMethod(exports, "findPassword", FindPassword);
+  Nan::SetMethod(exports, "getPasswordSync", GetPassword);
+  Nan::SetMethod(exports, "addPasswordSync", AddPassword);
+  Nan::SetMethod(exports, "deletePasswordSync", DeletePassword);
+  Nan::SetMethod(exports, "findPasswordSync", FindPassword);
 }
 
 }  // namespace

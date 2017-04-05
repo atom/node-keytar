@@ -8,38 +8,38 @@ describe "keytar", ->
   password2 = 'secret2'
 
   beforeEach ->
-    keytar.deletePassword(service, account)
-    keytar.deletePassword(service, account2)
+    keytar.deletePasswordSync(service, account)
+    keytar.deletePasswordSync(service, account2)
 
   afterEach ->
-    keytar.deletePassword(service, account)
-    keytar.deletePassword(service, account2)
+    keytar.deletePasswordSync(service, account)
+    keytar.deletePasswordSync(service, account2)
 
-  describe "addPassword(service, account, password)", ->
+  describe "addPasswordSync(service, account, password)", ->
     it "returns true when the service, account, and password are specified", ->
-      expect(keytar.addPassword(service, account, password)).toBe true
+      expect(keytar.addPasswordSync(service, account, password)).toBe true
 
-  describe "getPassword(service, account, password)", ->
+  describe "getPasswordSync(service, account, password)", ->
     it "returns the password for service and account", ->
-      expect(keytar.addPassword(service, account, password)).toBe true
-      expect(keytar.getPassword(service, account)).toBe password
+      expect(keytar.addPasswordSync(service, account, password)).toBe true
+      expect(keytar.getPasswordSync(service, account)).toBe password
 
-  describe "deletePassword(service, account)", ->
+  describe "deletePasswordSync(service, account)", ->
     it "returns true when the password for the service and account has been deleted", ->
-      expect(keytar.deletePassword(service, account)).toBe false
-      expect(keytar.addPassword(service, account, password)).toBe true
-      expect(keytar.deletePassword(service, account)).toBe true
-      expect(keytar.deletePassword(service, account)).toBe false
+      expect(keytar.deletePasswordSync(service, account)).toBe false
+      expect(keytar.addPasswordSync(service, account, password)).toBe true
+      expect(keytar.deletePasswordSync(service, account)).toBe true
+      expect(keytar.deletePasswordSync(service, account)).toBe false
 
-  describe "replacePassword(service, account, password)", ->
+  describe "replacePasswordSync(service, account, password)", ->
     it "returns true when the password for the service and account has been deleted and readded", ->
-      expect(keytar.addPassword(service, account, password)).toBe true
-      expect(keytar.replacePassword(service, account, 'another secret')).toBe true
-      expect(keytar.getPassword(service, account)).toBe 'another secret'
+      expect(keytar.addPasswordSync(service, account, password)).toBe true
+      expect(keytar.replacePasswordSync(service, account, 'another secret')).toBe true
+      expect(keytar.getPasswordSync(service, account)).toBe 'another secret'
 
-  describe "findPassword(service)", ->
+  describe "findPasswordSync(service)", ->
     it "returns a password of the service", ->
-      expect(keytar.addPassword(service, account, password)).toBe true
-      expect(keytar.addPassword(service, account2, password2)).toBe true
-      found = keytar.findPassword(service)
+      expect(keytar.addPasswordSync(service, account, password)).toBe true
+      expect(keytar.addPasswordSync(service, account2, password2)).toBe true
+      found = keytar.findPasswordSync(service)
       expect([password, password2].indexOf(found)).toBeGreaterThan -1

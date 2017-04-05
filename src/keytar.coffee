@@ -1,34 +1,34 @@
 keytar = require('../build/Release/keytar.node')
 
 module.exports =
-  getPassword: (service, account) ->
+  getPasswordSync: (service, account) ->
     throw new Error("Service is required.") unless service?.length > 0
     throw new Error("Account is required.") unless account?.length > 0
 
-    keytar.getPassword(service, account)
+    keytar.getPasswordSync(service, account)
 
-  addPassword: (service, account, password) ->
-    throw new Error("Service is required.") unless service?.length > 0
-    throw new Error("Account is required.") unless account?.length > 0
-    throw new Error("Password is required.") unless password?.length > 0
-
-    keytar.addPassword(service, account, password)
-
-  deletePassword: (service, account) ->
-    throw new Error("Service is required.") unless service?.length > 0
-    throw new Error("Account is required.") unless account?.length > 0
-
-    keytar.deletePassword(service, account)
-
-  replacePassword: (service, account, password) ->
+  addPasswordSync: (service, account, password) ->
     throw new Error("Service is required.") unless service?.length > 0
     throw new Error("Account is required.") unless account?.length > 0
     throw new Error("Password is required.") unless password?.length > 0
 
-    keytar.deletePassword(service, account)
-    keytar.addPassword(service, account, password)
+    keytar.addPasswordSync(service, account, password)
 
-  findPassword: (service) ->
+  deletePasswordSync: (service, account) ->
+    throw new Error("Service is required.") unless service?.length > 0
+    throw new Error("Account is required.") unless account?.length > 0
+
+    keytar.deletePasswordSync(service, account)
+
+  replacePasswordSync: (service, account, password) ->
+    throw new Error("Service is required.") unless service?.length > 0
+    throw new Error("Account is required.") unless account?.length > 0
+    throw new Error("Password is required.") unless password?.length > 0
+
+    keytar.deletePasswordSync(service, account)
+    keytar.addPasswordSync(service, account, password)
+
+  findPasswordSync: (service) ->
     throw new Error("Service is required.") unless service?.length > 0
 
-    keytar.findPassword(service)
+    keytar.findPasswordSync(service)
