@@ -1,8 +1,7 @@
 #!/bin/bash
 
 echo "Unlocking the keyring..."
-echo -n "" | /usr/bin/gnome-keyring-daemon --components=secrets --login
-/usr/bin/gnome-keyring-daemon --start
+eval $(echo -n "" | /usr/bin/gnome-keyring-daemon --components=secrets --login --daemonize)
 export GNOME_KEYRING_CONTROL GNOME_KEYRING_PID GPG_AGENT_INFO SSH_AUTH_SOCK
 echo "Doing the test thing..."
 npm test
