@@ -1,5 +1,5 @@
 language: node_js
-
+sudo: required
 os:
   - linux
   - osx
@@ -8,28 +8,19 @@ node_js:
   - "6.0"
   - "4.0"
 
-
-sudo: required
-
-addons:
-  apt:
-    packages:
-      - clang-3.3
-      - build-essential
-      - xvfb
-      - gnome-keyring
-      - libgnome-keyring-dev
-      - libsecret-1-dev
-
 env:
   - CC=clang CXX=clang++ npm_config_clang=1
 
 notifications:
   email: false
 
+git:
+  depth: 10
+
+before_install:
+  - if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then sudo apt-get update; fi
+  - if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then sudo apt-get install xvfb gnome-keyring libsecret-1-dev; fi
+
 script:
   - if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then xvfb-run ./script/cibuild; fi
   - if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then npm test; fi
-
-git:
-  depth: 10
