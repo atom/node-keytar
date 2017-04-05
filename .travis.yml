@@ -2,9 +2,9 @@ language: node_js
 
 sudo: false
 
-os: osx
 matrix:
   include:
+  - os: osx
   - os: linux
     dist: trusty
     addons:
