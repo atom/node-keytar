@@ -1,6 +1,5 @@
 #!/bin/bash
 
-sudo service dbus start
 eval $(echo -n "" | /usr/bin/gnome-keyring-daemon --components=secrets --login)
 export GNOME_KEYRING_CONTROL GNOME_KEYRING_PID GPG_AGENT_INFO SSH_AUTH_SOCK
 npm test
