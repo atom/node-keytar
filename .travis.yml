@@ -20,7 +20,13 @@ git:
 
 before_install:
   - if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then sudo apt-get update; fi
-  - if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then sudo apt-get install -yq xvfb gnome-keyring libsecret-1-dev; fi
+  - if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then sudo apt-get install -yq xvfb gnome-keyring libsecret-1-dev python-gnomekeyring; fi
+
+before_script:
+  - |
+    if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then
+      dbus-launch /usr/bin/python -c \
+        "import gnomekeyring;gnomekeyring.create_sync('login', '');"
 
 script:
   - if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then xvfb-run ./script/cibuild; fi
