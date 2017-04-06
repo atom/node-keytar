@@ -4,9 +4,26 @@
 
 namespace keytar {
 
-bool AddPassword(const std::string& service,
-                 const std::string& account,
-                 const std::string& password) {
+const std::string errorStatusToString(OSStatus status) {
+  std::string errorStr;
+  CFStringRef errorMessageString = SecCopyErrorMessageString(status, NULL);
+
+  const char* errorCStringPtr = CFStringGetCStringPtr(errorMessageString,
+                                                      kCFStringEncodingUTF8);
+  if (errorCStringPtr) {
+    errorStr = std::string(errorCStringPtr);
+  } else {
+    errorStr = std::string("An unknown error occurred.");
+  }
+
+  CFRelease(errorMessageString);
+  return errorStr;
+}
+
+KEYTAR_OP_RESULT AddPassword(const std::string& service,
+                             const std::string& account,
+                             const std::string& password,
+                             std::string* error) {
   OSStatus status = SecKeychainAddGenericPassword(NULL,
                                                   service.length(),
                                                   service.data(),
@@ -15,31 +32,47 @@ bool AddPassword(const std::string& service,
                                                   password.length(),
                                                   password.data(),
                                                   NULL);
-  return status == errSecSuccess;
+  if (status == errSecDuplicateItem) {
+    // This password already exists.
+    return FAIL_NORMAL;
+  } else if (status != errSecSuccess) {
+    *error = errorStatusToString(status);
+    return FAIL_ERROR;
+  }
+
+  return SUCCESS;
 }
 
-bool GetPassword(const std::string& service,
-                 const std::string& account,
-                 std::string* password) {
+KEYTAR_OP_RESULT GetPassword(const std::string& service,
+                             const std::string& account,
+                             std::string* password,
+                             std::string* error) {
   void *data;
   UInt32 length;
   OSStatus status = SecKeychainFindGenericPassword(NULL,
-                                                  service.length(),
-                                                  service.data(),
-                                                  account.length(),
-                                                  account.data(),
-                                                  &length,
-                                                  &data,
-                                                  NULL);
-  if (status != errSecSuccess)
-    return false;
+                                                   service.length(),
+                                                   service.data(),
+                                                   account.length(),
+                                                   account.data(),
+                                                   &length,
+                                                   &data,
+                                                   NULL);
+
+  if (status == errSecItemNotFound) {
+    return FAIL_NORMAL;
+  } else if (status != errSecSuccess) {
+    *error = errorStatusToString(status);
+    return FAIL_ERROR;
+  }
 
   *password = std::string(reinterpret_cast<const char*>(data), length);
   SecKeychainItemFreeContent(NULL, data);
-  return true;
+  return SUCCESS;
 }
 
-bool DeletePassword(const std::string& service, const std::string& account) {
+KEYTAR_OP_RESULT DeletePassword(const std::string& service,
+                                const std::string& account,
+                                std::string* error) {
   SecKeychainItemRef item;
   OSStatus status = SecKeychainFindGenericPassword(NULL,
                                                    service.length(),
@@ -49,15 +82,27 @@ bool DeletePassword(const std::string& service, const std::string& account) {
                                                    NULL,
                                                    NULL,
                                                    &item);
-  if (status != errSecSuccess)
-    return false;
+  if (status == errSecItemNotFound) {
+    // Item could not be found, so already deleted.
+    return FAIL_NORMAL;
+  } else if (status != errSecSuccess) {
+    *error = errorStatusToString(status);
+    return FAIL_ERROR;
+  }
 
   status = SecKeychainItemDelete(item);
   CFRelease(item);
-  return status == errSecSuccess;
+  if (status != errSecSuccess) {
+    *error = errorStatusToString(status);
+    return FAIL_ERROR;
+  }
+
+  return SUCCESS;
 }
 
-bool FindPassword(const std::string& service, std::string* password) {
+KEYTAR_OP_RESULT FindPassword(const std::string& service,
+                              std::string* password,
+                              std::string* error) {
   SecKeychainItemRef item;
   void *data;
   UInt32 length;
@@ -70,13 +115,17 @@ bool FindPassword(const std::string& service, std::string* password) {
                                                    &length,
                                                    &data,
                                                    &item);
-  if (status != errSecSuccess)
-    return false;
+  if (status == errSecItemNotFound) {
+    return FAIL_NORMAL;
+  } else if (status != errSecSuccess) {
+    *error = errorStatusToString(status);
+    return FAIL_ERROR;
+  }
 
   *password = std::string(reinterpret_cast<const char*>(data), length);
   SecKeychainItemFreeContent(NULL, data);
   CFRelease(item);
-  return true;
+  return SUCCESS;
 }
 
 }  // namespace keytar

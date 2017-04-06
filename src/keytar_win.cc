@@ -7,7 +7,8 @@ namespace keytar {
 
 bool AddPassword(const std::string& service,
                  const std::string& account,
-                 const std::string& password) {
+                 const std::string& password,
+                 std::string* error) {
   std::string target_name = service + '/' + account;
 
   CREDENTIAL cred = { 0 };
@@ -22,7 +23,8 @@ bool AddPassword(const std::string& service,
 
 bool GetPassword(const std::string& service,
                  const std::string& account,
-                 std::string* password) {
+                 std::string* password,
+                 std::string* error) {
   std::string target_name = service + '/' + account;
 
   CREDENTIAL* cred;
@@ -35,13 +37,17 @@ bool GetPassword(const std::string& service,
   return true;
 }
 
-bool DeletePassword(const std::string& service, const std::string& account) {
+bool DeletePassword(const std::string& service,
+                    const std::string& account,
+                    std::string* error) {
   std::string target_name = service + '/' + account;
 
   return ::CredDelete(target_name.c_str(), CRED_TYPE_GENERIC, 0) == TRUE;
 }
 
-bool FindPassword(const std::string& service, std::string* password) {
+bool FindPassword(const std::string& service,
+                  std::string* password,
+                  std::string* error) {
   std::string filter = service + "*";
 
   DWORD count;

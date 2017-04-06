@@ -18,7 +18,8 @@ static const SecretSchema schema = {
 
 bool AddPassword(const std::string& service,
                  const std::string& account,
-                 const std::string& password) {
+                 const std::string& password,
+                 std::string* error) {
   GError* error = NULL;
 
   gboolean result = secret_password_store_sync(
@@ -42,7 +43,8 @@ bool AddPassword(const std::string& service,
 
 bool GetPassword(const std::string& service,
                  const std::string& account,
-                 std::string* password) {
+                 std::string* password,
+                 std::string* error) {
   GError* error = NULL;
 
   gchar* raw_password = secret_password_lookup_sync(
@@ -66,7 +68,9 @@ bool GetPassword(const std::string& service,
   return true;
 }
 
-bool DeletePassword(const std::string& service, const std::string& account) {
+bool DeletePassword(const std::string& service,
+                    const std::string& account,
+                    std::string* error) {
   GError* error = NULL;
 
   gboolean result = secret_password_clear_sync(
@@ -85,7 +89,9 @@ bool DeletePassword(const std::string& service, const std::string& account) {
   return result;
 }
 
-bool FindPassword(const std::string& service, std::string* password) {
+bool FindPassword(const std::string& service,
+                  std::string* password,
+                  std::string* error) {
   GError* error = NULL;
 
   gchar* raw_password = secret_password_lookup_sync(
