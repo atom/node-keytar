@@ -27,6 +27,7 @@ before_script:
     if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then
       dbus-launch /usr/bin/python -c \
         "import gnomekeyring;gnomekeyring.create_sync('login', '');"
+    fi
 
 script:
   - if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then xvfb-run ./script/cibuild; fi
