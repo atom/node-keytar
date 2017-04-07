@@ -1,17 +1,16 @@
 #include "keytar.h"
 
-#include <gnome-keyring.h>
+#include <libsecret/secret.h>
 #include <stdio.h>
 
 namespace keytar {
 
 namespace {
 
-const GnomeKeyringPasswordSchema kGnomeSchema = {
-  GNOME_KEYRING_ITEM_GENERIC_SECRET, {
-    { "service", GNOME_KEYRING_ATTRIBUTE_TYPE_STRING },
-    { "account", GNOME_KEYRING_ATTRIBUTE_TYPE_STRING },
-    { NULL }
+static const SecretSchema schema = {
+  "org.freedesktop.Secret.Generic", SECRET_SCHEMA_NONE, {
+    { "service", SECRET_SCHEMA_ATTRIBUTE_STRING },
+    { "account", SECRET_SCHEMA_ATTRIBUTE_STRING }
   }
 };
 
@@ -20,57 +19,92 @@ const GnomeKeyringPasswordSchema kGnomeSchema = {
 bool AddPassword(const std::string& service,
                  const std::string& account,
                  const std::string& password) {
-  GnomeKeyringResult result = gnome_keyring_store_password_sync(
-      &kGnomeSchema,
-      NULL,  // Default keyring.
-      (service + "/" + account).c_str(),  // Display name.
-      password.c_str(),
-      "service", service.c_str(),
-      "account", account.c_str(),
-      NULL);
-  return result == GNOME_KEYRING_RESULT_OK;
+  GError* error = NULL;
+
+  gboolean result = secret_password_store_sync(
+    &schema,                            // The schema.
+    SECRET_COLLECTION_DEFAULT,          // Default collection.
+    (service + "/" + account).c_str(),  // The label.
+    password.c_str(),                   // The password.
+    NULL,                               // Cancellable. (unneeded)
+    &error,                             // Reference to the error.
+    "service", service.c_str(),
+    "account", account.c_str(),
+    NULL);                              // End of arguments.
+
+  if (error != NULL) {
+    g_error_free(error);
+    return false;
+  }
+
+  return result;
 }
 
 bool GetPassword(const std::string& service,
                  const std::string& account,
                  std::string* password) {
-  gchar* raw_passwords;
-  GnomeKeyringResult result = gnome_keyring_find_password_sync(
-      &kGnomeSchema,
-      &raw_passwords,
-      "service", service.c_str(),
-      "account", account.c_str(),
-      NULL);
-  if (result != GNOME_KEYRING_RESULT_OK)
+  GError* error = NULL;
+
+  gchar* raw_password = secret_password_lookup_sync(
+    &schema,                            // The schema.
+    NULL,                               // Cancellable. (unneeded)
+    &error,                             // Reference to the error.
+    "service", service.c_str(),
+    "account", account.c_str(),
+    NULL);                              // End of arguments.
+
+  if (error != NULL) {
+    g_error_free(error);
+    return false;
+  }
+
+  if (raw_password == NULL)
     return false;
 
-  if (raw_passwords != NULL)
-    *password = raw_passwords;
-  gnome_keyring_free_password(raw_passwords);
+  *password = raw_password;
+  secret_password_free(raw_password);
   return true;
 }
 
 bool DeletePassword(const std::string& service, const std::string& account) {
-  return gnome_keyring_delete_password_sync(
-      &kGnomeSchema,
-      "service", service.c_str(),
-      "account", account.c_str(),
-      NULL) == GNOME_KEYRING_RESULT_OK;
+  GError* error = NULL;
+
+  gboolean result = secret_password_clear_sync(
+    &schema,                            // The schema.
+    NULL,                               // Cancellable. (unneeded)
+    &error,                             // Reference to the error.
+    "service", service.c_str(),
+    "account", account.c_str(),
+    NULL);                              // End of arguments.
+
+  if (error != NULL) {
+    g_error_free(error);
+    return false;
+  }
+
+  return result;
 }
 
 bool FindPassword(const std::string& service, std::string* password) {
-  gchar* raw_passwords;
-  GnomeKeyringResult result = gnome_keyring_find_password_sync(
-      &kGnomeSchema,
-      &raw_passwords,
-      "service", service.c_str(),
-      NULL);
-  if (result != GNOME_KEYRING_RESULT_OK)
+  GError* error = NULL;
+
+  gchar* raw_password = secret_password_lookup_sync(
+    &schema,                            // The schema.
+    NULL,                               // Cancellable. (unneeded)
+    &error,                             // Reference to the error.
+    "service", service.c_str(),
+    NULL);                              // End of arguments.
+
+  if (error != NULL) {
+    g_error_free(error);
+    return false;
+  }
+
+  if (raw_password == NULL)
     return false;
 
-  if (raw_passwords != NULL)
-    *password = raw_passwords;
-  gnome_keyring_free_password(raw_passwords);
+  *password = raw_password;
+  secret_password_free(raw_password);
   return true;
 }
 
