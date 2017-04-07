@@ -30,26 +30,26 @@ describe("keytar", function() {
       })
       .then(function(result) {
         assert.equal(result, password)
-        return keytar.setPassword(service, account, "another password")
+        return keytar.setPassword(service, account, password2)
       })
       .then(function() {
         return keytar.getPassword(service, account)
       })
       .then(function(result) {
-        assert.equal(result, "another password")
+        assert.equal(result, password2)
       })
     })
 
-    it("calls back with true with the password was replaced, false if it was only added", function(done) {
+    it("calls back when the password was set", function(done) {
       return keytar.setPassword(service, account, password, function(err) {
         if (err) return done(err)
         keytar.getPassword(service, account, function(err, result) {
           if (err) return done(err)
           assert.equal(result, password)
-          keytar.setPassword(service, account, "another password", function(err) {
+          keytar.setPassword(service, account, password2, function(err) {
             if (err) return done(err)
             keytar.getPassword(service, account, function(err, result) {
-              assert.equal(result, "another password")
+              assert.equal(result, password2)
               done(err)
             })
           })
