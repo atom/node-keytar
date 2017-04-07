@@ -5,7 +5,7 @@
 
 namespace keytar {
 
-bool AddPassword(const std::string& service,
+bool SetPassword(const std::string& service,
                  const std::string& account,
                  const std::string& password,
                  std::string* error) {

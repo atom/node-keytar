@@ -45,9 +45,9 @@ Get the stored password for the `service` and `account`.
 
 Yields the string password or `null` if an entry for the given service and account was not found.
 
-### addPassword(service, account, password, [callback])
+### setPassword(service, account, password, [callback])
 
-Add the `password` for the `service` and `account` to the keychain.
+Save the `password` for the `service` and `account` to the keychain. Adds a new entry if necessary, or updates an existing entry if one exists.
 
 `service` - The string service name.
 
@@ -55,7 +55,7 @@ Add the `password` for the `service` and `account` to the keychain.
 
 `password` - The string password.
 
-Yields `true` if the password was added, or `false` if a password for the given service and account already exists, in which case the password was not changed. Use `replacePassword` to add or replace an existing password.
+Yields nothing.
 
 ### deletePassword(service, account, [callback])
 
@@ -66,22 +66,6 @@ Delete the stored password for the `service` and `account`.
 `account` - The string account name.
 
 Yields `true` if a password was deleted, or `false` if an entry with the given service and account was not found.
-
-### replacePassword(service, account, password, [callback])
-
-Replace the `password` for the `service` and `account` in the keychain.
-
-This is a simple convenience function that internally calls
-`deletePassword(service, account)` followed by
-`addPassword(service, account, password)`.
-
-`service` - The string service name.
-
-`account` - The string account name.
-
-`password` - The string password.
-
-Yields `true` if the password was replaced, `false` if it was only added (and no entry needed to be deleted).
 
 ### findPassword(service)
 

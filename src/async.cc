@@ -6,7 +6,7 @@
 
 using keytar::KEYTAR_OP_RESULT;
 
-AddPasswordWorker::AddPasswordWorker(
+SetPasswordWorker::SetPasswordWorker(
   const std::string& service,
   const std::string& account,
   const std::string& password,
@@ -16,33 +16,17 @@ AddPasswordWorker::AddPasswordWorker(
     account(account),
     password(password) {}
 
-AddPasswordWorker::~AddPasswordWorker() {}
+SetPasswordWorker::~SetPasswordWorker() {}
 
-void AddPasswordWorker::Execute() {
+void SetPasswordWorker::Execute() {
   std::string error;
-  KEYTAR_OP_RESULT result = keytar::AddPassword(service,
+  KEYTAR_OP_RESULT result = keytar::SetPassword(service,
                                                 account,
                                                 password,
                                                 &error);
   if (result == keytar::FAIL_ERROR) {
     SetErrorMessage(error.c_str());
-  } else if (result == keytar::FAIL_NORMAL) {
-    success = false;
-  } else {
-    success = true;
   }
-}
-
-void AddPasswordWorker::HandleOKCallback() {
-  Nan::HandleScope scope;
-  v8::Local<v8::Boolean> val =
-    Nan::New<v8::Boolean>(success);
-  v8::Local<v8::Value> argv[] = {
-    Nan::Null(),
-    val
-  };
-
-  callback->Call(2, argv);
 }
 
 

@@ -22,25 +22,37 @@ describe("keytar", function() {
     ])
   })
 
-  describe("addPassword(service, account, password)", function() {
-    it("yields true when the service, account, and password are specified, and false when a password already exists", function() {
-      return keytar.addPassword(service, account, password)
-      .then(function(result) {
-        assert.equal(result, true)
-        return keytar.addPassword(service, account, "anything")
+  describe("setPassword(service, account, password)", function() {
+    it("yields when the password was set", function() {
+      return keytar.setPassword(service, account, password)
+      .then(function() {
+        return keytar.getPassword(service, account)
       })
       .then(function(result) {
-        assert.equal(result, false)
+        assert.equal(result, password)
+        return keytar.setPassword(service, account, "another password")
+      })
+      .then(function() {
+        return keytar.getPassword(service, account)
+      })
+      .then(function(result) {
+        assert.equal(result, "another password")
       })
     })
 
-    it("calls back with true when the service, account, and password are specified, and false when a password already exists", function(done) {
-      keytar.addPassword(service, account, password, function(err, result) {
+    it("calls back with true with the password was replaced, false if it was only added", function(done) {
+      return keytar.setPassword(service, account, password, function(err) {
         if (err) return done(err)
-        assert.equal(result, true)
-        keytar.addPassword(service, account, "anything", function(err, result) {
-          assert.equal(result, false)
-          done(err)
+        keytar.getPassword(service, account, function(err, result) {
+          if (err) return done(err)
+          assert.equal(result, password)
+          keytar.setPassword(service, account, "another password", function(err) {
+            if (err) return done(err)
+            keytar.getPassword(service, account, function(err, result) {
+              assert.equal(result, "another password")
+              done(err)
+            })
+          })
         })
       })
     })
@@ -51,22 +63,20 @@ describe("keytar", function() {
       return keytar.getPassword(service, account)
       .then(function(result) {
         assert.equal(result, null)
-        return keytar.addPassword(service, account, password)
+        return keytar.setPassword(service, account, password)
       })
-      .then(function(result) {
-        assert.equal(result, true)
-        return keytar.addPassword(service, account, "anything")
-      }).then(function(result) {
-        assert.equal(result, false);
+      .then(function() {
+        return keytar.setPassword(service, account, password2)
+      }).then(function() {
         return keytar.getPassword(service, account)
       })
       .then(function(pass) {
-        assert.equal(pass, password)
+        assert.equal(pass, password2)
       })
     })
 
     it('calls back with the password for the service and account', function(done) {
-      keytar.addPassword(service, account, password, function(err) {
+      keytar.setPassword(service, account, password, function(err) {
         if (err) return done(err)
         keytar.getPassword(service, account, function(err, pass) {
           assert.equal(pass, password)
@@ -81,7 +91,7 @@ describe("keytar", function() {
       return keytar.deletePassword(service, account)
       .then(function(result) {
         assert.equal(result, false)
-        return keytar.addPassword(service, account, password)
+        return keytar.setPassword(service, account, password)
       })
       .then(function() {
         return keytar.deletePassword(service, account)
@@ -99,9 +109,8 @@ describe("keytar", function() {
       keytar.deletePassword(service, account, function(err, result) {
         if (err) return done(err)
         assert.equal(result, false)
-        keytar.addPassword(service, account, password, function(err, result) {
+        keytar.setPassword(service, account, password, function(err) {
           if (err) return done(err)
-          assert.equal(result, true)
           keytar.deletePassword(service, account, function(err, result) {
             assert.equal(result, true)
             done(err)
@@ -111,54 +120,12 @@ describe("keytar", function() {
     })
   })
 
-  describe("replacePassword(service, account, password)", function() {
-    it("yields true with the password was replaced, false if it was only added", function() {
-      return keytar.replacePassword(service, account, password)
-      .then(function(result) {
-        assert.equal(result, false)
-        return keytar.getPassword(service, account)
-      })
-      .then(function(result) {
-        assert.equal(result, password)
-        return keytar.replacePassword(service, account, "another password")
-      })
-      .then(function(result) {
-        assert.equal(result, true)
-        return keytar.getPassword(service, account)
-      })
-      .then(function(result) {
-        assert.equal(result, "another password")
-      })
-    })
-
-    it("calls back with true with the password was replaced, false if it was only added", function(done) {
-      return keytar.replacePassword(service, account, password, function(err, result) {
-        if (err) return done(err)
-        assert.equal(result, false)
-        keytar.getPassword(service, account, function(err, result) {
-          if (err) return done(err)
-          assert.equal(result, password)
-          keytar.replacePassword(service, account, "another password", function(err, result) {
-            if (err) return done(err)
-            assert.equal(result, true)
-            keytar.getPassword(service, account, function(err, result) {
-              assert.equal(result, "another password")
-              done(err)
-            })
-          })
-        })
-      })
-    })
-  })
-
   describe("findPassword(service)", function() {
     it("yields a password for the service", function() {
       return Promise.all([
-        keytar.addPassword(service, account, password),
-        keytar.addPassword(service, account2, password2)
-      ]).then(function(results) {
-        assert.equal(results[0], true)
-        assert.equal(results[1], true)
+        keytar.setPassword(service, account, password),
+        keytar.setPassword(service, account2, password2)
+      ]).then(function() {
         return keytar.findPassword(service)
       })
       .then(function(result) {
@@ -167,12 +134,10 @@ describe("keytar", function() {
     })
 
     it("calls back with a password for the service", function(done) {
-      keytar.addPassword(service, account, password, function(err, result) {
+      keytar.setPassword(service, account, password, function(err) {
         if (err) return done(err)
-        assert.equal(result, true)
-        keytar.addPassword(service, account2, password2, function(err, result) {
+        keytar.setPassword(service, account2, password2, function(err) {
           if (err) return done(err)
-          assert.equal(result, true)
           keytar.findPassword(service, function(err, result) {
             assert.include([password, password2], result)
             done(err)

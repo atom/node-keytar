@@ -11,7 +11,7 @@ enum KEYTAR_OP_RESULT {
   FAIL_NORMAL
 };
 
-KEYTAR_OP_RESULT AddPassword(const std::string& service,
+KEYTAR_OP_RESULT SetPassword(const std::string& service,
                              const std::string& account,
                              const std::string& password,
                              std::string* error);

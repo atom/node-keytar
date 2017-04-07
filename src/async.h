@@ -3,21 +3,19 @@
 
 #include <string>
 
-class AddPasswordWorker : public Nan::AsyncWorker {
+class SetPasswordWorker : public Nan::AsyncWorker {
   public:
-    AddPasswordWorker(const std::string& service, const std::string& account, const std::string& password,
+    SetPasswordWorker(const std::string& service, const std::string& account, const std::string& password,
                       Nan::Callback* callback);
 
-    ~AddPasswordWorker();
+    ~SetPasswordWorker();
 
     void Execute();
-    void HandleOKCallback();
 
   private:
     const std::string service;
     const std::string account;
     const std::string password;
-    bool success;
 };
 
 class GetPasswordWorker : public Nan::AsyncWorker {
