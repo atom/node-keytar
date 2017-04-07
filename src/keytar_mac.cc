@@ -34,7 +34,7 @@ KEYTAR_OP_RESULT AddPassword(const std::string& service,
                                                   NULL);
   if (status == errSecDuplicateItem) {
     // This password already exists.
-    return FAIL_NORMAL;
+    return FAIL_NONFATAL;
   } else if (status != errSecSuccess) {
     *error = errorStatusToString(status);
     return FAIL_ERROR;
@@ -59,7 +59,7 @@ KEYTAR_OP_RESULT GetPassword(const std::string& service,
                                                    NULL);
 
   if (status == errSecItemNotFound) {
-    return FAIL_NORMAL;
+    return FAIL_NONFATAL;
   } else if (status != errSecSuccess) {
     *error = errorStatusToString(status);
     return FAIL_ERROR;
@@ -84,7 +84,7 @@ KEYTAR_OP_RESULT DeletePassword(const std::string& service,
                                                    &item);
   if (status == errSecItemNotFound) {
     // Item could not be found, so already deleted.
-    return FAIL_NORMAL;
+    return FAIL_NONFATAL;
   } else if (status != errSecSuccess) {
     *error = errorStatusToString(status);
     return FAIL_ERROR;
@@ -116,7 +116,7 @@ KEYTAR_OP_RESULT FindPassword(const std::string& service,
                                                    &data,
                                                    &item);
   if (status == errSecItemNotFound) {
-    return FAIL_NORMAL;
+    return FAIL_NONFATAL;
   } else if (status != errSecSuccess) {
     *error = errorStatusToString(status);
     return FAIL_ERROR;

@@ -8,7 +8,7 @@ namespace keytar {
 enum KEYTAR_OP_RESULT {
   SUCCESS,
   FAIL_ERROR,
-  FAIL_NORMAL
+  FAIL_NONFATAL
 };
 
 KEYTAR_OP_RESULT AddPassword(const std::string& service,

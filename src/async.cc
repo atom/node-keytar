@@ -26,7 +26,7 @@ void AddPasswordWorker::Execute() {
                                                 &error);
   if (result == keytar::FAIL_ERROR) {
     SetErrorMessage(error.c_str());
-  } else if (result == keytar::FAIL_NORMAL) {
+  } else if (result == keytar::FAIL_NONFATAL) {
     success = false;
   } else {
     success = true;
@@ -65,7 +65,7 @@ void GetPasswordWorker::Execute() {
                                                 &error);
   if (result == keytar::FAIL_ERROR) {
     SetErrorMessage(error.c_str());
-  } else if (result == keytar::FAIL_NORMAL) {
+  } else if (result == keytar::FAIL_NONFATAL) {
     success = false;
   } else {
     success = true;
@@ -104,7 +104,7 @@ void DeletePasswordWorker::Execute() {
   KEYTAR_OP_RESULT result = keytar::DeletePassword(service, account, &error);
   if (result == keytar::FAIL_ERROR) {
     SetErrorMessage(error.c_str());
-  } else if (result == keytar::FAIL_NORMAL) {
+  } else if (result == keytar::FAIL_NONFATAL) {
     success = false;
   } else {
     success = true;
@@ -140,7 +140,7 @@ void FindPasswordWorker::Execute() {
                                                  &error);
   if (result == keytar::FAIL_ERROR) {
     SetErrorMessage(error.c_str());
-  } else if (result == keytar::FAIL_NORMAL) {
+  } else if (result == keytar::FAIL_NONFATAL) {
     success = false;
   } else {
     success = true;
