@@ -1,6 +1,3 @@
 #!/bin/bash
 
-sudo service dbus start
-eval $(echo -n "" | /usr/bin/gnome-keyring-daemon --components=secrets --login)
-
-grunt test
+# grunt test
