@@ -20,10 +20,11 @@ const std::string errorStatusToString(OSStatus status) {
   return errorStr;
 }
 
-KEYTAR_OP_RESULT SetPassword(const std::string& service,
+KEYTAR_OP_RESULT AddPassword(const std::string& service,
                              const std::string& account,
                              const std::string& password,
-                             std::string* error) {
+                             std::string* error,
+                             bool returnNonfatalOnDuplicate) {
   OSStatus status = SecKeychainAddGenericPassword(NULL,
                                                   service.length(),
                                                   service.data(),
@@ -32,11 +33,31 @@ KEYTAR_OP_RESULT SetPassword(const std::string& service,
                                                   password.length(),
                                                   password.data(),
                                                   NULL);
-  if (status == errSecDuplicateItem) {
-    // This password already exists.
+
+  if (status == errSecDuplicateItem && returnNonfatalOnDuplicate) {
     return FAIL_NONFATAL;
   } else if (status != errSecSuccess) {
     *error = errorStatusToString(status);
+    return FAIL_ERROR;
+  }
+
+  return SUCCESS;
+}
+
+KEYTAR_OP_RESULT SetPassword(const std::string& service,
+                             const std::string& account,
+                             const std::string& password,
+                             std::string* error) {
+  KEYTAR_OP_RESULT result = AddPassword(service, account, password,
+                                        error, true);
+  if (result == FAIL_NONFATAL) {
+    // This password already exists, delete it and try again.
+    KEYTAR_OP_RESULT delResult = DeletePassword(service, account, error);
+    if (delResult == FAIL_ERROR)
+      return FAIL_ERROR;
+    else
+      return AddPassword(service, account, password, error, false);
+  } else if (result == FAIL_ERROR) {
     return FAIL_ERROR;
   }
 
