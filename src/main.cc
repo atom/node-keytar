@@ -3,8 +3,8 @@
 
 namespace {
 
-NAN_METHOD(AddPassword) {
-  AddPasswordWorker* worker = new AddPasswordWorker(
+NAN_METHOD(SetPassword) {
+  SetPasswordWorker* worker = new SetPasswordWorker(
     *v8::String::Utf8Value(info[0]),
     *v8::String::Utf8Value(info[1]),
     *v8::String::Utf8Value(info[2]),
@@ -37,7 +37,7 @@ NAN_METHOD(FindPassword) {
 
 void Init(v8::Handle<v8::Object> exports) {
   Nan::SetMethod(exports, "getPassword", GetPassword);
-  Nan::SetMethod(exports, "addPassword", AddPassword);
+  Nan::SetMethod(exports, "setPassword", SetPassword);
   Nan::SetMethod(exports, "deletePassword", DeletePassword);
   Nan::SetMethod(exports, "findPassword", FindPassword);
 }

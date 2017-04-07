@@ -16,13 +16,13 @@ static const SecretSchema schema = {
 
 }  // namespace
 
-bool AddPassword(const std::string& service,
-                 const std::string& account,
-                 const std::string& password,
-                 std::string* error) {
+KEYTAR_OP_RESULT SetPassword(const std::string& service,
+                             const std::string& account,
+                             const std::string& password,
+                             std::string* errStr) {
   GError* error = NULL;
 
-  gboolean result = secret_password_store_sync(
+  secret_password_store_sync(
     &schema,                            // The schema.
     SECRET_COLLECTION_DEFAULT,          // Default collection.
     (service + "/" + account).c_str(),  // The label.
@@ -34,17 +34,18 @@ bool AddPassword(const std::string& service,
     NULL);                              // End of arguments.
 
   if (error != NULL) {
+    *errStr = std::string(error->message);
     g_error_free(error);
-    return false;
+    return FAIL_ERROR;
   }
 
-  return result;
+  return SUCCESS;
 }
 
-bool GetPassword(const std::string& service,
-                 const std::string& account,
-                 std::string* password,
-                 std::string* error) {
+KEYTAR_OP_RESULT GetPassword(const std::string& service,
+                             const std::string& account,
+                             std::string* password,
+                             std::string* errStr) {
   GError* error = NULL;
 
   gchar* raw_password = secret_password_lookup_sync(
@@ -56,21 +57,22 @@ bool GetPassword(const std::string& service,
     NULL);                              // End of arguments.
 
   if (error != NULL) {
+    *errStr = std::string(error->message);
     g_error_free(error);
-    return false;
+    return FAIL_ERROR;
   }
 
   if (raw_password == NULL)
-    return false;
+    return FAIL_NORMAL;
 
   *password = raw_password;
   secret_password_free(raw_password);
-  return true;
+  return SUCCESS;
 }
 
-bool DeletePassword(const std::string& service,
-                    const std::string& account,
-                    std::string* error) {
+KEYTAR_OP_RESULT DeletePassword(const std::string& service,
+                                const std::string& account,
+                                std::string* errStr) {
   GError* error = NULL;
 
   gboolean result = secret_password_clear_sync(
@@ -82,16 +84,20 @@ bool DeletePassword(const std::string& service,
     NULL);                              // End of arguments.
 
   if (error != NULL) {
+    *errStr = std::string(error->message);
     g_error_free(error);
-    return false;
+    return FAIL_ERROR;
   }
 
-  return result;
+  if (!result)
+    return FAIL_NORMAL;
+
+  return SUCCESS;
 }
 
-bool FindPassword(const std::string& service,
-                  std::string* password,
-                  std::string* error) {
+KEYTAR_OP_RESULT FindPassword(const std::string& service,
+                              std::string* password,
+                              std::string* errStr) {
   GError* error = NULL;
 
   gchar* raw_password = secret_password_lookup_sync(
@@ -102,16 +108,17 @@ bool FindPassword(const std::string& service,
     NULL);                              // End of arguments.
 
   if (error != NULL) {
+    *errStr = std::string(error->message);
     g_error_free(error);
-    return false;
+    return FAIL_ERROR;
   }
 
   if (raw_password == NULL)
-    return false;
+    return FAIL_NORMAL;
 
   *password = raw_password;
   secret_password_free(raw_password);
-  return true;
+  return SUCCESS;
 }
 
 }  // namespace keytar
