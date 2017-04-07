@@ -2,6 +2,7 @@
 #define SRC_ASYNC_H_
 
 #include <string>
+#include "nan.h"
 
 class AddPasswordWorker : public Nan::AsyncWorker {
   public:
