@@ -63,7 +63,7 @@ KEYTAR_OP_RESULT GetPassword(const std::string& service,
   }
 
   if (raw_password == NULL)
-    return FAIL_NORMAL;
+    return FAIL_NONFATAL;
 
   *password = raw_password;
   secret_password_free(raw_password);
@@ -90,7 +90,7 @@ KEYTAR_OP_RESULT DeletePassword(const std::string& service,
   }
 
   if (!result)
-    return FAIL_NORMAL;
+    return FAIL_NONFATAL;
 
   return SUCCESS;
 }
@@ -114,7 +114,7 @@ KEYTAR_OP_RESULT FindPassword(const std::string& service,
   }
 
   if (raw_password == NULL)
-    return FAIL_NORMAL;
+    return FAIL_NONFATAL;
 
   *password = raw_password;
   secret_password_free(raw_password);
