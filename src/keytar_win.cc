@@ -7,17 +7,9 @@ namespace keytar {
 
 std::string getErrorMessage(DWORD errorCode) {
   LPVOID errBuffer;
-  ::FormatMessage(
-    FORMAT_MESSAGE_ALLOCATE_BUFFER |
-    FORMAT_MESSAGE_FROM_SYSTEM,
-    NULL,
-    errorCode,
-    0,
-    (LPTSTR) &errBuffer,
-    0,
-    NULL
-  );
-  std::string errMsg = std::string((char*) errBuffer);
+  ::FormatMessage(FORMAT_MESSAGE_ALLOCATE_BUFFER | FORMAT_MESSAGE_FROM_SYSTEM,
+                  NULL, errorCode, 0, (LPTSTR) &errBuffer, 0, NULL);
+  std::string errMsg = std::string(reinterpret_cast<char*>(errBuffer));
   LocalFree(errBuffer);
   return errMsg;
 }
@@ -39,8 +31,9 @@ KEYTAR_OP_RESULT SetPassword(const std::string& service,
   if (!result) {
     *errStr = getErrorMessage(::GetLastError());
     return FAIL_ERROR;
-  } else
+  } else {
     return SUCCESS;
+  }
 }
 
 KEYTAR_OP_RESULT GetPassword(const std::string& service,
@@ -53,9 +46,9 @@ KEYTAR_OP_RESULT GetPassword(const std::string& service,
   bool result = ::CredRead(target_name.c_str(), CRED_TYPE_GENERIC, 0, &cred);
   if (!result) {
     DWORD code = ::GetLastError();
-    if (code == ERROR_NOT_FOUND)
+    if (code == ERROR_NOT_FOUND) {
       return FAIL_NONFATAL;
-    else {
+    } else {
       *errStr = getErrorMessage(code);
       return FAIL_ERROR;
     }
@@ -75,9 +68,9 @@ KEYTAR_OP_RESULT DeletePassword(const std::string& service,
   bool result = ::CredDelete(target_name.c_str(), CRED_TYPE_GENERIC, 0);
   if (!result) {
     DWORD code = ::GetLastError();
-    if (code == ERROR_NOT_FOUND)
+    if (code == ERROR_NOT_FOUND) {
       return FAIL_NONFATAL;
-    else {
+    } else {
       *errStr = getErrorMessage(code);
       return FAIL_ERROR;
     }
@@ -96,9 +89,9 @@ KEYTAR_OP_RESULT FindPassword(const std::string& service,
   bool result = ::CredEnumerate(filter.c_str(), 0, &count, &creds);
   if (!result) {
     DWORD code = ::GetLastError();
-    if (code == ERROR_NOT_FOUND)
+    if (code == ERROR_NOT_FOUND) {
       return FAIL_NONFATAL;
-    else {
+    } else {
       *errStr = getErrorMessage(code);
       return FAIL_ERROR;
     }
