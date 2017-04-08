@@ -1,4 +1,5 @@
 var assert = require('chai').assert
+var async = require('async')
 var keytar = require('../')
 
 describe("keytar", function() {
@@ -87,6 +88,42 @@ describe("keytar", function() {
       return keytar.findPassword(service)
       .then(function(result) {
         assert.equal(result, null)
+      })
+    })
+  })
+
+  describe("callback-based API", function() {
+    it("works for all public API methods", function(done) {
+      async.waterfall([
+        (cb) => keytar.getPassword(service, account, cb),
+        (pass, cb) => {
+          assert.equal(pass, null)
+          keytar.setPassword(service, account, password, cb)
+        },
+        (cb) => keytar.getPassword(service, account, cb),
+        (pass, cb) => {
+          assert.equal(pass, password)
+          keytar.setPassword(service, account2, password2, cb)
+        },
+        (cb) => keytar.findPassword(service, cb),
+        (pass, cb) => {
+          assert.include([password, password2], pass)
+          keytar.deletePassword(service, account, cb)
+        },
+        (result, cb) => {
+          assert.equal(result, true)
+          keytar.deletePassword(service, account2, cb)
+        },
+        (result, cb) => {
+          assert.equal(result, true)
+          keytar.deletePassword(service, account, cb)
+        },
+        (result, cb) => {
+          assert.equal(result, false)
+          cb()
+        }
+      ], (err) => {
+        done(err)
       })
     })
   })

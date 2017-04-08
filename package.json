@@ -32,6 +32,7 @@
     "test": "npm run lint && npm build . && mocha spec/"
   },
   "devDependencies": {
+    "async": "^2.3.0",
     "chai": "^3.5.0",
     "mocha": "^3.2.0",
     "node-cpplint": "~0.1.5",
