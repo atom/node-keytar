@@ -5,10 +5,27 @@
 
 namespace keytar {
 
-bool SetPassword(const std::string& service,
+std::string getErrorMessage(DWORD errorCode) {
+  LPVOID errBuffer;
+  ::FormatMessage(
+    FORMAT_MESSAGE_ALLOCATE_BUFFER |
+    FORMAT_MESSAGE_FROM_SYSTEM,
+    NULL,
+    errorCode,
+    0,
+    (LPTSTR) &errBuffer,
+    0,
+    NULL
+  );
+  std::string errMsg = std::string((char*) errBuffer);
+  LocalFree(errBuffer);
+  return errMsg;
+}
+
+KEYTAR_OP_RESULT SetPassword(const std::string& service,
                  const std::string& account,
                  const std::string& password,
-                 std::string* error) {
+                 std::string* errStr) {
   std::string target_name = service + '/' + account;
 
   CREDENTIAL cred = { 0 };
@@ -18,47 +35,79 @@ bool SetPassword(const std::string& service,
   cred.CredentialBlob = (LPBYTE)(password.data());
   cred.Persist = CRED_PERSIST_LOCAL_MACHINE;
 
-  return ::CredWrite(&cred, 0) == TRUE;
+  bool result = ::CredWrite(&cred, 0);
+  if (!result) {
+    *errStr = getErrorMessage(::GetLastError());
+    return FAIL_ERROR;
+  } else
+    return SUCCESS;
 }
 
-bool GetPassword(const std::string& service,
+KEYTAR_OP_RESULT GetPassword(const std::string& service,
                  const std::string& account,
                  std::string* password,
-                 std::string* error) {
+                 std::string* errStr) {
   std::string target_name = service + '/' + account;
 
   CREDENTIAL* cred;
-  if (::CredRead(target_name.c_str(), CRED_TYPE_GENERIC, 0, &cred) == FALSE)
-    return false;
+  bool result = ::CredRead(target_name.c_str(), CRED_TYPE_GENERIC, 0, &cred);
+  if (!result) {
+    DWORD code = ::GetLastError();
+    if (code == ERROR_NOT_FOUND)
+      return FAIL_NONFATAL;
+    else {
+      *errStr = getErrorMessage(code);
+      return FAIL_ERROR;
+    }
+  }
 
   *password = std::string(reinterpret_cast<char*>(cred->CredentialBlob),
                           cred->CredentialBlobSize);
   ::CredFree(cred);
-  return true;
+  return SUCCESS;
 }
 
-bool DeletePassword(const std::string& service,
+KEYTAR_OP_RESULT DeletePassword(const std::string& service,
                     const std::string& account,
-                    std::string* error) {
+                    std::string* errStr) {
   std::string target_name = service + '/' + account;
 
-  return ::CredDelete(target_name.c_str(), CRED_TYPE_GENERIC, 0) == TRUE;
+  bool result = ::CredDelete(target_name.c_str(), CRED_TYPE_GENERIC, 0);
+  if (!result) {
+    DWORD code = ::GetLastError();
+    if (code == ERROR_NOT_FOUND)
+      return FAIL_NONFATAL;
+    else {
+      *errStr = getErrorMessage(code);
+      return FAIL_ERROR;
+    }
+  }
+
+  return SUCCESS;
 }
 
-bool FindPassword(const std::string& service,
+KEYTAR_OP_RESULT FindPassword(const std::string& service,
                   std::string* password,
-                  std::string* error) {
+                  std::string* errStr) {
   std::string filter = service + "*";
 
   DWORD count;
   CREDENTIAL** creds;
-  if (::CredEnumerate(filter.c_str(), 0, &count, &creds) == FALSE)
-    return false;
+  bool result = ::CredEnumerate(filter.c_str(), 0, &count, &creds);
+  if (!result) {
+    DWORD code = ::GetLastError();
+    if (code == ERROR_NOT_FOUND)
+      return FAIL_NONFATAL;
+    else {
+      *errStr = getErrorMessage(code);
+      return FAIL_ERROR;
+    }
+  }
 
   *password = std::string(reinterpret_cast<char*>(creds[0]->CredentialBlob),
                           creds[0]->CredentialBlobSize);
   ::CredFree(creds);
-  return true;
+  return SUCCESS;
 }
 
 }  // namespace keytar
