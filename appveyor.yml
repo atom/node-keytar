@@ -12,10 +12,10 @@ skip_tags: true
 
 install:
   - ps: Install-Product node 6
-  - ps: npm install
+  - npm install
 
 build_script:
-  - ps: npm test
+  - npm test
 
 test: off
 deploy: off
