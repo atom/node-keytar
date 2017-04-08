@@ -22,33 +22,13 @@ describe("keytar", function() {
     ])
   })
 
-  describe("setPassword(service, account, password)", function() {
-    it("yields when the password was set", function() {
+  describe("setPassword/getPassword(service, account)", function() {
+    it("sets and yields the password for the service and account", function() {
       return keytar.setPassword(service, account, password)
       .then(function() {
         return keytar.getPassword(service, account)
-      })
-      .then(function(result) {
-        assert.equal(result, password)
-        return keytar.setPassword(service, account, password2)
-      })
-      .then(function() {
-        return keytar.getPassword(service, account)
-      })
-      .then(function(result) {
-        assert.equal(result, password2)
-      })
-    })
-  })
-
-  describe("getPassword(service, account)", function() {
-    it("yields the password for the service and account", function() {
-      return keytar.getPassword(service, account)
-      .then(function(result) {
-        assert.equal(result, null)
-        return keytar.setPassword(service, account, password)
-      })
-      .then(function() {
+      }).then(function(pass) {
+        assert.equal(pass, password)
         return keytar.setPassword(service, account, password2)
       }).then(function() {
         return keytar.getPassword(service, account)
@@ -57,15 +37,18 @@ describe("keytar", function() {
         assert.equal(pass, password2)
       })
     })
+
+    it("yeilds null when the password was not found", function() {
+      return keytar.getPassword(service, account)
+      .then(function(result) {
+        assert.equal(result, null)
+      })
+    })
   })
 
   describe("deletePassword(service, account)", function() {
-    it("yields true when the password was deleted, and false when it doesn't exist", function() {
-      return keytar.deletePassword(service, account)
-      .then(function(result) {
-        assert.equal(result, false)
-        return keytar.setPassword(service, account, password)
-      })
+    it("yields true when the password was deleted", function() {
+      return keytar.setPassword(service, account, password)
       .then(function() {
         return keytar.deletePassword(service, account)
       })
@@ -75,6 +58,14 @@ describe("keytar", function() {
       })
       .then(function(result) {
         assert.equal(result, false)
+      })
+    })
+
+    it("yields false when the password didn't exist", function() {
+      return keytar.deletePassword(service, account)
+      .then(function(result) {
+        assert.equal(result, false)
+        return keytar.setPassword(service, account, password)
       })
     })
   })
@@ -89,6 +80,13 @@ describe("keytar", function() {
       })
       .then(function(result) {
         assert.include([password, password2], result)
+      })
+    })
+
+    it("yields null when no password can be found", function() {
+      return keytar.findPassword(service)
+      .then(function(result) {
+        assert.equal(result, null)
       })
     })
   })
