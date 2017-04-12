@@ -1,5 +1,4 @@
 var assert = require('chai').assert
-var async = require('async')
 var keytar = require('../')
 
 describe("keytar", function() {

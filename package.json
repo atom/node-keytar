@@ -27,7 +27,6 @@
     "test": "npm run lint && npm build . && mocha --compilers js:babel-core/register spec/"
   },
   "devDependencies": {
-    "async": "^2.3.0",
     "babel": "^6.23.0",
     "babel-plugin-transform-async-to-generator": "^6.24.1",
     "chai": "^3.5.0",
