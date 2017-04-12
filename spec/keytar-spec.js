@@ -27,7 +27,7 @@ describe("keytar", function() {
       assert.equal(await keytar.getPassword(service, account), password2)
     })
 
-    it("yeilds null when the password was not found", async function() {
+    it("yields null when the password was not found", async function() {
       assert.equal(await keytar.getPassword(service, account), null)
     })
   })
