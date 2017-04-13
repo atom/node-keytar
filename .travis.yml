@@ -1,32 +1,34 @@
 language: node_js
-
-sudo: false
-
-addons:
-  apt:
-    packages:
-      - xvfb
-      - gnome-keyring
-      - libgnome-keyring-dev
+sudo: required
+dist: trusty
+os:
+  - linux
+  - osx
+node_js:
+  - "7.0"
+  - "6.0"
+  - "4.0"
 
 env:
   - CC=clang CXX=clang++ npm_config_clang=1
 
-node_js:
-  - "6.0"
-  - "4.0"
-  - "0.11"
-  - "0.10"
-  - "iojs"
-
 notifications:
   email: false
-
-script: xvfb-run ./script/cibuild
 
 git:
   depth: 10
 
-branches:
-  only:
-    - master
+before_install:
+  - if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then sudo apt-get update; fi
+  - if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then sudo apt-get install -yq xvfb gnome-keyring libsecret-1-dev python-gnomekeyring; fi
+
+before_script:
+  - |
+    if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then
+      dbus-launch /usr/bin/python -c \
+        "import gnomekeyring;gnomekeyring.create_sync('login', '');"
+    fi
+
+script:
+  - if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then xvfb-run ./script/cibuild; fi
+  - if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then npm test; fi

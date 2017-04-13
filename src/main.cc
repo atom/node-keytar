@@ -1,56 +1,43 @@
 #include "nan.h"
-using namespace v8;
-
-#include "keytar.h"
+#include "async.h"
 
 namespace {
 
-NAN_METHOD(AddPassword) {
-  Nan::HandleScope scope;
-  bool success = keytar::AddPassword(*String::Utf8Value(info[0]),
-                                     *String::Utf8Value(info[1]),
-                                     *String::Utf8Value(info[2]));
-  info.GetReturnValue().Set(Nan::New<Boolean>(success));
+NAN_METHOD(SetPassword) {
+  SetPasswordWorker* worker = new SetPasswordWorker(
+    *v8::String::Utf8Value(info[0]),
+    *v8::String::Utf8Value(info[1]),
+    *v8::String::Utf8Value(info[2]),
+    new Nan::Callback(info[3].As<v8::Function>()));
+  Nan::AsyncQueueWorker(worker);
 }
 
 NAN_METHOD(GetPassword) {
-  Nan::HandleScope scope;
-  std::string password;
-  bool success = keytar::GetPassword(*String::Utf8Value(info[0]),
-                                     *String::Utf8Value(info[1]),
-                                     &password);
-  if (success) {
-    Local<String> val =
-      Nan::New<String>(password.data(), password.length()).ToLocalChecked();
-    info.GetReturnValue().Set(val);
-  } else {
-    info.GetReturnValue().Set(Nan::Null());
-  }
+  GetPasswordWorker* worker = new GetPasswordWorker(
+    *v8::String::Utf8Value(info[0]),
+    *v8::String::Utf8Value(info[1]),
+    new Nan::Callback(info[2].As<v8::Function>()));
+  Nan::AsyncQueueWorker(worker);
 }
 
 NAN_METHOD(DeletePassword) {
-  Nan::HandleScope scope;
-  bool success = keytar::DeletePassword(*String::Utf8Value(info[0]),
-                                        *String::Utf8Value(info[1]));
-  info.GetReturnValue().Set(Nan::New<Boolean>(success));
+  DeletePasswordWorker* worker = new DeletePasswordWorker(
+    *v8::String::Utf8Value(info[0]),
+    *v8::String::Utf8Value(info[1]),
+    new Nan::Callback(info[2].As<v8::Function>()));
+  Nan::AsyncQueueWorker(worker);
 }
 
 NAN_METHOD(FindPassword) {
-  Nan::HandleScope scope;
-  std::string password;
-  bool success = keytar::FindPassword(*String::Utf8Value(info[0]), &password);
-  if (success) {
-    Local<String> val =
-      Nan::New<String>(password.data(), password.length()).ToLocalChecked();
-    info.GetReturnValue().Set(val);
-  } else {
-    info.GetReturnValue().Set(Nan::Null());
-  }
+  FindPasswordWorker* worker = new FindPasswordWorker(
+    *v8::String::Utf8Value(info[0]),
+    new Nan::Callback(info[1].As<v8::Function>()));
+  Nan::AsyncQueueWorker(worker);
 }
 
-void Init(Handle<Object> exports) {
+void Init(v8::Handle<v8::Object> exports) {
   Nan::SetMethod(exports, "getPassword", GetPassword);
-  Nan::SetMethod(exports, "addPassword", AddPassword);
+  Nan::SetMethod(exports, "setPassword", SetPassword);
   Nan::SetMethod(exports, "deletePassword", DeletePassword);
   Nan::SetMethod(exports, "findPassword", FindPassword);
 }

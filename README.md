@@ -3,9 +3,7 @@
 [![Build
 Status](https://travis-ci.org/atom/node-keytar.svg?branch=master)](https://travis-ci.org/atom/node-keytar)
 
-A native Node module to get, add, replace, and delete passwords in system's
-keychain. On OS X the passwords are managed by the Keychain, on Linux they are
-managed by Gnome Keyring and on Windows they are managed by Credential Vault.
+A native Node module to get, add, replace, and delete passwords in system's keychain. On macOS the passwords are managed by the Keychain, on Linux they are managed by the Secret Service API/libsecret, and on Windows they are managed by Credential Vault.
 
 ## Installing
 
@@ -15,23 +13,29 @@ npm install keytar
 
 ### On Linux
 
-Currently this library uses the gnome-keyring so you may need to run `sudo apt-get install libgnome-keyring-dev` before `npm install`ing.
+Currently this library uses `libsecret` so you may need to install it before `npm install`ing.
 
-If you are using a Red Hat-based system you need to run `sudo yum install libgnome-keyring-devel`.
+Depending on your distribution, you will need to run the following command:
+
+* Debian/Ubuntu: `sudo apt-get install libsecret-1-dev`
+* Red Hat-based: `sudo yum install libsecret-devel`
+* Arch Linux: `sudo pacman -S libsecret`
 
 ## Building
+
   * Clone the repository
   * Run `npm install`
-  * Run `grunt` to compile the native and CoffeeScript code
-  * Run `grunt test` to run the specs
+  * Run `npm test` to run the tests
 
 ## Docs
 
-```coffeescript
-keytar = require 'keytar'
+```javascript
+const keytar = require('keytar')
 ```
 
-### getPassword(service, account)
+Every function in keytar is asynchronous. You may pass a callback, or you may omit it to return a promise from the function instead. If you pass a callback, the callback will receive any error as the first parameter and the function's "yields" value as the second. If you leave off the callback and receive a promise, the promise will be rejected with any error that occurs or will be resolved with the function's "yields" value.
+
+### getPassword(service, account, [callback])
 
 Get the stored password for the `service` and `account`.
 
@@ -39,11 +43,11 @@ Get the stored password for the `service` and `account`.
 
 `account` - The string account name.
 
-Returns the string password or `null` on failures.
+Yields the string password or `null` if an entry for the given service and account was not found.
 
-### addPassword(service, account, password)
+### setPassword(service, account, password, [callback])
 
-Add the `password` for the `service` and `account` to the keychain.
+Save the `password` for the `service` and `account` to the keychain. Adds a new entry if necessary, or updates an existing entry if one exists.
 
 `service` - The string service name.
 
@@ -51,9 +55,9 @@ Add the `password` for the `service` and `account` to the keychain.
 
 `password` - The string password.
 
-Returns `true` on success, `false` on failure.
+Yields nothing.
 
-### deletePassword(service, account)
+### deletePassword(service, account, [callback])
 
 Delete the stored password for the `service` and `account`.
 
@@ -61,23 +65,7 @@ Delete the stored password for the `service` and `account`.
 
 `account` - The string account name.
 
-Returns the string password or `null` on failures.
-
-### replacePassword(service, account, password)
-
-Replace the `password` for the `service` and `account` in the keychain.
-
-This is a simple convenience function that internally calls
-`deletePassword(service, account)` followed by
-`addPassword(service, account, password)`.
-
-`service` - The string service name.
-
-`account` - The string account name.
-
-`password` - The string password.
-
-Returns `true` on success, `false` on failure.
+Yields `true` if a password was deleted, or `false` if an entry with the given service and account was not found.
 
 ### findPassword(service)
 
@@ -85,4 +73,4 @@ Find a password for the `service` in the keychain.
 
 `service` - The string service name.
 
-Returns the string password or `null` on failures.
+Yields the string password, or `null` if an entry for the given service and account was not found.
