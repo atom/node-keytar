@@ -33,7 +33,7 @@ Depending on your distribution, you will need to run the following command:
 const keytar = require('keytar')
 ```
 
-Every function in keytar is asynchronous. You may pass a callback, or you may omit it to return a promise from the function instead. If you pass a callback, the callback will receive any error as the first parameter and the function's "yields" value as the second. If you leave off the callback and receive a promise, the promise will be rejected with any error that occurs or will be resolved with the function's "yields" value.
+Every function in keytar is asynchronous and returns a promise. The promise will be rejected with any error that occurs or will be resolved with the function's "yields" value.
 
 ### getPassword(service, account, [callback])
 
