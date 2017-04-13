@@ -35,7 +35,7 @@ const keytar = require('keytar')
 
 Every function in keytar is asynchronous and returns a promise. The promise will be rejected with any error that occurs or will be resolved with the function's "yields" value.
 
-### getPassword(service, account, [callback])
+### getPassword(service, account)
 
 Get the stored password for the `service` and `account`.
 
@@ -45,7 +45,7 @@ Get the stored password for the `service` and `account`.
 
 Yields the string password or `null` if an entry for the given service and account was not found.
 
-### setPassword(service, account, password, [callback])
+### setPassword(service, account, password)
 
 Save the `password` for the `service` and `account` to the keychain. Adds a new entry if necessary, or updates an existing entry if one exists.
 
@@ -57,7 +57,7 @@ Save the `password` for the `service` and `account` to the keychain. Adds a new 
 
 Yields nothing.
 
-### deletePassword(service, account, [callback])
+### deletePassword(service, account)
 
 Delete the stored password for the `service` and `account`.
 
