@@ -1,15 +1,53 @@
 #include "keytar.h"
 
+#define UNICODE
+
 #include <windows.h>
 #include <wincred.h>
 
 namespace keytar {
 
+LPWSTR utf8ToWideChar(std::string utf8) {
+  int wide_char_length = MultiByteToWideChar(CP_UTF8, 0, utf8.c_str(), -1, NULL, 0);
+  if (wide_char_length == 0) {
+    return NULL;
+  }
+
+  LPWSTR result = new WCHAR[wide_char_length];
+  if (MultiByteToWideChar(CP_UTF8, 0, utf8.c_str(), -1, result, wide_char_length) == 0) {
+    delete[] result;
+    return NULL;
+  }
+
+  return result;
+}
+
+std::string wideCharToAnsi(LPWSTR wide_char) {
+  if (wide_char == NULL) {
+    return std::string();
+  }
+
+  int ansi_length = WideCharToMultiByte(CP_ACP, 0, wide_char, -1, NULL, 0, NULL, NULL);
+  if (ansi_length == 0) {
+    return std::string();
+  }
+
+  char* buffer = new char[ansi_length];
+  if (WideCharToMultiByte(CP_ACP, 0, wide_char, -1, buffer, ansi_length, NULL, NULL) == 0) {
+    delete[] buffer;
+    return std::string();
+  }
+
+  std::string result = std::string(buffer);
+  delete[] buffer;
+  return result;
+}
+
 std::string getErrorMessage(DWORD errorCode) {
-  LPVOID errBuffer;
+  LPWSTR errBuffer;
   ::FormatMessage(FORMAT_MESSAGE_ALLOCATE_BUFFER | FORMAT_MESSAGE_FROM_SYSTEM,
-                  NULL, errorCode, 0, (LPTSTR) &errBuffer, 0, NULL);
-  std::string errMsg = std::string(reinterpret_cast<char*>(errBuffer));
+                  NULL, errorCode, 0, (LPWSTR) &errBuffer, 0, NULL);
+  std::string errMsg = wideCharToAnsi(errBuffer);
   LocalFree(errBuffer);
   return errMsg;
 }
@@ -18,16 +56,20 @@ KEYTAR_OP_RESULT SetPassword(const std::string& service,
                  const std::string& account,
                  const std::string& password,
                  std::string* errStr) {
-  std::string target_name = service + '/' + account;
+  LPWSTR target_name = utf8ToWideChar(service + '/' + account);
+  if (target_name == NULL) {
+    return FAIL_ERROR;
+  }
 
   CREDENTIAL cred = { 0 };
   cred.Type = CRED_TYPE_GENERIC;
-  cred.TargetName = const_cast<char*>(target_name.c_str());
+  cred.TargetName = target_name;
   cred.CredentialBlobSize = password.size();
   cred.CredentialBlob = (LPBYTE)(password.data());
   cred.Persist = CRED_PERSIST_LOCAL_MACHINE;
 
   bool result = ::CredWrite(&cred, 0);
+  delete[] target_name;
   if (!result) {
     *errStr = getErrorMessage(::GetLastError());
     return FAIL_ERROR;
@@ -40,10 +82,14 @@ KEYTAR_OP_RESULT GetPassword(const std::string& service,
                  const std::string& account,
                  std::string* password,
                  std::string* errStr) {
-  std::string target_name = service + '/' + account;
+  LPWSTR target_name = utf8ToWideChar(service + '/' + account);
+  if (target_name == NULL) {
+    return FAIL_ERROR;
+  }
 
   CREDENTIAL* cred;
-  bool result = ::CredRead(target_name.c_str(), CRED_TYPE_GENERIC, 0, &cred);
+  bool result = ::CredRead(target_name, CRED_TYPE_GENERIC, 0, &cred);
+  delete[] target_name;
   if (!result) {
     DWORD code = ::GetLastError();
     if (code == ERROR_NOT_FOUND) {
@@ -63,9 +109,13 @@ KEYTAR_OP_RESULT GetPassword(const std::string& service,
 KEYTAR_OP_RESULT DeletePassword(const std::string& service,
                     const std::string& account,
                     std::string* errStr) {
-  std::string target_name = service + '/' + account;
+  LPWSTR target_name = utf8ToWideChar(service + '/' + account);
+  if (target_name == NULL) {
+    return FAIL_ERROR;
+  }
 
-  bool result = ::CredDelete(target_name.c_str(), CRED_TYPE_GENERIC, 0);
+  bool result = ::CredDelete(target_name, CRED_TYPE_GENERIC, 0);
+  delete[] target_name;
   if (!result) {
     DWORD code = ::GetLastError();
     if (code == ERROR_NOT_FOUND) {
@@ -82,11 +132,15 @@ KEYTAR_OP_RESULT DeletePassword(const std::string& service,
 KEYTAR_OP_RESULT FindPassword(const std::string& service,
                   std::string* password,
                   std::string* errStr) {
-  std::string filter = service + "*";
+  LPWSTR filter = utf8ToWideChar(service + "*");
+  if (filter == NULL) {
+    return FAIL_ERROR;
+  }
 
   DWORD count;
   CREDENTIAL** creds;
-  bool result = ::CredEnumerate(filter.c_str(), 0, &count, &creds);
+  bool result = ::CredEnumerate(filter, 0, &count, &creds);
+  delete[] filter;
   if (!result) {
     DWORD code = ::GetLastError();
     if (code == ERROR_NOT_FOUND) {
