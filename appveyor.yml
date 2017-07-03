@@ -1,6 +1,11 @@
 version: "{build}"
 
-platform: x64
+image: Visual Studio 2017
+platform:
+  - x64
+
+cache:
+  - node_modules
 
 branches:
   only:
@@ -11,11 +16,16 @@ clone_depth: 10
 skip_tags: true
 
 install:
-  - ps: Install-Product node 6
-  - npm install
+  - ps: Install-Product node 8 x64
+  - yarn
 
 build_script:
-  - npm test
+  - yarn test
+  - yarn prebuild-node
+  - yarn prebuild-node-ia32
+  - yarn prebuild-electron
+  - yarn prebuild-electron-ia32
+  - yarn upload
 
 test: off
 deploy: off
