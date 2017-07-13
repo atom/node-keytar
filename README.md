@@ -14,7 +14,7 @@ npm install keytar
 
 ### On Linux
 
-Currently this library uses `libsecret` so you may need to install it before run `npm install`.
+Currently this library uses `libsecret` so you may need to install it before running `npm install`.
 
 Depending on your distribution, you will need to run the following command:
 
