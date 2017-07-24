@@ -31,9 +31,9 @@ describe("keytar", function() {
     })
 
     describe("Unicode support", function() {
-      const service = "se®viçe"
-      const account = "shiƒ†ke¥"
-      const password = "påsswø®∂"
+      const service = "se®vi\u00C7e"
+      const account = "shi\u0191\u2020ke\u00A5"
+      const password = "p\u00E5ssw\u00D8®\u2202"
 
       it("handles unicode strings everywhere", async function() {
         await keytar.setPassword(service, account, password)
