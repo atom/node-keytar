@@ -29,6 +29,21 @@ describe("keytar", function() {
     it("yields null when the password was not found", async function() {
       assert.equal(await keytar.getPassword(service, account), null)
     })
+
+    describe("Unicode support", function() {
+      const service = "se®viçe"
+      const account = "shiƒ†ke¥"
+      const password = "påsswø®∂"
+
+      it("handles unicode strings everywhere", async function() {
+        await keytar.setPassword(service, account, password)
+        assert.equal(await keytar.getPassword(service, account), password)
+      })
+
+      afterEach(async function() {
+        await keytar.deletePassword(service, account)
+      })
+    })
   })
 
   describe("deletePassword(service, account)", function() {
