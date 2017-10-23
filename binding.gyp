@@ -47,6 +47,7 @@
             ],
           },
         }],
+        ['target_arch=="arm"', { 'type': 'static_library' }]
       ],
     }
   ]
