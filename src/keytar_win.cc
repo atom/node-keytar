@@ -8,13 +8,23 @@
 namespace keytar {
 
 LPWSTR utf8ToWideChar(std::string utf8) {
-  int wide_char_length = MultiByteToWideChar(CP_UTF8, 0, utf8.c_str(), -1, NULL, 0);
+  int wide_char_length = MultiByteToWideChar(CP_UTF8,
+                                             0,
+                                             utf8.c_str(),
+                                             -1,
+                                             NULL,
+                                             0);
   if (wide_char_length == 0) {
     return NULL;
   }
 
   LPWSTR result = new WCHAR[wide_char_length];
-  if (MultiByteToWideChar(CP_UTF8, 0, utf8.c_str(), -1, result, wide_char_length) == 0) {
+  if (MultiByteToWideChar(CP_UTF8,
+                          0,
+                          utf8.c_str(),
+                          -1,
+                          result,
+                          wide_char_length) == 0) {
     delete[] result;
     return NULL;
   }
@@ -27,13 +37,27 @@ std::string wideCharToAnsi(LPWSTR wide_char) {
     return std::string();
   }
 
-  int ansi_length = WideCharToMultiByte(CP_ACP, 0, wide_char, -1, NULL, 0, NULL, NULL);
+  int ansi_length = WideCharToMultiByte(CP_ACP,
+                                        0,
+                                        wide_char,
+                                        -1,
+                                        NULL,
+                                        0,
+                                        NULL,
+                                        NULL);
   if (ansi_length == 0) {
     return std::string();
   }
 
   char* buffer = new char[ansi_length];
-  if (WideCharToMultiByte(CP_ACP, 0, wide_char, -1, buffer, ansi_length, NULL, NULL) == 0) {
+  if (WideCharToMultiByte(CP_ACP,
+                          0,
+                          wide_char,
+                          -1,
+                          buffer,
+                          ansi_length,
+                          NULL,
+                          NULL) == 0) {
     delete[] buffer;
     return std::string();
   }
