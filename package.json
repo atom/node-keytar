@@ -44,13 +44,10 @@
     "mocha": "^3.5.0",
     "node-cpplint": "~0.4.0",
     "node-gyp": "^3.6.2",
-    "prebuild": "^6.2.1"
+    "prebuild": "^6.2.2"
   },
   "dependencies": {
     "nan": "2.7.0",
-    "prebuild-install": "^2.2.2"
-  },
-  "resolutions": {
-    "node-abi": "^2.1.1"
+    "prebuild-install": "^2.3.0"
   }
 }
