@@ -3,6 +3,7 @@ var keytar = require('../')
 
 describe("keytar", function() {
   var service = 'keytar tests'
+  var service2 = 'other tests'
   var account = 'buster'
   var password = 'secret'
   var account2 = 'buster2'
@@ -11,11 +12,14 @@ describe("keytar", function() {
   beforeEach(async function() {
     await keytar.deletePassword(service, account),
     await keytar.deletePassword(service, account2)
+    await keytar.deletePassword(service2, account)
+
   })
 
   afterEach(async function() {
     await keytar.deletePassword(service, account),
     await keytar.deletePassword(service, account2)
+    await keytar.deletePassword(service2, account)
   })
 
   describe("setPassword/getPassword(service, account)", function() {
@@ -68,4 +72,28 @@ describe("keytar", function() {
       assert.equal(await keytar.findPassword(service), null)
     })
   })
+
+  describe('findCredentials(service)', function() {
+    it('yields an array of the credentials', async function() {
+      await keytar.setPassword(service, account, password)
+      await keytar.setPassword(service, account2, password2)
+      await keytar.setPassword(service2, account, password)
+
+      const found = await keytar.findCredentials(service)
+      const sorted = found.sort(function(a, b) {
+        return a.account.localeCompare(b.account)
+      })
+
+      assert.deepEqual([{account: account, password: password}, {account: account2, password: password2}], sorted)
+    });
+
+    it('returns an empty array when no credentials are found', async function() {
+      const accounts = await keytar.findCredentials(service)
+      assert.deepEqual([], accounts)
+    })
+
+    afterEach(async function() {
+      await keytar.deletePassword(service2, account)
+    })
+  });
 })
