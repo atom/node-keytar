@@ -7,6 +7,7 @@
         'src/async.cc',
         'src/main.cc',
         'src/keytar.h',
+        'src/credentials.h',
       ],
       'conditions': [
         ['OS=="mac"', {
