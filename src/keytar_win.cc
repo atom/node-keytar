@@ -99,6 +99,7 @@ KEYTAR_OP_RESULT SetPassword(const std::string& service,
   cred.CredentialBlobSize = password.size();
   cred.CredentialBlob = (LPBYTE)(password.data());
   cred.Persist = CRED_PERSIST_LOCAL_MACHINE;
+  cred.UserName = utf8ToWideChar(account);
 
   bool result = ::CredWrite(&cred, 0);
   delete[] target_name;
