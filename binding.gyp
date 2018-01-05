@@ -47,8 +47,7 @@
               '<!(pkg-config --libs-only-l libsecret-1)',
             ],
           },
-        }],
-        ['target_arch=="arm"', { 'type': 'static_library' }]
+        }]
       ],
     }
   ]
