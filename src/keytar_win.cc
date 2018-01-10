@@ -9,7 +9,7 @@
 
 namespace keytar {
 
-LPWSTR utf8ToWideChar(std::string utf8) {
+LPWSTR utf8ToWideChar(const std::string& utf8) {
   int wide_char_length = MultiByteToWideChar(CP_UTF8,
                                              0,
                                              utf8.c_str(),
@@ -88,7 +88,8 @@ KEYTAR_OP_RESULT SetPassword(const std::string& service,
   }
 
   LPWSTR user_name = utf8ToWideChar(account);
-  if (target_name == NULL) {
+  if (user_name == NULL) {
+    delete[] target_name;
     return FAIL_ERROR;
   }
 
@@ -102,6 +103,7 @@ KEYTAR_OP_RESULT SetPassword(const std::string& service,
 
   bool result = ::CredWrite(&cred, 0);
   delete[] target_name;
+  delete[] user_name;
   if (!result) {
     *errStr = getErrorMessage(::GetLastError());
     return FAIL_ERROR;
@@ -198,6 +200,7 @@ KEYTAR_OP_RESULT FindCredentials(const std::string& service,
   CREDENTIAL **creds;
 
   bool result = ::CredEnumerate(filter, 0, &count, &creds);
+  delete[] filter;
   if (!result) {
     DWORD code = ::GetLastError();
     if (code == ERROR_NOT_FOUND) {
