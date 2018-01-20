@@ -1,8 +1,42 @@
-#include "keytar.h"
-
 #include <Security/Security.h>
+#include "keytar.h"
+#include "credentials.h"
+
 
 namespace keytar {
+
+/**
+ * Converts a CFString to a std::string
+ *
+ * This either uses CFStringGetCStringPtr or (if that fails)
+ * CFStringGetCString, trying to be as efficient as possible.
+ */
+const std::string CFStringToStdString(CFStringRef cfstring) {
+  const char* cstr = CFStringGetCStringPtr(cfstring, kCFStringEncodingUTF8);
+
+  if (cstr != NULL) {
+    return std::string(cstr);
+  }
+
+  CFIndex length = CFStringGetLength(cfstring);
+  // Worst case: 2 bytes per character + NUL
+  CFIndex cstrPtrLen = length * 2 + 1;
+  char* cstrPtr = static_cast<char*>(malloc(cstrPtrLen));
+
+  Boolean result = CFStringGetCString(cfstring,
+                                      cstrPtr,
+                                      cstrPtrLen,
+                                      kCFStringEncodingUTF8);
+
+  std::string stdstring;
+  if (result) {
+    stdstring = std::string(cstrPtr);
+  }
+
+  free(cstrPtr);
+
+  return stdstring;
+}
 
 const std::string errorStatusToString(OSStatus status) {
   std::string errorStr;
@@ -146,6 +180,99 @@ KEYTAR_OP_RESULT FindPassword(const std::string& service,
   *password = std::string(reinterpret_cast<const char*>(data), length);
   SecKeychainItemFreeContent(NULL, data);
   CFRelease(item);
+  return SUCCESS;
+}
+
+Credentials getCredentialsForItem(CFDictionaryRef item) {
+  CFStringRef service = (CFStringRef) CFDictionaryGetValue(item,
+                                                           kSecAttrService);
+  CFStringRef account = (CFStringRef) CFDictionaryGetValue(item,
+                                                           kSecAttrAccount);
+
+  CFMutableDictionaryRef query = CFDictionaryCreateMutable(
+    NULL,
+    0,
+    &kCFTypeDictionaryKeyCallBacks,
+    &kCFTypeDictionaryValueCallBacks);
+
+  CFDictionaryAddValue(query, kSecAttrService, service);
+  CFDictionaryAddValue(query, kSecClass, kSecClassGenericPassword);
+  CFDictionaryAddValue(query, kSecMatchLimit, kSecMatchLimitOne);
+  CFDictionaryAddValue(query, kSecReturnAttributes, kCFBooleanTrue);
+  CFDictionaryAddValue(query, kSecReturnData, kCFBooleanTrue);
+  CFDictionaryAddValue(query, kSecAttrAccount, account);
+
+  CFTypeRef result;
+  OSStatus status = SecItemCopyMatching((CFDictionaryRef) query, &result);
+
+  if (status == errSecSuccess) {
+      CFDataRef passwordData = (CFDataRef) CFDictionaryGetValue(
+        (CFDictionaryRef) result,
+        CFSTR("v_Data"));
+      CFStringRef password = CFStringCreateFromExternalRepresentation(
+        NULL,
+        passwordData,
+        kCFStringEncodingUTF8);
+
+      Credentials cred = Credentials(
+        CFStringToStdString(account),
+        CFStringToStdString(password));
+      CFRelease(password);
+
+      return cred;
+  }
+
+  return Credentials();
+}
+
+KEYTAR_OP_RESULT FindCredentials(const std::string& service,
+                                 std::vector<Credentials>* credentials,
+                                 std::string* error) {
+  CFStringRef serviceStr = CFStringCreateWithCString(
+    NULL,
+    service.c_str(),
+    kCFStringEncodingUTF8);
+
+  CFMutableDictionaryRef query = CFDictionaryCreateMutable(
+    NULL,
+    0,
+    &kCFTypeDictionaryKeyCallBacks,
+    &kCFTypeDictionaryValueCallBacks);
+  CFDictionaryAddValue(query, kSecClass, kSecClassGenericPassword);
+  CFDictionaryAddValue(query, kSecAttrService, serviceStr);
+  CFDictionaryAddValue(query, kSecMatchLimit, kSecMatchLimitAll);
+  CFDictionaryAddValue(query, kSecReturnRef, kCFBooleanTrue);
+  CFDictionaryAddValue(query, kSecReturnAttributes, kCFBooleanTrue);
+
+  CFTypeRef result;
+  OSStatus status = SecItemCopyMatching((CFDictionaryRef) query, &result);
+
+  if (status == errSecSuccess) {
+    CFArrayRef resultArray = (CFArrayRef) result;
+    int resultCount = CFArrayGetCount(resultArray);
+
+    for (int idx = 0; idx < resultCount; idx++) {
+      CFDictionaryRef item = (CFDictionaryRef) CFArrayGetValueAtIndex(
+        resultArray,
+        idx);
+
+      Credentials cred = getCredentialsForItem(item);
+      credentials->push_back(cred);
+    }
+  } else if (status == errSecItemNotFound) {
+    return FAIL_NONFATAL;
+  } else {
+    *error = errorStatusToString(status);
+    return FAIL_ERROR;
+  }
+
+
+  if (result != NULL) {
+    CFRelease(result);
+  }
+
+  CFRelease(query);
+
   return SUCCESS;
 }
 

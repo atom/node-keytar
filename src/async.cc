@@ -1,4 +1,5 @@
 #include <string>
+#include <vector>
 
 #include "nan.h"
 #include "keytar.h"
@@ -144,4 +145,68 @@ void FindPasswordWorker::HandleOKCallback() {
   };
 
   callback->Call(2, argv);
+}
+
+
+
+FindCredentialsWorker::FindCredentialsWorker(
+  const std::string& service,
+  Nan::Callback* callback
+) : AsyncWorker(callback),
+    service(service) {}
+
+FindCredentialsWorker::~FindCredentialsWorker() {}
+
+void FindCredentialsWorker::Execute() {
+  std::string error;
+  KEYTAR_OP_RESULT result = keytar::FindCredentials(service,
+                                                    &credentials,
+                                                    &error);
+  if (result == keytar::FAIL_ERROR) {
+    SetErrorMessage(error.c_str());
+  } else if (result == keytar::FAIL_NONFATAL) {
+    success = false;
+  } else {
+    success = true;
+  }
+}
+
+void FindCredentialsWorker::HandleOKCallback() {
+  Nan::HandleScope scope;
+
+  if (success) {
+    v8::Local<v8::Array> val = Nan::New<v8::Array>(credentials.size());
+    unsigned int idx = 0;
+    std::vector<keytar::Credentials>::iterator it;
+    for (it = credentials.begin(); it != credentials.end(); it++) {
+      keytar::Credentials cred = *it;
+      v8::Local<v8::Object> obj = Nan::New<v8::Object>();
+
+      v8::Local<v8::String> account = Nan::New<v8::String>(
+        cred.first.data(),
+        cred.first.length()).ToLocalChecked();
+
+      v8::Local<v8::String> password = Nan::New<v8::String>(
+        cred.second.data(),
+        cred.second.length()).ToLocalChecked();
+
+      obj->Set(Nan::New("account").ToLocalChecked(), account);
+      obj->Set(Nan::New("password").ToLocalChecked(), password);
+
+      Nan::Set(val, idx, obj);
+      ++idx;
+    }
+
+    v8::Local<v8::Value> argv[] = {
+      Nan::Null(),
+      val
+    };
+    callback->Call(2, argv);
+  } else {
+    v8::Local<v8::Value> argv[] = {
+      Nan::Null(),
+      Nan::New<v8::Array>(0)
+    };
+    callback->Call(2, argv);
+  }
 }
