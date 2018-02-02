@@ -216,7 +216,7 @@ KEYTAR_OP_RESULT FindCredentials(const std::string& service,
     }
 
     std::string login = wideCharToAnsi(cred->UserName);
-    std::string password(reinterpret_cast<char*>(cred->CredentialBlob));
+    std::string password(reinterpret_cast<char*>(cred->CredentialBlob), cred->CredentialBlobSize);
 
     credentials->push_back(Credentials(login, password));
   }
