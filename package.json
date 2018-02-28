@@ -1,5 +1,6 @@
 {
   "main": "./lib/keytar.js",
+  "typings": "keytar.d.ts",
   "name": "keytar",
   "description": "Bindings to native Mac/Linux/Windows password APIs",
   "version": "4.1.0",
