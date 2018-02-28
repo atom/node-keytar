@@ -21,20 +21,33 @@
     "vault",
     "credential vault"
   ],
+  "files": [
+    "lib",
+    "src",
+    "binding.gyp"
+  ],
   "scripts": {
+    "install": "prebuild-install || node-gyp rebuild",
     "lint": "npm run cpplint",
     "cpplint": "node-cpplint --filters legal-copyright,build-include,build-namespaces src/*.cc",
-    "test": "npm run lint && npm build . && mocha --compilers js:babel-core/register spec/"
+    "test": "npm run lint && npm build . && mocha --compilers js:babel-core/register spec/",
+    "prebuild-node": "prebuild -t 6.11.0 -t 7.9.0 -t 8.9.0 -t 9.4.0 --strip",
+    "prebuild-node-ia32": "prebuild -t 6.11.0 -t 7.9.0 -t 8.9.0 -t 9.4.0 -a ia32 --strip",
+    "prebuild-electron": "prebuild -t 1.6.11 -t 1.7.10 -t 1.8.0 -r electron --strip",
+    "prebuild-electron-ia32": "prebuild -t 1.6.11 -t 1.7.10 -t 1.8.0 -r electron -a ia32 --strip",
+    "upload": "node ./script/upload.js"
   },
   "devDependencies": {
-    "babel-core": "^6.24.1",
+    "babel-core": "^6.26.0",
     "babel-plugin-transform-async-to-generator": "^6.24.1",
-    "chai": "^3.5.0",
-    "mocha": "^3.2.0",
-    "node-cpplint": "~0.1.5",
-    "node-gyp": "^3.6.0"
+    "chai": "^4.1.2",
+    "mocha": "^3.5.0",
+    "node-cpplint": "~0.4.0",
+    "node-gyp": "^3.6.2",
+    "prebuild": "^7.2.2"
   },
   "dependencies": {
-    "nan": "2.5.1"
+    "nan": "2.8.0",
+    "prebuild-install": "^2.4.1"
   }
 }
