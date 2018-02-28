@@ -1,12 +1,15 @@
+// Definitions by: Milan Burda <https://github.com/miniak>, Brendan Forster <https://github.com/shiftkey>, Hari Juturu <https://github.com/juturu>
+// Adapted from DefinitelyTyped: https://github.com/DefinitelyTyped/DefinitelyTyped/blob/master/types/keytar/index.d.ts
+
 /**
  * Get the stored password for the service and account.
  *
  * @param service The string service name.
  * @param account The string account name.
  *
- * @returns the string password or null on failures.
+ * @returns A promise for the password string.
  */
-export function getPassword(service: string, account: string): string;
+export declare function getPassword(service: string, account: string): Promise<string | null>;
 
 /**
  * Add the password for the service and account to the keychain.
@@ -15,9 +18,9 @@ export function getPassword(service: string, account: string): string;
  * @param account The string account name.
  * @param password The string password.
  *
- * @returns true on success, false on failure.
+ * @returns A promise for the set password completion.
  */
-export function addPassword(service: string, account: string, password: string): boolean;
+export declare function setPassword(service: string, account: string, password: string): Promise<void>;
 
 /**
  * Delete the stored password for the service and account.
@@ -25,29 +28,16 @@ export function addPassword(service: string, account: string, password: string):
  * @param service The string service name.
  * @param account The string account name.
  *
- * @returns the string password or null on failures.
+ * @returns A promise for the deletion status. True on success.
  */
-export function deletePassword(service: string, account: string): string;
-
-/**
- * Replace the password for the service and account in the keychain.
- *
- * This is a simple convenience function that internally calls deletePassword(service, account)
- * followed by addPassword(service, account, password).
- *
- * @param service The string service name.
- * @param account The string account name.
- * @param password The string password.
- *
- * @returns true on success, false on failure.
- */
-export function replacePassword(service: string, account: string, password: string): boolean;
+export declare function deletePassword(service: string, account: string): Promise<boolean>;
 
 /**
  * Find a password for the service in the keychain.
  *
  * @param service The string service name.
  *
- * @returns the string password or null on failures.
+ * @returns A promise for the password string.
  */
-export function findPassword(service: string): string;
+export declare function findPassword(service: string): Promise<string | null>;
+
