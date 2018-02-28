@@ -41,3 +41,11 @@ export declare function deletePassword(service: string, account: string): Promis
  */
 export declare function findPassword(service: string): Promise<string | null>;
 
+/**
+ * Find all accounts and passwords for `service` in the keychain.
+ *
+ * @param service The string service name.
+ *
+ * @returns A promise for the array of found credentials.
+ */
+export declare function findCredentials(service: string): Promise<{ account: string, password: string}>;
