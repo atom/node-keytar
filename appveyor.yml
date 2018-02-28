@@ -13,8 +13,6 @@ branches:
 
 clone_depth: 10
 
-skip_tags: true
-
 install:
   - ps: Install-Product node 8 x64
   - npm install
@@ -25,7 +23,7 @@ build_script:
   - npm run prebuild-node-ia32
   - npm run prebuild-electron
   - npm run prebuild-electron-ia32
-  - npm run upload
+  - if defined APPVEYOR_REPO_TAG_NAME (npm run upload)
 
 test: off
 deploy: off

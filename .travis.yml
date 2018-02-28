@@ -18,6 +18,7 @@ git:
 branches:
   only:
     - master
+    - /^v\d+\.\d+(\.\d+)?(-\S*)?$/
 
 services:
   - docker
@@ -49,4 +50,4 @@ script:
   - npm run prebuild-node
   - npm run prebuild-electron
   - if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then docker run --rm -v ${PWD}:/project electronuserland/electron-builder:8-ia32 /bin/bash -c "cd /project && npm run prebuild-node-ia32 && npm run prebuild-electron-ia32"; fi
-  - npm run upload
+  - if [[ -n "$TRAVIS_TAG" ]]; then npm run upload; fi
