@@ -92,8 +92,26 @@ describe("keytar", function() {
       assert.deepEqual([], accounts)
     })
 
-    afterEach(async function() {
-      await keytar.deletePassword(service2, account)
+    describe("Unicode support", function() {
+      const service = "se®vi\u00C7e"
+      const account = "shi\u0191\u2020ke\u00A5"
+      const password = "p\u00E5ssw\u00D8®\u2202"
+
+      it("handles unicode strings everywhere", async function() {
+        await keytar.setPassword(service, account, password)
+        await keytar.setPassword(service, account2, password2)
+
+        const found = await keytar.findCredentials(service)
+        const sorted = found.sort(function(a, b) {
+          return a.account.localeCompare(b.account)
+        })
+
+        assert.deepEqual([{account: account2, password: password2}, {account: account, password: password}], sorted)
+      })
+
+      afterEach(async function() {
+        await keytar.deletePassword(service, account)
+      })
     })
   });
 })

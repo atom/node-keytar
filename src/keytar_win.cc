@@ -69,6 +69,41 @@ std::string wideCharToAnsi(LPWSTR wide_char) {
   return result;
 }
 
+std::string wideCharToUtf8(LPWSTR wide_char) {
+  if (wide_char == NULL) {
+    return std::string();
+  }
+
+  int utf8_length = WideCharToMultiByte(CP_UTF8,
+                                        0,
+                                        wide_char,
+                                        -1,
+                                        NULL,
+                                        0,
+                                        NULL,
+                                        NULL);
+  if (utf8_length == 0) {
+    return std::string();
+  }
+
+  char* buffer = new char[utf8_length];
+  if (WideCharToMultiByte(CP_UTF8,
+                          0,
+                          wide_char,
+                          -1,
+                          buffer,
+                          utf8_length,
+                          NULL,
+                          NULL) == 0) {
+    delete[] buffer;
+    return std::string();
+  }
+
+  std::string result = std::string(buffer);
+  delete[] buffer;
+  return result;
+}
+
 std::string getErrorMessage(DWORD errorCode) {
   LPWSTR errBuffer;
   ::FormatMessage(FORMAT_MESSAGE_ALLOCATE_BUFFER | FORMAT_MESSAGE_FROM_SYSTEM,
@@ -215,8 +250,11 @@ KEYTAR_OP_RESULT FindCredentials(const std::string& service,
       continue;
     }
 
-    std::string login = wideCharToAnsi(cred->UserName);
-    std::string password(reinterpret_cast<char*>(cred->CredentialBlob));
+    std::string login = wideCharToUtf8(cred->UserName);
+    std::string password(
+      reinterpret_cast<char*>(
+        cred->CredentialBlob),
+        cred->CredentialBlobSize);
 
     credentials->push_back(Credentials(login, password));
   }
