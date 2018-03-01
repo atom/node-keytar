@@ -3,7 +3,7 @@
   "typings": "keytar.d.ts",
   "name": "keytar",
   "description": "Bindings to native Mac/Linux/Windows password APIs",
-  "version": "4.1.0",
+  "version": "4.2.0",
   "license": "MIT",
   "repository": {
     "type": "git",
