@@ -9,7 +9,7 @@ cache:
 
 branches:
   only:
-    - master
+    - /master|^v\d+\.\d+\.\d+$/
 
 clone_depth: 10
 
