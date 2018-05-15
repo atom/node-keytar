@@ -48,4 +48,4 @@ export declare function findPassword(service: string): Promise<string | null>;
  *
  * @returns A promise for the array of found credentials.
  */
-export declare function findCredentials(service: string): Promise<{ account: string, password: string}>;
+export declare function findCredentials(service: string): Promise<Array<{ account: string, password: string}>>;
