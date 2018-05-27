@@ -41,16 +41,16 @@
     "upload": "node ./script/upload.js"
   },
   "devDependencies": {
-    "babel-core": "^6.26.0",
+    "babel-core": "^6.26.3",
     "babel-plugin-transform-async-to-generator": "^6.24.1",
     "chai": "^4.1.2",
-    "mocha": "^3.5.0",
+    "mocha": "^5.2.0",
     "node-cpplint": "~0.4.0",
     "node-gyp": "^3.6.2",
     "prebuild": "^7.4.0"
   },
   "dependencies": {
-    "nan": "2.8.0",
-    "prebuild-install": "^2.4.1"
+    "nan": "2.10.0",
+    "prebuild-install": "^2.5.3"
   }
 }
