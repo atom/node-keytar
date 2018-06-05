@@ -12,9 +12,9 @@ namespace keytar {
 namespace {
 
 static const SecretSchema schema = {
-  "org.freedesktop.Secret.Generic", SECRET_SCHEMA_NONE, {
-    { "service", SECRET_SCHEMA_ATTRIBUTE_STRING },
-    { "account", SECRET_SCHEMA_ATTRIBUTE_STRING }
+  "chrome_libsecret_password_schema", SECRET_SCHEMA_NONE, {
+    { "signon_realm", SECRET_SCHEMA_ATTRIBUTE_STRING },
+    { "username_value", SECRET_SCHEMA_ATTRIBUTE_STRING }
   }
 };
 
@@ -33,8 +33,8 @@ KEYTAR_OP_RESULT SetPassword(const std::string& service,
     password.c_str(),                   // The password.
     NULL,                               // Cancellable. (unneeded)
     &error,                             // Reference to the error.
-    "service", service.c_str(),
-    "account", account.c_str(),
+    "signon_realm", service.c_str(),
+    "username_value", account.c_str(),
     NULL);                              // End of arguments.
 
   if (error != NULL) {
@@ -56,8 +56,8 @@ KEYTAR_OP_RESULT GetPassword(const std::string& service,
     &schema,                            // The schema.
     NULL,                               // Cancellable. (unneeded)
     &error,                             // Reference to the error.
-    "service", service.c_str(),
-    "account", account.c_str(),
+    "signon_realm", service.c_str(),
+    "username_value", account.c_str(),
     NULL);                              // End of arguments.
 
   if (error != NULL) {
@@ -83,8 +83,8 @@ KEYTAR_OP_RESULT DeletePassword(const std::string& service,
     &schema,                            // The schema.
     NULL,                               // Cancellable. (unneeded)
     &error,                             // Reference to the error.
-    "service", service.c_str(),
-    "account", account.c_str(),
+    "signon_realm", service.c_str(),
+    "username_value", account.c_str(),
     NULL);                              // End of arguments.
 
   if (error != NULL) {
@@ -108,7 +108,7 @@ KEYTAR_OP_RESULT FindPassword(const std::string& service,
     &schema,                            // The schema.
     NULL,                               // Cancellable. (unneeded)
     &error,                             // Reference to the error.
-    "service", service.c_str(),
+    "signon_realm", service.c_str(),
     NULL);                              // End of arguments.
 
   if (error != NULL) {
@@ -132,7 +132,7 @@ KEYTAR_OP_RESULT FindCredentials(const std::string& service,
 
   GHashTable* attributes = g_hash_table_new(NULL, NULL);
   g_hash_table_replace(attributes,
-                       (gpointer) "service",
+                       (gpointer) "signon_realm",
                        (gpointer) service.c_str());
 
   GList* items = secret_service_search_sync(
@@ -157,8 +157,8 @@ KEYTAR_OP_RESULT FindCredentials(const std::string& service,
     SecretItem* item = reinterpret_cast<SecretItem*>(current->data);
 
     GHashTable* itemAttrs = secret_item_get_attributes(item);
-    char* account = strdup(
-      reinterpret_cast<char*>(g_hash_table_lookup(itemAttrs, "account")));
+    char* account = strdup(reinterpret_cast<char*>(
+      g_hash_table_lookup(itemAttrs, "username_value")));
 
     SecretValue* secret = secret_item_get_secret(item);
     char* password = strdup(secret_value_get_text(secret));
