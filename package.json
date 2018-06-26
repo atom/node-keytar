@@ -46,11 +46,11 @@
     "chai": "^4.1.2",
     "mocha": "^3.5.0",
     "node-cpplint": "~0.4.0",
-    "node-gyp": "^3.6.2",
+    "node-gyp": "^3.7.0",
     "prebuild": "^7.4.0"
   },
   "dependencies": {
-    "nan": "2.8.0",
+    "nan": "2.10.0",
     "prebuild-install": "^2.4.1"
   }
 }
