@@ -31,6 +31,7 @@
   "types": "./keytar.d.ts",
   "scripts": {
     "install": "prebuild-install || node-gyp rebuild",
+    "postinstall": "node-gyp",
     "lint": "npm run cpplint",
     "cpplint": "node-cpplint --filters legal-copyright,build-include,build-namespaces src/*.cc",
     "test": "npm run lint && npm build . && mocha --compilers js:babel-core/register spec/",
