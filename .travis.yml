@@ -43,7 +43,7 @@ before_script:
       dbus-launch /usr/bin/python -c \
         "import gnomekeyring;gnomekeyring.create_sync('login', '');"
     fi
-  - node-gyp
+  - npm install -g node-gyp@3.7.0
 
 script:
   - if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then xvfb-run ./script/cibuild; fi
