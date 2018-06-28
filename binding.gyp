@@ -31,6 +31,9 @@
           ],
         }],
         ['OS not in ["mac", "win"]', {
+          'variables': {
+            'build_v8_with_gn': 'false'
+          },
           'sources': [
             'src/keytar_posix.cc',
           ],
