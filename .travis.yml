@@ -46,7 +46,7 @@ before_script:
   - npm install -g node-gyp@3.7.0
   - |
     if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then
-      node-gyp configure --build_v8_with_gn=false
+      node-gyp configure -- -Dbuild_v8_with_gn=false
     fi
 
 script:
