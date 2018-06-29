@@ -1,6 +1,6 @@
 {
   'variables': {
-    'build_v8_with_gn': 'false'
+    'build_v8_with_gn': 0
   },
   'targets': [
     {
