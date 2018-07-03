@@ -1,4 +1,7 @@
 {
+  'variables': {
+    'build_v8_with_gn': 0
+  },
   'targets': [
     {
       'target_name': 'keytar',

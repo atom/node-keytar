@@ -69,7 +69,8 @@ void GetPasswordWorker::HandleOKCallback() {
     val
   };
 
-  callback->Call(2, argv);
+  Nan::AsyncResource resource("keytar:GetPasswordWorker");
+  callback->Call(2, argv, &resource);
 }
 
 
@@ -105,7 +106,8 @@ void DeletePasswordWorker::HandleOKCallback() {
     val
   };
 
-  callback->Call(2, argv);
+  Nan::AsyncResource resource("keytar:DeletePasswordWorker");
+  callback->Call(2, argv, &resource);
 }
 
 
@@ -144,7 +146,8 @@ void FindPasswordWorker::HandleOKCallback() {
     val
   };
 
-  callback->Call(2, argv);
+  Nan::AsyncResource resource("keytar:FindPasswordWorker");
+  callback->Call(2, argv, &resource);
 }
 
 
@@ -173,6 +176,7 @@ void FindCredentialsWorker::Execute() {
 
 void FindCredentialsWorker::HandleOKCallback() {
   Nan::HandleScope scope;
+  Nan::AsyncResource resource("keytar:FindCredentialsWorker");
 
   if (success) {
     v8::Local<v8::Array> val = Nan::New<v8::Array>(credentials.size());
@@ -201,12 +205,12 @@ void FindCredentialsWorker::HandleOKCallback() {
       Nan::Null(),
       val
     };
-    callback->Call(2, argv);
+    callback->Call(2, argv, &resource);
   } else {
     v8::Local<v8::Value> argv[] = {
       Nan::Null(),
       Nan::New<v8::Array>(0)
     };
-    callback->Call(2, argv);
+    callback->Call(2, argv, &resource);
   }
 }
