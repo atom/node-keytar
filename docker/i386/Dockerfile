@@ -12,9 +12,6 @@ RUN apt-get install --quiet --yes \
 RUN curl -sL https://deb.nodesource.com/setup_9.x | bash -
 RUN apt-get install -y nodejs
 
-RUN node --version
-RUN npm --version
-
 ENV CC clang
 ENV CXX clang++
 ENV npm_config_clang 1
