@@ -3,14 +3,14 @@
   "typings": "keytar.d.ts",
   "name": "keytar",
   "description": "Bindings to native Mac/Linux/Windows password APIs",
-  "version": "4.2.1",
+  "version": "4.3.1",
   "license": "MIT",
   "repository": {
     "type": "git",
-    "url": "https://github.com/atom/node-keytar.git"
+    "url": "https://github.com/popod/node-keytar.git"
   },
   "bugs": {
-    "url": "https://github.com/atom/node-keytar/issues"
+    "url": "https://github.com/popod/node-keytar/issues"
   },
   "homepage": "http://atom.github.io/node-keytar",
   "keywords": [
@@ -34,10 +34,10 @@
     "lint": "npm run cpplint",
     "cpplint": "node-cpplint --filters legal-copyright,build-include,build-namespaces src/*.cc",
     "test": "npm run lint && npm build . && mocha --require babel-core/register spec/",
-    "prebuild-node": "prebuild -t 6.11.0 -t 7.9.0 -t 8.9.0 -t 9.4.0 --strip",
+    "prebuild-node": "prebuild -t 6.11.0 -t 7.9.0 -t 8.9.0 -t 9.4.0 -t 10.11.0 --strip",
     "prebuild-node-ia32": "prebuild -t 6.11.0 -t 7.9.0 -t 8.9.0 -t 9.4.0 -a ia32 --strip",
-    "prebuild-electron": "prebuild -t 1.6.11 -t 1.7.10 -t 1.8.0 -t 2.0.0 -r electron --strip",
-    "prebuild-electron-ia32": "prebuild -t 1.6.11 -t 1.7.10 -t 1.8.0 -t 2.0.0 -r electron -a ia32 --strip",
+    "prebuild-electron": "prebuild -t 1.6.11 -t 1.7.10 -t 1.8.0 -t 2.0.0 -t 3.0.0 -r electron --strip",
+    "prebuild-electron-ia32": "prebuild -t 1.6.11 -t 1.7.10 -t 1.8.0 -t 2.0.0 -t 3.0.0 -r electron -a ia32 --strip",
     "upload": "node ./script/upload.js"
   },
   "devDependencies": {
@@ -45,9 +45,10 @@
     "babel-plugin-transform-async-to-generator": "^6.24.1",
     "chai": "^4.1.2",
     "mocha": "^5.2.0",
+    "node-abi": "^2.4.4",
     "node-cpplint": "~0.4.0",
     "node-gyp": "^3.7.0",
-    "prebuild": "^7.4.0"
+    "prebuild": "^8.0.1"
   },
   "dependencies": {
     "nan": "2.8.0",
