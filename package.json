@@ -47,7 +47,7 @@
     "mocha": "^5.2.0",
     "node-abi": "^2.4.4",
     "node-cpplint": "~0.4.0",
-    "node-gyp": "^3.7.0",
+    "node-gyp": "^3.8.0",
     "prebuild": "^8.0.1"
   },
   "dependencies": {
