@@ -1,5 +1,8 @@
 #include "nan.h"
 #include "async.h"
+#include "keytar.h"
+
+using keytar::KEYTAR_OP_RESULT;
 
 namespace {
 
@@ -42,12 +45,27 @@ NAN_METHOD(FindCredentials) {
   Nan::AsyncQueueWorker(worker);
 }
 
+NAN_METHOD(GetPasswordSync){
+  std::string password,error;
+  KEYTAR_OP_RESULT result =keytar::GetPassword(*v8::String::Utf8Value(info[0]),
+                      *v8::String::Utf8Value(info[1]),&password,&error);
+  // if (result == keytar::FAIL_ERROR) {
+  //   SetErrorMessage(error.c_str());
+  // } else 
+  if (result == keytar::FAIL_NONFATAL) {
+    info.GetReturnValue().Set(Nan::Null());
+  } else {
+    info.GetReturnValue().Set(Nan::New(password).ToLocalChecked());
+  }
+}
+
 void Init(v8::Handle<v8::Object> exports) {
   Nan::SetMethod(exports, "getPassword", GetPassword);
   Nan::SetMethod(exports, "setPassword", SetPassword);
   Nan::SetMethod(exports, "deletePassword", DeletePassword);
   Nan::SetMethod(exports, "findPassword", FindPassword);
   Nan::SetMethod(exports, "findCredentials", FindCredentials);
+  Nan::SetMethod(exports,"getPasswordSync",GetPasswordSync);
 }
 
 }  // namespace

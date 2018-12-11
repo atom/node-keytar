@@ -113,5 +113,17 @@ describe("keytar", function() {
         await keytar.deletePassword(service, account)
       })
     })
+    describe("setPassword/getPasswordSync(service, account)", function() {
+      it("sets and yields the password for the service and account", async function() {
+        await keytar.setPassword(service, account, password)
+        assert.equal( keytar.getPasswordSync(service, account), password)
+        await keytar.setPassword(service, account, password2)
+        assert.equal( keytar.getPasswordSync(service, account), password2)
+      })
+  
+      it("yields null when the password was not found", function() {
+        assert.equal( keytar.getPasswordSync(service, account), null)
+      })
+    })
   });
 })

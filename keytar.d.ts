@@ -49,3 +49,10 @@ export declare function findPassword(service: string): Promise<string | null>;
  * @returns A promise for the array of found credentials.
  */
 export declare function findCredentials(service: string): Promise<Array<{ account: string, password: string}>>;
+
+/**
+ * 
+ * @param service the string service name
+ * @param account the string account name
+ */
+export declare function getPasswordSync(service:string,account:string):string;
