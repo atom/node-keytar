@@ -68,14 +68,6 @@ Delete the stored password for the `service` and `account`.
 
 Yields `true` if a password was deleted, or `false` if an entry with the given service and account was not found.
 
-### findPassword(service)
-
-Find a password for the `service` in the keychain.
-
-`service` - The string service name.
-
-Yields the string password, or `null` if an entry for the given service and account was not found.
-
 ### findCredentials(service)
 
 Find all accounts and password for the `service` in the keychain.
@@ -83,3 +75,12 @@ Find all accounts and password for the `service` in the keychain.
 `service` - The string service name.
 
 Yields an array of `{ account: 'foo', password: 'bar' }`.
+
+### findPassword(service)
+
+Find a password for the `service` in the keychain. This is ideal for scenarios where an `account` is not required.
+
+`service` - The string service name.
+
+Yields the string password, or `null` if an entry for the given service was not found.
+
