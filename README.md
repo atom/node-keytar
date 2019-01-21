@@ -74,7 +74,7 @@ Find a password for the `service` in the keychain.
 
 `service` - The string service name.
 
-Yields the string password, or `null` if an entry for the given service and account was not found.
+Yields the string password, or `null` if an entry for the given service was not found.
 
 ### findCredentials(service)
 
