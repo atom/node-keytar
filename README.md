@@ -6,10 +6,6 @@
 
 A native Node module to get, add, replace, and delete passwords in system's keychain. On macOS the passwords are managed by the Keychain, on Linux they are managed by the Secret Service API/libsecret, and on Windows they are managed by Credential Vault.
 
-### Electron 4 and 5 support
-
-Please note that there are some issues with Node ABI versioning that affect native modules like `keytar`. If you depend on tools like `prebuild` for consuming `keytar` please have a read of [#133](https://github.com/atom/node-keytar/issues/133) as well as the upstream issue [`lgeiger/node-abi#54`](https://github.com/lgeiger/node-abi/issues/54).
-
 ## Installing
 
 ```sh
