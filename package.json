@@ -51,7 +51,7 @@
     "prebuild": "^8.1.2"
   },
   "dependencies": {
-    "nan": "2.8.0",
+    "nan": "2.12.1",
     "@shiftkey/prebuild-install": "5.2.4"
   }
 }

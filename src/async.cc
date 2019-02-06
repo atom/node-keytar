@@ -69,7 +69,7 @@ void GetPasswordWorker::HandleOKCallback() {
     val
   };
 
-  callback->Call(2, argv);
+  callback->Call(2, argv, async_resource);
 }
 
 
@@ -105,7 +105,7 @@ void DeletePasswordWorker::HandleOKCallback() {
     val
   };
 
-  callback->Call(2, argv);
+  callback->Call(2, argv, async_resource);
 }
 
 
@@ -144,7 +144,7 @@ void FindPasswordWorker::HandleOKCallback() {
     val
   };
 
-  callback->Call(2, argv);
+  callback->Call(2, argv, async_resource);
 }
 
 
@@ -201,12 +201,12 @@ void FindCredentialsWorker::HandleOKCallback() {
       Nan::Null(),
       val
     };
-    callback->Call(2, argv);
+    callback->Call(2, argv, async_resource);
   } else {
     v8::Local<v8::Value> argv[] = {
       Nan::Null(),
       Nan::New<v8::Array>(0)
     };
-    callback->Call(2, argv);
+    callback->Call(2, argv, async_resource);
   }
 }
