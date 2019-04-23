@@ -14,7 +14,8 @@ branches:
 clone_depth: 10
 
 install:
-  - ps: Install-Product node 10 x64
+  # https://www.appveyor.com/docs/lang/nodejs-iojs/#installing-any-version-of-nodejs-or-iojs
+  - ps: Update-NodeJsInstallation (Get-NodeJsLatestBuild 12) x64
   - npm install
 
 build_script:
