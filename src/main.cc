@@ -4,10 +4,27 @@
 namespace {
 
 NAN_METHOD(SetPassword) {
+  if (!info[0]->IsString()) {
+    Nan::ThrowTypeError("Parameter 'service' must be a string");
+    return;
+  }
+
   Nan::Utf8String serviceNan(info[0]);
   std::string service(*serviceNan, serviceNan.length());
+
+  if (!info[1]->IsString()) {
+    Nan::ThrowTypeError("Parameter 'username' must be a string");
+    return;
+  }
+
   Nan::Utf8String usernameNan(info[1]);
   std::string username(*usernameNan, usernameNan.length());
+
+  if (!info[2]->IsString()) {
+    Nan::ThrowTypeError("Parameter 'password' must be a string");
+    return;
+  }
+
   Nan::Utf8String passwordNan(info[2]);
   std::string password(*passwordNan, passwordNan.length());
 
@@ -20,8 +37,19 @@ NAN_METHOD(SetPassword) {
 }
 
 NAN_METHOD(GetPassword) {
+  if (!info[0]->IsString()) {
+    Nan::ThrowTypeError("Parameter 'service' must be a string");
+    return;
+  }
+
   Nan::Utf8String serviceNan(info[0]);
   std::string service(*serviceNan, serviceNan.length());
+
+  if (!info[1]->IsString()) {
+    Nan::ThrowTypeError("Parameter 'username' must be a string");
+    return;
+  }
+
   Nan::Utf8String usernameNan(info[1]);
   std::string username(*usernameNan, usernameNan.length());
 
@@ -33,8 +61,19 @@ NAN_METHOD(GetPassword) {
 }
 
 NAN_METHOD(DeletePassword) {
+  if (!info[0]->IsString()) {
+    Nan::ThrowTypeError("Parameter 'service' must be a string");
+    return;
+  }
+
   Nan::Utf8String serviceNan(info[0]);
   std::string service(*serviceNan, serviceNan.length());
+
+  if (!info[1]->IsString()) {
+    Nan::ThrowTypeError("Parameter 'username' must be a string");
+    return;
+  }
+
   Nan::Utf8String usernameNan(info[1]);
   std::string username(*usernameNan, usernameNan.length());
 
@@ -46,6 +85,11 @@ NAN_METHOD(DeletePassword) {
 }
 
 NAN_METHOD(FindPassword) {
+  if (!info[0]->IsString()) {
+    Nan::ThrowTypeError("Parameter 'service' must be a string");
+    return;
+  }
+
   Nan::Utf8String serviceNan(info[0]);
   std::string service(*serviceNan, serviceNan.length());
 
@@ -56,6 +100,11 @@ NAN_METHOD(FindPassword) {
 }
 
 NAN_METHOD(FindCredentials) {
+  if (!info[0]->IsString()) {
+    Nan::ThrowTypeError("Parameter 'service' must be a string");
+    return;
+  }
+
   Nan::Utf8String serviceNan(info[0]);
   std::string service(*serviceNan, serviceNan.length());
 
