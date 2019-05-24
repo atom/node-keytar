@@ -9,6 +9,11 @@ describe("keytar", function() {
   var account2 = 'buster2'
   var password2 = 'secret2'
 
+  var object = {}
+  object.toString = function () {
+    throw new Error("Whoops! Time to seg fault")
+  }
+
   beforeEach(async function() {
     await keytar.deletePassword(service, account),
     await keytar.deletePassword(service, account2)
@@ -32,6 +37,52 @@ describe("keytar", function() {
 
     it("yields null when the password was not found", async function() {
       assert.equal(await keytar.getPassword(service, account), null)
+    })
+
+    describe("error handling", function () {
+      describe('setPassword', () => {
+        it("handles when an object is provided for service", async function () {
+          try {
+            await keytar.setPassword(object, account, password)
+          } catch (err) {
+            assert.equal(err.message, "Parameter 'service' must be a string")
+          }
+        })
+
+        it("handles when an object is provided for username", async function () {
+          try {
+            await keytar.setPassword(service, object, password)
+          } catch (err) {
+            assert.equal(err.message, "Parameter 'username' must be a string")
+          }
+        })
+
+        it("handles when an object is provided for password", async function () {
+          try {
+            await keytar.setPassword(service, account, object)
+          } catch (err) {
+            assert.equal(err.message, "Parameter 'password' must be a string")
+          }
+        })
+      })
+
+      describe('getPassword', () => {
+        it("handles when an object is provided for service", async function () {
+          try {
+            await keytar.getPassword(object, account)
+          } catch (err) {
+            assert.equal(err.message, "Parameter 'service' must be a string")
+          }
+        })
+
+        it("handles when an object is provided for username", async function () {
+          try {
+            await keytar.getPassword(service, object)
+          } catch (err) {
+            assert.equal(err.message, "Parameter 'username' must be a string")
+          }
+        })
+      })
     })
 
     describe("Unicode support", function() {
@@ -59,6 +110,24 @@ describe("keytar", function() {
     it("yields false when the password didn't exist", async function() {
       assert.equal(await keytar.deletePassword(service, account), false)
     })
+
+    describe("error handling", function () {
+      it("handles when an object is provided for service", async function () {
+        try {
+          await keytar.deletePassword(object, account)
+        } catch (err) {
+          assert.equal(err.message, "Parameter 'service' must be a string")
+        }
+      })
+
+      it("handles when an object is provided for username", async function () {
+        try {
+          await keytar.deletePassword(service, object)
+        } catch (err) {
+          assert.equal(err.message, "Parameter 'username' must be a string")
+        }
+      })
+    })
   })
 
   describe("findPassword(service)", function() {
@@ -70,6 +139,14 @@ describe("keytar", function() {
 
     it("yields null when no password can be found", async function() {
       assert.equal(await keytar.findPassword(service), null)
+    })
+
+    it("handles when an object is provided for service", async function () {
+      try {
+        await keytar.findPassword(object)
+      } catch (err) {
+        assert.equal(err.message, "Parameter 'service' must be a string")
+      }
     })
   })
 
@@ -90,6 +167,14 @@ describe("keytar", function() {
     it('returns an empty array when no credentials are found', async function() {
       const accounts = await keytar.findCredentials(service)
       assert.deepEqual([], accounts)
+    })
+
+    it("handles when an object is provided for service", async function () {
+      try {
+        await keytar.findCredentials(object)
+      } catch (err) {
+        assert.equal(err.message, "Parameter 'service' must be a string")
+      }
     })
 
     describe("Unicode support", function() {
