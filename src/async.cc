@@ -190,8 +190,20 @@ void FindCredentialsWorker::HandleOKCallback() {
         cred.second.data(),
         cred.second.length()).ToLocalChecked();
 
-      obj->Set(Nan::New("account").ToLocalChecked(), account);
-      obj->Set(Nan::New("password").ToLocalChecked(), password);
+#ifndef _WIN32
+#pragma GCC diagnostic ignored "-Wunused-result"
+#endif
+      obj->Set(
+        Nan::GetCurrentContext(),
+        Nan::New("account").ToLocalChecked(),
+        account);
+#ifndef _WIN32
+#pragma GCC diagnostic ignored "-Wunused-result"
+#endif
+      obj->Set(
+        Nan::GetCurrentContext(),
+        Nan::New("password").ToLocalChecked(),
+        password);
 
       Nan::Set(val, idx, obj);
       ++idx;
