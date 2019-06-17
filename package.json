@@ -49,7 +49,7 @@
     "node-abi": "^2.8.0",
     "node-cpplint": "~0.4.0",
     "node-gyp": "^4.0.0",
-    "prebuild": "^8.2.1"
+    "prebuild": "^9.0.0"
   },
   "dependencies": {
     "nan": "2.14.0",
