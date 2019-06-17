@@ -4,6 +4,9 @@ image: Visual Studio 2017
 platform:
   - x64
 
+environment:
+  nodejs_version: "12"
+
 cache:
   - node_modules
 
@@ -14,8 +17,7 @@ branches:
 clone_depth: 10
 
 install:
-  # https://www.appveyor.com/docs/lang/nodejs-iojs/#installing-any-version-of-nodejs-or-iojs
-  - ps: Update-NodeJsInstallation (Get-NodeJsLatestBuild 12) x64
+  - ps: Install-Product node $env:nodejs_version
   - npm install
 
 build_script:
