@@ -1,128 +1,239 @@
 <!doctype html>
 <html>
-  <head>
-    <meta charset="utf-8">
-    <meta http-equiv="X-UA-Compatible" content="chrome=1">
-    <title>keytar by atom</title>
 
-    <link rel="stylesheet" href="stylesheets/styles.css">
-    <link rel="stylesheet" href="stylesheets/pygment_trac.css">
-    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
-    <!--[if lt IE 9]>
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="chrome=1">
+  <title>keytar by atom</title>
+
+  <link rel="stylesheet" href="stylesheets/styles.css">
+  <link rel="stylesheet" href="stylesheets/github-light.css">
+  <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
+  <!--[if lt IE 9]>
     <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
-    <![endif]-->
-  </head>
-  <body>
-    <div class="wrapper">
-      <header>
-        <h1>keytar</h1>
-        <p>Native Password Node Module</p>
+  <![endif]-->
+</head>
 
-        <p class="view"><a href="https://github.com/atom/node-keytar">View the Project on GitHub <small>atom/node-keytar</small></a></p>
+<body>
+  <div class="wrapper">
+    <header>
+      <h1>keytar</h1>
+      <p>Node module to manage system keychain</p>
 
+      <p class="view">
+        <a href="https://github.com/atom/node-keytar">
+          View the Project on GitHub
+          <small>atom/node-keytar</small>
+        </a>
+      </p>
 
-        <ul>
-          <li><a href="https://github.com/atom/node-keytar/zipball/master">Download <strong>ZIP File</strong></a></li>
-          <li><a href="https://github.com/atom/node-keytar/tarball/master">Download <strong>TAR Ball</strong></a></li>
-          <li><a href="https://github.com/atom/node-keytar">View On <strong>GitHub</strong></a></li>
-        </ul>
-      </header>
-      <section>
-        <h1>
-<a name="keytar---native-password-node-module" class="anchor" href="#keytar---native-password-node-module"><span class="octicon octicon-link"></span></a>keytar - Native Password Node Module</h1>
+      <ul>
+        <li><a href="https://github.com/atom/node-keytar/zipball/master">Download <strong>ZIP File</strong></a></li>
+        <li><a href="https://github.com/atom/node-keytar/tarball/master">Download <strong>TAR Ball</strong></a></li>
+        <li><a href="https://github.com/atom/node-keytar">View On <strong>GitHub</strong></a></li>
+      </ul>
+    </header>
+    <section>
+      <h1>
+        <a name="keytar---native-password-node-module" class="anchor" href="#keytar---native-password-node-module">
+          <span class="octicon octicon-link"></span>
+        </a>
+        keytar - Node module to manage system keychain
+      </h1>
 
-<p>A native Node module to get, add, replace, and delete passwords. On OS X the
-passwords are managed by the Keychain, and on Windows they are managed by the
-Credential Vault.</p>
+      <p>
+        A native Node module to get, add, replace, and delete passwords in system's keychain. On macOS the passwords
+        are managed by the Keychain, on Linux they are managed by the Secret Service API/libsecret, and on Windows
+        they are managed by Credential Vault.
+      </p>
 
-<h2>
-<a name="installing" class="anchor" href="#installing"><span class="octicon octicon-link"></span></a>Installing</h2>
+      <h2>
+        <a name="installing" class="anchor" href="#installing">
+          <span class="octicon octicon-link"></span>
+        </a>
+        Installing
+      </h2>
 
-<div class="highlight highlight-sh"><pre>npm install keytar
-</pre></div>
+      <div class="highlight highlight-source-shell">
+        <pre>npm install keytar</pre>
+      </div>
 
-<h2>
-<a name="building" class="anchor" href="#building"><span class="octicon octicon-link"></span></a>Building</h2>
+      <h3>
+        <a name="onlinux" class="anchor" href="#onlinux">
+          <span class="octicon octicon-link"></span>
+        </a>
+        On Linux
+      </h3>
 
-<ul>
-<li>Clone the repository</li>
-<li>Run <code>npm install</code>
-</li>
-<li>Run <code>grunt</code> to compile the native and CoffeeScript code</li>
-<li>Run <code>grunt test</code> to run the specs</li>
-</ul><h2>
-<a name="docs" class="anchor" href="#docs"><span class="octicon octicon-link"></span></a>Docs</h2>
+      <p>
+        Currently this library uses <code>libsecret</code> so you may need to install it before running <code>npm
+        install</code>.
+      </p>
 
-<div class="highlight highlight-coffeescript"><pre><span class="nv">keytar = </span><span class="nx">require</span> <span class="s">'keytar'</span>
-</pre></div>
+      <p>
+        Depending on your distribution, you will need to run the following command:
+      </p>
 
-<h3>
-<a name="getpasswordservice-account" class="anchor" href="#getpasswordservice-account"><span class="octicon octicon-link"></span></a>getPassword(service, account)</h3>
+      <ul>
+        <li>Debian/Ubuntu: <code>sudo apt-get install libsecret-1-dev</code></li>
+        <li>Red Hat-based: <code>sudo yum install libsecret-devel</code></li>
+        <li>Arch Linux: <code>sudo pacman -S libsecret</code></li>
+      </ul>
 
-<p>Get the stored password for the <code>service</code> and <code>account</code>.</p>
+      <h2>
+        <a name="building" class="anchor" href="#building">
+          <span class="octicon octicon-link"></span>
+        </a>
+        Building
+      </h2>
 
-<p><code>service</code> - The string service name.</p>
+      <ul>
+        <li>Clone the repository</li>
+        <li>Run <code>npm install</code></li>
+        <li>Run <code>npm test</code> to run the tests</li>
+      </ul>
 
-<p><code>account</code> - The string account name.</p>
+      <h2>
+        <a name="docs" class="anchor" href="#docs">
+          <span class="octicon octicon-link"></span>
+        </a>
+        Docs
+      </h2>
 
-<p>Returns the string password or <code>null</code> on failures.</p>
+      <div class="highlight highlight-source-js">
+        <pre><span class="pl-k">const</span> <span class="pl-c1">keytar</span> <span class="pl-k">=</span> <span class="pl-c1">require</span>(<span class="pl-s"><span class="pl-pds">'</span>keytar<span class="pl-pds">'</span></span>)</pre>
+      </div>
 
-<h3>
-<a name="addpasswordservice-account-password" class="anchor" href="#addpasswordservice-account-password"><span class="octicon octicon-link"></span></a>addPassword(service, account, password)</h3>
+      <p>
+        Every function in keytar is asynchronous and returns a promise. The promise will be rejected with any error that
+        occurs or will be resolved with the function's "yields" value.
+      </p>
 
-<p>Add the <code>password</code> for the <code>service</code> and <code>account</code> to the keychain.</p>
+      <h3>
+        <a name="getpasswordservice-account" class="anchor" href="#getpasswordservice-account">
+          <span class="octicon octicon-link"></span>
+        </a>
+        getPassword(service, account)
+      </h3>
 
-<p><code>service</code> - The string service name.</p>
+      <p>
+        Get the stored password for the <code>service</code> and <code>account</code>.
+      </p>
 
-<p><code>account</code> - The string account name.</p>
+      <p>
+        <code>service</code> - The string service name.
+      </p>
 
-<p><code>password</code> - The string password.</p>
+      <p>
+        <code>account</code> - The string account name.
+      </p>
 
-<p>Returns <code>true</code> on success, <code>false</code> on failure.</p>
+      <p>
+        Yields the string password or <code>null</code> if an entry for the given service and account was not found.
+      </p>
 
-<h3>
-<a name="deletepasswordservice-account" class="anchor" href="#deletepasswordservice-account"><span class="octicon octicon-link"></span></a>deletePassword(service, account)</h3>
+      <h3>
+        <a name="setpasswordservice-account-password" class="anchor" href="#setpasswordservice-account-password">
+          <span class="octicon octicon-link"></span>
+        </a>
+        setPassword(service, account, password)
+      </h3>
 
-<p>Delete the stored password for the <code>service</code> and <code>account</code>.</p>
+      <p>
+        Save the <code>password</code> for the <code>service</code> and <code>account</code> to the keychain. Adds a
+        new entry if necessary, or updates an existing entry if one exists.
+      </p>
 
-<p><code>service</code> - The string service name.</p>
+      <p>
+        <code>service</code> - The string service name.
+      </p>
 
-<p><code>account</code> - The string account name.</p>
+      <p>
+        <code>account</code> - The string account name.
+      </p>
 
-<p>Returns the string password or <code>null</code> on failures.</p>
+      <p>
+        <code>password</code> - The string password.
+      </p>
 
-<h3>
-<a name="replacepasswordservice-account-password" class="anchor" href="#replacepasswordservice-account-password"><span class="octicon octicon-link"></span></a>replacePassword(service, account, password)</h3>
+      <p>
+        Yields nothing.
+      </p>
 
-<p>Replace the <code>password</code> for the <code>service</code> and <code>account</code> in the keychain.</p>
+      <h3>
+        <a name="deletepasswordservice-account" class="anchor" href="#deletepasswordservice-account">
+          <span class="octicon octicon-link"></span>
+        </a>
+        deletePassword(service, account)
+      </h3>
 
-<p>This is a simple convenience function that internally calls
-<code>deletePassword(service, account)</code> followed by
-<code>addPassword(service, account, password)</code>.</p>
+      <p>
+        Delete the stored password for the <code>service</code> and <code>account</code>.
+      </p>
 
-<p><code>service</code> - The string service name.</p>
+      <p>
+        <code>service</code> - The string service name.
+      </p>
 
-<p><code>account</code> - The string account name.</p>
+      <p>
+        <code>account</code> - The string account name.
+      </p>
 
-<p><code>password</code> - The string password.</p>
+      <p>
+        Yields <code>true</code> if a password was deleted, or <code>false</code> if an entry with the given service
+        and account was not found.
+      </p>
 
-<p>Returns <code>true</code> on success, <code>false</code> on failure.</p>
+      <h3>
+        <a name="findcredentialsservice" class="anchor" href="#findcredentialsservice">
+          <span class="octicon octicon-link"></span>
+        </a>
+        findCredentials(service)
+      </h3>
 
-<h3>
-<a name="findpasswordservice" class="anchor" href="#findpasswordservice"><span class="octicon octicon-link"></span></a>findPassword(service)</h3>
+      <p>
+        Find all accounts and password for the <code>service</code> in the keychain.
+      </p>
 
-<p>Find the first password for the <code>service</code> in the keychain.</p>
+      <p>
+        <code>service</code> - The string service name.
+      </p>
 
-<p><code>service</code> - The string service name.</p>
+      <p>
+        Yields an array of <code>{ account: 'foo', password: 'bar' }</code>.
+      </p>
 
-<p>Returns the string password or <code>null</code> on failures.</p>
-      </section>
-      <footer>
-        <p>This project is maintained by <a href="https://github.com/atom">atom</a></p>
-        <p><small>Hosted on GitHub Pages &mdash; Theme by <a href="https://github.com/orderedlist">orderedlist</a></small></p>
-      </footer>
-    </div>
-    <script src="javascripts/scale.fix.js"></script>
-    
-  </body>
+      <h3>
+        <a name="findpasswordservice" class="anchor" href="#findpasswordservice">
+          <span class="octicon octicon-link"></span>
+        </a>
+        findPassword(service)
+      </h3>
+
+      <p>
+        Find a password for the <code>service</code> in the keychain. This is ideal for scenarios where an
+        <code>account</code> is not required.
+      </p>
+
+      <p>
+        <code>service</code> - The string service name.
+      </p>
+
+      <p>
+        Yields the string password, or <code>null</code> if an entry for the given service was not found.
+      </p>
+    </section>
+    <footer>
+      <p>
+        This project is maintained by <a href="https://github.com/atom">atom</a>
+      </p>
+
+      <p>
+        <small>Hosted on GitHub Pages &mdash; Theme by <a href="https://github.com/orderedlist">orderedlist</a></small>
+      </p>
+    </footer>
+  </div>
+  <script src="javascripts/scale.fix.js"></script>
+</body>
+
 </html>
