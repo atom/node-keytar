@@ -1,10 +1,11 @@
 {
   "main": "./lib/keytar.js",
   "typings": "keytar.d.ts",
-  "name": "keytar",
+  "name": "keytar-extra",
   "description": "Bindings to native Mac/Linux/Windows password APIs",
   "version": "4.11.0",
   "license": "MIT",
+  "author": "Will Brickner",
   "repository": {
     "type": "git",
     "url": "https://github.com/atom/node-keytar.git"

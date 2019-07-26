@@ -9,7 +9,7 @@ A native Node module to get, add, replace, and delete passwords in system's keyc
 ## Installing
 
 ```sh
-npm install keytar
+npm install keytar-extra
 ```
 
 ### On Linux
