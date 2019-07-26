@@ -31,7 +31,7 @@ Depending on your distribution, you will need to run the following command:
 ## Docs
 
 ```javascript
-const keytar = require('keytar')
+const keytar = require('keytar-extra')
 ```
 
 ### Differences in Behavior
