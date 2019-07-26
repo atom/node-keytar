@@ -3,7 +3,7 @@
   "typings": "keytar.d.ts",
   "name": "keytar-extra",
   "description": "Bindings to native Mac/Linux/Windows password APIs",
-  "version": "4.11.0",
+  "version": "4.12.0",
   "license": "MIT",
   "author": "Will Brickner",
   "repository": {
