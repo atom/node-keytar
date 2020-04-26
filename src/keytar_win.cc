@@ -123,7 +123,7 @@ KEYTAR_OP_RESULT SetPassword(const std::string& service,
   }
 
   LPWSTR user_name = utf8ToWideChar(account);
-  if (target_name == NULL) {
+  if (user_name == NULL) {
     return FAIL_ERROR;
   }
 
