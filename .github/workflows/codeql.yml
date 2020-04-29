@@ -11,13 +11,21 @@ jobs:
     strategy:
       fail-fast: false
 
-
     # CodeQL runs on ubuntu-latest, windows-latest, and macos-latest
     runs-on: ubuntu-latest
 
     steps:
     - name: Checkout repository
       uses: actions/checkout@v2
+
+    # Install nodejs first
+    - uses: actions/setup-node@v1
+      with:
+        node-version: '10.x'
+
+    # Setup dependencies (including native modules)
+    - name: Install dependencies
+      run: npm install
 
     # Initializes the CodeQL tools for scanning.
     - name: Initialize CodeQL
