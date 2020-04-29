@@ -27,6 +27,10 @@ jobs:
     - name: Install dependencies
       run: npm install
 
+    # Ensure node-gyp splats the required makefile and metadata to disk by rebuilding
+    - name: Build native module from source
+      run: ./node_modules/.bin/node-gyp rebuild
+
     # Initializes the CodeQL tools for scanning.
     - name: Initialize CodeQL
       uses: github/codeql-action/init@v1
