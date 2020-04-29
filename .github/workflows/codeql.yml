@@ -23,6 +23,12 @@ jobs:
       with:
         node-version: '10.x'
 
+    # Initializes the CodeQL tools for scanning.
+    - name: Initialize CodeQL
+      uses: github/codeql-action/init@v1
+      with:
+        languages: javascript, cpp
+
     # Setup dependencies (including native modules)
     - name: Install dependencies
       run: npm install
@@ -30,12 +36,6 @@ jobs:
     # Ensure node-gyp splats the required makefile and metadata to disk by rebuilding
     - name: Build native module from source
       run: ./node_modules/.bin/node-gyp rebuild
-
-    # Initializes the CodeQL tools for scanning.
-    - name: Initialize CodeQL
-      uses: github/codeql-action/init@v1
-      with:
-        languages: javascript, cpp
 
     - name: Perform CodeQL Analysis
       uses: github/codeql-action/analyze@v1
