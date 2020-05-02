@@ -4,7 +4,7 @@ dist: trusty
 os:
   - linux
   - osx
-node_js: 12
+node_js: 14
 
 env:
   - CC=clang CXX=clang++ npm_config_clang=1
