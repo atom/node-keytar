@@ -1,131 +1,139 @@
-#include "nan.h"
+#include "napi.h"
+#include "uv.h"
 #include "async.h"
 
 namespace {
 
-NAN_METHOD(SetPassword) {
-  if (!info[0]->IsString()) {
-    Nan::ThrowTypeError("Parameter 'service' must be a string");
-    return;
+Napi::Value SetPassword(const Napi::CallbackInfo& info) {
+  Napi::Env env = info.Env();
+
+  if (!info[0].IsString()) {
+    Napi::TypeError::New(env, "Parameter 'service' must be a string").
+      ThrowAsJavaScriptException();
+    return env.Null();
   }
 
-  Nan::Utf8String serviceNan(info[0]);
-  std::string service(*serviceNan, serviceNan.length());
+  std::string service = info[0].As<Napi::String>();
 
-  if (!info[1]->IsString()) {
-    Nan::ThrowTypeError("Parameter 'username' must be a string");
-    return;
+  if (!info[1].IsString()) {
+    Napi::TypeError::New(env, "Parameter 'username' must be a string").
+      ThrowAsJavaScriptException();
+    return env.Null();
   }
 
-  Nan::Utf8String usernameNan(info[1]);
-  std::string username(*usernameNan, usernameNan.length());
+  std::string username = info[1].As<Napi::String>();
 
-  if (!info[2]->IsString()) {
-    Nan::ThrowTypeError("Parameter 'password' must be a string");
-    return;
+  if (!info[2].IsString()) {
+    Napi::TypeError::New(env, "Parameter 'password' must be a string").
+      ThrowAsJavaScriptException();
+    return env.Null();
   }
 
-  Nan::Utf8String passwordNan(info[2]);
-  std::string password(*passwordNan, passwordNan.length());
+  std::string password = info[2].As<Napi::String>();
 
   SetPasswordWorker* worker = new SetPasswordWorker(
     service,
     username,
     password,
-    new Nan::Callback(info[3].As<v8::Function>()));
-  Nan::AsyncQueueWorker(worker);
+    env);
+  worker->Queue();
+  return worker->Promise();
 }
 
-NAN_METHOD(GetPassword) {
-  if (!info[0]->IsString()) {
-    Nan::ThrowTypeError("Parameter 'service' must be a string");
-    return;
+Napi::Value GetPassword(const Napi::CallbackInfo& info) {
+  Napi::Env env = info.Env();
+  if (!info[0].IsString()) {
+    Napi::TypeError::New(env, "Parameter 'service' must be a string").
+      ThrowAsJavaScriptException();
+    return env.Null();
   }
 
-  Nan::Utf8String serviceNan(info[0]);
-  std::string service(*serviceNan, serviceNan.length());
+  std::string service = info[0].As<Napi::String>();
 
-  if (!info[1]->IsString()) {
-    Nan::ThrowTypeError("Parameter 'username' must be a string");
-    return;
+  if (!info[1].IsString()) {
+    Napi::TypeError::New(env, "Parameter 'username' must be a string").
+      ThrowAsJavaScriptException();
+    return env.Null();
   }
 
-  Nan::Utf8String usernameNan(info[1]);
-  std::string username(*usernameNan, usernameNan.length());
+  std::string username = info[1].As<Napi::String>();
 
   GetPasswordWorker* worker = new GetPasswordWorker(
     service,
     username,
-    new Nan::Callback(info[2].As<v8::Function>()));
-  Nan::AsyncQueueWorker(worker);
+    env);
+  worker->Queue();
+  return worker->Promise();
 }
 
-NAN_METHOD(DeletePassword) {
-  if (!info[0]->IsString()) {
-    Nan::ThrowTypeError("Parameter 'service' must be a string");
-    return;
+Napi::Value DeletePassword(const Napi::CallbackInfo& info) {
+  Napi::Env env = info.Env();
+  if (!info[0].IsString()) {
+    Napi::TypeError::New(env, "Parameter 'service' must be a string");
+    return env.Null();
   }
 
-  Nan::Utf8String serviceNan(info[0]);
-  std::string service(*serviceNan, serviceNan.length());
+  std::string service = info[0].As<Napi::String>();
 
-  if (!info[1]->IsString()) {
-    Nan::ThrowTypeError("Parameter 'username' must be a string");
-    return;
+  if (!info[1].IsString()) {
+    Napi::TypeError::New(env, "Parameter 'username' must be a string").
+      ThrowAsJavaScriptException();
+    return env.Null();
   }
 
-  Nan::Utf8String usernameNan(info[1]);
-  std::string username(*usernameNan, usernameNan.length());
+  std::string username = info[1].As<Napi::String>();
 
-  DeletePasswordWorker* worker = new DeletePasswordWorker(
+  DeletePasswordWorker *worker = new DeletePasswordWorker(
     service,
     username,
-    new Nan::Callback(info[2].As<v8::Function>()));
-  Nan::AsyncQueueWorker(worker);
+    env);
+  worker->Queue();
+  return worker->Promise();
 }
 
-NAN_METHOD(FindPassword) {
-  if (!info[0]->IsString()) {
-    Nan::ThrowTypeError("Parameter 'service' must be a string");
-    return;
+Napi::Value FindPassword(const Napi::CallbackInfo& info) {
+  Napi::Env env = info.Env();
+  if (!info[0].IsString()) {
+    Napi::TypeError::New(env, "Parameter 'service' must be a string").
+      ThrowAsJavaScriptException();
+    return env.Null();
   }
 
-  Nan::Utf8String serviceNan(info[0]);
-  std::string service(*serviceNan, serviceNan.length());
+  std::string service = info[0].As<Napi::String>();
 
   FindPasswordWorker* worker = new FindPasswordWorker(
     service,
-    new Nan::Callback(info[1].As<v8::Function>()));
-  Nan::AsyncQueueWorker(worker);
+    env);
+  worker->Queue();
+  return worker->Promise();
 }
 
-NAN_METHOD(FindCredentials) {
-  if (!info[0]->IsString()) {
-    Nan::ThrowTypeError("Parameter 'service' must be a string");
-    return;
+Napi::Value FindCredentials(const Napi::CallbackInfo& info) {
+  Napi::Env env = info.Env();
+  if (!info[0].IsString()) {
+    Napi::TypeError::New(env, "Parameter 'service' must be a string").
+      ThrowAsJavaScriptException();
+    return env.Null();
   }
 
-  Nan::Utf8String serviceNan(info[0]);
-  std::string service(*serviceNan, serviceNan.length());
+  std::string service = info[0].As<Napi::String>();
 
   FindCredentialsWorker* worker = new FindCredentialsWorker(
     service,
-    new Nan::Callback(info[1].As<v8::Function>()));
-  Nan::AsyncQueueWorker(worker);
+    env);
+  worker->Queue();
+  return worker->Promise();
 }
 
-NAN_MODULE_INIT(Init) {
-  Nan::SetMethod(target, "getPassword", GetPassword);
-  Nan::SetMethod(target, "setPassword", SetPassword);
-  Nan::SetMethod(target, "deletePassword", DeletePassword);
-  Nan::SetMethod(target, "findPassword", FindPassword);
-  Nan::SetMethod(target, "findCredentials", FindCredentials);
+Napi::Object Init(Napi::Env env, Napi::Object exports) {
+  exports.Set("getPassword", Napi::Function::New(env, GetPassword));
+  exports.Set("setPassword", Napi::Function::New(env, SetPassword));
+  exports.Set("deletePassword", Napi::Function::New(env, DeletePassword));
+  exports.Set("findPassword", Napi::Function::New(env, FindPassword));
+  exports.Set("findCredentials", Napi::Function::New(env, FindCredentials));
+  return exports;
 }
 
 }  // namespace
 
-#if NODE_MAJOR_VERSION >= 10
-NAN_MODULE_WORKER_ENABLED(keytar, Init)
-#else
-NODE_MODULE(keytar, Init)
-#endif
+NODE_API_MODULE(keytar, Init)
