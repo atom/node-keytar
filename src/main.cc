@@ -69,7 +69,8 @@ Napi::Value GetPassword(const Napi::CallbackInfo& info) {
 Napi::Value DeletePassword(const Napi::CallbackInfo& info) {
   Napi::Env env = info.Env();
   if (!info[0].IsString()) {
-    Napi::TypeError::New(env, "Parameter 'service' must be a string");
+    Napi::TypeError::New(env, "Parameter 'service' must be a string").
+      ThrowAsJavaScriptException();
     return env.Null();
   }
 
