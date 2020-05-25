@@ -53,6 +53,6 @@
   },
   "dependencies": {
     "node-addon-api": "^3.0.0",
-    "prebuild-install": "5.3.3"
+    "prebuild-install": "5.3.4"
   }
 }
