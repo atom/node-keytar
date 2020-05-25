@@ -2,7 +2,6 @@
 #include <vector>
 
 #include "napi.h"
-#include "uv.h"
 #include "keytar.h"
 #include "async.h"
 

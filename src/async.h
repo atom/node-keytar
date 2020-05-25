@@ -3,7 +3,6 @@
 
 #include <string>
 #include "napi.h"
-#include "uv.h"
 
 #include "credentials.h"
 
