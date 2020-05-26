@@ -1,5 +1,4 @@
 #include "napi.h"
-#include "uv.h"
 #include "async.h"
 
 namespace {
