@@ -45,7 +45,7 @@
     "babel-core": "^6.26.3",
     "babel-plugin-transform-async-to-generator": "^6.24.1",
     "chai": "^4.2.0",
-    "mocha": "^7.1.2",
+    "mocha": "^8.0.1",
     "node-abi": "^2.17.0",
     "node-cpplint": "~0.4.0",
     "node-gyp": "^7.0.0",
