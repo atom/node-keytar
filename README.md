@@ -78,7 +78,7 @@ Find all accounts and password for the `service` in the keychain.
 
 `service` - The string service name.
 
-Yields an array of `{ account: 'foo', password: 'bar' }`.
+Yields an array of `{ service: 'foo', account: 'bar', password: 'baz' }`.
 
 ### findPassword(service)
 
