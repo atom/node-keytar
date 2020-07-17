@@ -201,16 +201,16 @@ void FindCredentialsWorker::OnOK() {
       Napi::Object obj = Napi::Object::New(env);
 
       Napi::String service = Napi::String::New(env,
-	std::get<0>(cred).data(),
-	std::get<0>(cred).length());
+        std::get<0>(cred).data(),
+        std::get<0>(cred).length());
 
       Napi::String account = Napi::String::New(env,
-	std::get<1>(cred).data(),
-	std::get<1>(cred).length());
+        std::get<1>(cred).data(),
+        std::get<1>(cred).length());
 
       Napi::String password = Napi::String::New(env,
-	std::get<2>(cred).data(),
-	std::get<2>(cred).length());
+        std::get<2>(cred).data(),
+        std::get<2>(cred).length());
 
 #ifndef _WIN32
 #pragma GCC diagnostic ignored "-Wunused-result"
