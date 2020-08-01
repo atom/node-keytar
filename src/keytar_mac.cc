@@ -213,8 +213,11 @@ Credentials getCredentialsForItem(CFDictionaryRef item) {
   CFDictionaryAddValue(query, kSecReturnData, kCFBooleanTrue);
   CFDictionaryAddValue(query, kSecAttrAccount, account);
 
-  CFTypeRef result;
+  Credentials cred;
+  CFTypeRef result = NULL;
   OSStatus status = SecItemCopyMatching((CFDictionaryRef) query, &result);
+
+  CFRelease(query);
 
   if (status == errSecSuccess) {
       CFDataRef passwordData = (CFDataRef) CFDictionaryGetValue(
@@ -225,15 +228,18 @@ Credentials getCredentialsForItem(CFDictionaryRef item) {
         passwordData,
         kCFStringEncodingUTF8);
 
-      Credentials cred = Credentials(
+      cred = Credentials(
         CFStringToStdString(account),
         CFStringToStdString(password));
-      CFRelease(password);
 
-      return cred;
+      CFRelease(password);
   }
 
-  return Credentials();
+  if (result != NULL) {
+    CFRelease(result);
+  }
+
+  return cred;
 }
 
 KEYTAR_OP_RESULT FindCredentials(const std::string& service,
@@ -255,8 +261,11 @@ KEYTAR_OP_RESULT FindCredentials(const std::string& service,
   CFDictionaryAddValue(query, kSecReturnRef, kCFBooleanTrue);
   CFDictionaryAddValue(query, kSecReturnAttributes, kCFBooleanTrue);
 
-  CFTypeRef result;
+  CFTypeRef result = NULL;
   OSStatus status = SecItemCopyMatching((CFDictionaryRef) query, &result);
+
+  CFRelease(serviceStr);
+  CFRelease(query);
 
   if (status == errSecSuccess) {
     CFArrayRef resultArray = (CFArrayRef) result;
@@ -277,12 +286,9 @@ KEYTAR_OP_RESULT FindCredentials(const std::string& service,
     return FAIL_ERROR;
   }
 
-
   if (result != NULL) {
     CFRelease(result);
   }
-
-  CFRelease(query);
 
   return SUCCESS;
 }
