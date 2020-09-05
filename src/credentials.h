@@ -2,11 +2,11 @@
 #define SRC_CREDENTIALS_H_
 
 #include <string>
-#include <utility>
+#include <tuple>
 
 namespace keytar {
 
-typedef std::pair<std::string, std::string> Credentials;
+typedef std::tuple<std::string, std::string, std::string> Credentials;
 
 }
 

@@ -173,7 +173,7 @@ KEYTAR_OP_RESULT FindCredentials(const std::string& service,
       continue;
     }
 
-    credentials->push_back(Credentials(account, password));
+    credentials->push_back(Credentials(service, account, password));
     free(account);
     free(password);
   }

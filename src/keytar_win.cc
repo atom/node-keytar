@@ -256,7 +256,7 @@ KEYTAR_OP_RESULT FindCredentials(const std::string& service,
         cred->CredentialBlob),
         cred->CredentialBlobSize);
 
-    credentials->push_back(Credentials(login, password));
+    credentials->push_back(Credentials(service, login, password));
   }
 
   CredFree(creds);

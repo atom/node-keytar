@@ -161,7 +161,10 @@ describe("keytar", function() {
         return a.account.localeCompare(b.account)
       })
 
-      assert.deepEqual([{account: account, password: password}, {account: account2, password: password2}], sorted)
+      assert.deepEqual([
+        { service: service, account: account, password: password },
+        { service: service, account: account2, password: password2 }
+      ], sorted)
     });
 
     it('returns an empty array when no credentials are found', async function() {
@@ -191,7 +194,10 @@ describe("keytar", function() {
           return a.account.localeCompare(b.account)
         })
 
-        assert.deepEqual([{account: account2, password: password2}, {account: account, password: password}], sorted)
+        assert.deepEqual([
+          { service: service, account: account2, password: password2 },
+          { service: service, account: account, password: password }
+        ], sorted)
       })
 
       afterEach(async function() {

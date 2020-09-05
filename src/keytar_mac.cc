@@ -226,6 +226,7 @@ Credentials getCredentialsForItem(CFDictionaryRef item) {
         kCFStringEncodingUTF8);
 
       Credentials cred = Credentials(
+        CFStringToStdString(service),
         CFStringToStdString(account),
         CFStringToStdString(password));
       CFRelease(password);
