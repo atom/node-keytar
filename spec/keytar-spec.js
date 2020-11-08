@@ -131,6 +131,8 @@ describe("keytar", function() {
   })
 
   describe("findPassword(service)", function() {
+    this.timeout(5000);
+
     it("yields a password for the service", async function() {
       await keytar.setPassword(service, account, password),
       await keytar.setPassword(service, account2, password2)
