@@ -1,0 +1,182 @@
+diff --git a/node_modules/node-abi/abi_registry.json b/node_modules/node-abi/abi_registry.json
+index 852f500..fec5324 100644
+--- a/node_modules/node-abi/abi_registry.json
++++ b/node_modules/node-abi/abi_registry.json
+@@ -6,87 +6,94 @@
+     "future": false,
+     "abi": "67"
+   },
+-  {
+-    "runtime": "electron",
+-    "target": "5.0.0",
+-    "lts": false,
+-    "future": false,
+-    "abi": "70"
+-  },
+   {
+     "runtime": "node",
+     "target": "12.0.0",
+     "lts": [
+       "2019-10-21",
+-      "2020-10-20"
++      "2020-11-30"
+     ],
+     "future": false,
+-    "abi": "68"
++    "abi": "72"
+   },
+   {
+-    "runtime": "electron",
+-    "target": "6.0.0",
++    "runtime": "node",
++    "target": "13.0.0",
+     "lts": false,
+     "future": false,
+-    "abi": "73"
++    "abi": "79"
+   },
+   {
+-    "runtime": "electron",
+-    "target": "7.0.0",
+-    "lts": false,
++    "runtime": "node",
++    "target": "14.0.0",
++    "lts": [
++      "2020-10-27",
++      "2021-10-19"
++    ],
+     "future": false,
+-    "abi": "75"
++    "abi": "83"
+   },
+   {
+-    "runtime": "electron",
+-    "target": "8.0.0",
++    "runtime": "node",
++    "target": "15.0.0",
+     "lts": false,
+     "future": false,
+-    "abi": "76"
++    "abi": "88"
+   },
+   {
+-    "runtime": "node",
+-    "target": "13.0.0",
+-    "lts": false,
++    "abi": "70",
+     "future": false,
+-    "abi": "74"
++    "lts": false,
++    "runtime": "electron",
++    "target": "5.0.0-beta.9"
+   },
+   {
+-    "runtime": "electron",
+-    "target": "9.0.0",
+-    "lts": false,
++    "abi": "73",
+     "future": false,
+-    "abi": "80"
++    "lts": false,
++    "runtime": "electron",
++    "target": "6.0.0-beta.1"
+   },
+   {
+-    "runtime": "node",
+-    "target": "14.0.0",
+-    "lts": [
+-      "2020-10-27",
+-      "2021-10-19"
+-    ],
++    "abi": "75",
+     "future": false,
+-    "abi": "81"
++    "lts": false,
++    "runtime": "electron",
++    "target": "7.0.0-beta.1"
+   },
+   {
+-    "runtime": "electron",
+-    "target": "10.0.0-beta.1",
++    "abi": "76",
++    "future": false,
+     "lts": false,
+-    "future": true,
+-    "abi": "82"
++    "runtime": "electron",
++    "target": "8.0.0-beta.1"
+   },
+   {
+-    "runtime": "node",
+-    "target": "15.0.0",
++    "abi": "80",
++    "future": false,
+     "lts": false,
+-    "future": true,
+-    "abi": "84"
++    "runtime": "electron",
++    "target": "9.0.0-beta.2"
+   },
+   {
++    "abi": "82",
++    "future": false,
++    "lts": false,
+     "runtime": "electron",
+-    "target": "11.0.0-beta.1",
++    "target": "10.0.0-beta.1"
++  },
++  {
++    "abi": "85",
++    "future": true,
+     "lts": false,
++    "runtime": "electron",
++    "target": "11.0.0-beta.11"
++  },
++  {
++    "abi": "87",
+     "future": true,
+-    "abi": "85"
++    "lts": false,
++    "runtime": "electron",
++    "target": "12.0.0-nightly.20201013"
+   }
+ ]
+diff --git a/node_modules/node-abi/index.js b/node_modules/node-abi/index.js
+index 8a25f25..e93924c 100644
+--- a/node_modules/node-abi/index.js
++++ b/node_modules/node-abi/index.js
+@@ -43,11 +43,20 @@ function getTarget (abi, runtime) {
+     .map(function (t) {
+       return t.target
+     })
+-  if (match.length) return match[0]
++  if (match.length) {
++    var betaSeparatorIndex = match[0].indexOf("-")
++    return betaSeparatorIndex > -1
++      ? match[0].substring(0, betaSeparatorIndex)
++      : match[0]
++  }
+ 
+   throw new Error('Could not detect target for abi ' + abi + ' and runtime ' + runtime)
+ }
+ 
++function sortByTargetFn (a, b) {
++  return Number(a.abi) > Number(b.abi) && a.target > b.target
++}
++
+ function loadGeneratedTargets () {
+   var registry = require('./abi_registry.json')
+   var targets = {
+@@ -80,9 +89,9 @@ function loadGeneratedTargets () {
+     }
+   })
+ 
+-  targets.supported.sort()
+-  targets.additional.sort()
+-  targets.future.sort()
++  targets.supported.sort(sortByTargetFn)
++  targets.additional.sort(sortByTargetFn)
++  targets.future.sort(sortByTargetFn)
+ 
+   return targets
+ }
