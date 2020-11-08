@@ -31,6 +31,7 @@
   "types": "./keytar.d.ts",
   "scripts": {
     "install": "prebuild-install || node-gyp rebuild",
+    "postinstall": "patch-package",
     "lint": "npm run cpplint",
     "cpplint": "node-cpplint --filters legal-copyright,build-include,build-namespaces src/*.cc",
     "test": "npm run lint && npm rebuild && mocha --require babel-core/register spec/",
@@ -50,6 +51,7 @@
     "node-abi": "^2.17.0",
     "node-cpplint": "~0.4.0",
     "node-gyp": "^7.0.0",
+    "patch-package": "^6.2.2",
     "prebuild": "^10.0.0"
   },
   "dependencies": {
