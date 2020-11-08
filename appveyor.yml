@@ -28,6 +28,7 @@ build_script:
   - npm run prebuild-electron-ia32
   - npm run prebuild-electron-arm64
   - if defined APPVEYOR_REPO_TAG_NAME (npm run upload)
+  - ls prebuilds
 
 test: off
 deploy: off
