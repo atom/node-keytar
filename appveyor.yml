@@ -5,7 +5,7 @@ platform:
   - x64
 
 environment:
-  nodejs_version: "14"
+  nodejs_version: "15"
 
 cache:
   - node_modules
