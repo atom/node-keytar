@@ -4,7 +4,7 @@ dist: trusty
 os:
   - linux
   - osx
-node_js: 14
+node_js: 15
 
 env:
   - CC=clang CXX=clang++ npm_config_clang=1
@@ -43,6 +43,9 @@ before_script:
       dbus-launch /usr/bin/python -c \
         "import gnomekeyring;gnomekeyring.create_sync('login', '');"
     fi
+
+install:
+  - npm install
 
 script:
   - if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then xvfb-run ./script/cibuild; fi

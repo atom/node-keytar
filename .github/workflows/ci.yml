@@ -1,0 +1,94 @@
+name: CI
+
+on:
+  push:
+    branches: [ master ]
+    # run when tag received matching version format
+  pull_request:
+    branches: [ master ]
+
+jobs:
+  build:
+    name: ${{ matrix.friendlyName }}
+    env:
+      DISPLAY: ":99.0"
+      CC: "clang"
+      CXX: "clang++"
+      npm_config_clang: "1"
+
+    strategy:
+      matrix:
+        node-version: [15.x]
+        os: [ubuntu-16.04, windows-latest, macos-latest]
+        include:
+          - os: ubuntu-16.04
+            friendlyName: Ubuntu
+          - os: windows-latest
+            friendlyName: Windows
+          - os: macos-latest
+            friendlyName: macOS
+
+    runs-on: ${{ matrix.os }}
+
+    steps:
+    - uses: actions/checkout@v2
+    - name: Use Node.js ${{ matrix.node-version }}
+      uses: actions/setup-node@v1
+      with:
+        node-version: ${{ matrix.node-version }}
+    - run: |
+        sudo apt-get install xvfb \
+                             gnome-keyring \
+                             libsecret-1-dev \
+                             dbus-x11 \
+                             python-gnomekeyring
+      if: ${{ matrix.os == 'ubuntu-16.04' }}
+      name: Install additional dependencies
+
+    - run: npm install
+      name: Setup environment
+
+    - run: |
+        echo "Initialize dbus..."
+        export NO_AT_BRIDGE=1;
+        eval $(dbus-launch --sh-syntax);
+        echo "Unlocking the keyring..."
+        eval $(echo -n "" | /usr/bin/gnome-keyring-daemon --login)
+        eval $(/usr/bin/gnome-keyring-daemon --components=secrets --start)
+        echo "Create a test key using script..."
+        python -c "import gnomekeyring;gnomekeyring.create_sync('login', '');"
+        npm test
+      if: ${{ matrix.os == 'ubuntu-16.04' }}
+      name: Run tests (Linux)
+
+    - run: npm test
+      if: ${{ matrix.os != 'ubuntu-16.04' }}
+      name: Run tests (Windows/macOS)
+
+    - run: |
+        npm run prebuild-node
+        npm run prebuild-electron
+      name: Prebuild (x64)
+
+    - run: npm run prebuild-electron-arm64
+      if: ${{ matrix.os != 'macos-latest' }}
+      name: Prebuild for Electron (ARM64)
+
+    - run: |
+        docker build -t node-keytar/i386 docker/i386
+        docker run --rm -v ${PWD}:/project node-keytar/i386 /bin/bash -c "cd /project && npm run prebuild-node-ia32 && npm run prebuild-electron-ia32"
+      if: ${{ matrix.os == 'ubuntu-16.04' }}
+      name: Prebuild (x86)
+
+    - run: |
+        npm run prebuild-node-ia32
+        npm run prebuild-electron-ia32
+      if: ${{ matrix.os == 'windows-latest' }}
+      name: Prebuild (x86)
+
+    - run: |
+        ls prebuilds/
+      name: List prebuilds
+
+    # only if tag found for release
+    #- if defined APPVEYOR_REPO_TAG_NAME (npm run upload)

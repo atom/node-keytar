@@ -1,4 +1,4 @@
-name: "Code Scanning - Action"
+name: "Code Scanning"
 
 on:
   push:
@@ -6,15 +6,22 @@ on:
     - cron: '0 0 * * 0'
 
 jobs:
-  CodeQL-Build:
+  CodeQL:
 
-    # CodeQL runs on ubuntu-latest, windows-latest, and macos-latest
+    name: ${{ matrix.friendlyName }}
+
     runs-on: ${{ matrix.os }}
     strategy:
       fail-fast: false
       matrix:
         os: [ubuntu-latest, windows-latest, macos-latest]
-
+        include:
+          - os: ubuntu-latest
+            friendlyName: Ubuntu
+          - os: windows-latest
+            friendlyName: Windows
+          - os: macos-latest
+            friendlyName: macOS
     steps:
     - name: Checkout repository
       uses: actions/checkout@v2
