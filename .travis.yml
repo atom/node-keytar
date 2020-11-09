@@ -44,6 +44,9 @@ before_script:
         "import gnomekeyring;gnomekeyring.create_sync('login', '');"
     fi
 
+install:
+  - npm install
+
 script:
   - if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then xvfb-run ./script/cibuild; fi
   - if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then npm test; fi
