@@ -11,7 +11,7 @@
       'msvs_settings': {
         'VCCLCompilerTool': { 'ExceptionHandling': 1 },
       },
-      'include_dirs' : [ "<!@(node -p \"require('node-addon-api').include\")" ],
+      'include_dirs': ["<!(node -p \"require('node-addon-api').include_dir\")"],
       'sources': [
         'src/async.cc',
         'src/main.cc',
