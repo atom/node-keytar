@@ -47,13 +47,13 @@
     "babel-plugin-transform-async-to-generator": "^6.24.1",
     "chai": "^4.2.0",
     "mocha": "^8.0.1",
-    "node-abi": "^2.17.0",
+    "@shiftkey/node-abi": "2.19.2-pre",
     "node-cpplint": "~0.4.0",
     "node-gyp": "^7.0.0",
-    "prebuild": "^10.0.0"
+    "@shiftkey/prebuild": "10.0.2-pre2"
   },
   "dependencies": {
     "node-addon-api": "^3.0.0",
-    "prebuild-install": "6.0.0"
+    "@shiftkey/prebuild-install": "6.0.1-pre2"
   }
 }
