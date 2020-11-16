@@ -95,6 +95,7 @@ jobs:
 
   build-docker-linux:
     name: Linux x86
+    runs-on: ubuntu-latest
 
     container:
       image: '../../docker/i386/'
