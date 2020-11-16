@@ -38,6 +38,9 @@ jobs:
         npm install
         npm run build
 
+    - name: Build native module
+      run: npm run build
+
     # Run code analysis
     - name: Perform CodeQL Analysis
       uses: github/codeql-action/analyze@v1
