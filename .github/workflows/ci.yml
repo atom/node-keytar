@@ -108,12 +108,12 @@ jobs:
       - name: Install additional dependencies
         run: |
           apt-get update
-          apt-get install build-essential \
-                             curl \
-                             pkg-config \
-                             clang \
-                             python \
-                             libsecret-1-dev
+          apt-get install --quiet --yes build-essential \
+                                        curl \
+                                        pkg-config \
+                                        clang \
+                                        python \
+                                        libsecret-1-dev
           curl -sL https://deb.nodesource.com/setup_9.x | bash -
           apt-get install -y nodejs
 
