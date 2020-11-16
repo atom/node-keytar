@@ -97,8 +97,7 @@ jobs:
     name: Linux x86
     runs-on: ubuntu-latest
 
-    container:
-      image: '../../docker/i386/'
+    container: 'i386/debian:stretch'
 
     env:
       CC: "clang"
@@ -106,6 +105,17 @@ jobs:
       npm_config_clang: "1"
 
     steps:
+    - name: Install additional dependencies
+      run: |
+        sudo apt-get install build-essential \
+                             curl \
+                             pkg-config \
+                             clang \
+                             python \
+                             libsecret-1-dev
+        curl -sL https://deb.nodesource.com/setup_9.x | bash -
+        apt-get install -y nodejs
+
       - uses: actions/checkout@v2
 
       - name: Setup environment
