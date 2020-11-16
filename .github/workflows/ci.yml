@@ -72,7 +72,6 @@ jobs:
 
     - run: |
         npm run prebuild-electron-arm64
-        npm run prebuild-electron-ia32
       if: ${{ matrix.os != 'macos-latest' }}
       name: Prebuild for Electron (ARM64)
 
