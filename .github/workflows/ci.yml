@@ -92,3 +92,23 @@ jobs:
 
     # only if tag found for release
     #- if defined APPVEYOR_REPO_TAG_NAME (npm run upload)
+
+  build-docker-linux:
+    name: Linux x86
+
+    container:
+      image: '../../docker/i386/'
+
+    env:
+      CC: "clang"
+      CXX: "clang++"
+      npm_config_clang: "1"
+
+    steps:
+      - uses: actions/checkout@v2
+
+      - name: Setup environment
+        run: npm install
+
+      - name: Run tests
+        run: npm test
