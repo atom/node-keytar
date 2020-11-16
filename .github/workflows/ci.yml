@@ -107,6 +107,7 @@ jobs:
     steps:
       - name: Install additional dependencies
         run: |
+          apt-get update
           apt-get install build-essential \
                              curl \
                              pkg-config \
