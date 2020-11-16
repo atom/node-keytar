@@ -107,7 +107,7 @@ jobs:
     steps:
       - name: Install additional dependencies
         run: |
-          sudo apt-get install build-essential \
+          apt-get install build-essential \
                              curl \
                              pkg-config \
                              clang \
