@@ -3,7 +3,7 @@
   "typings": "keytar.d.ts",
   "name": "@dennisameling/keytar-temp",
   "description": "Bindings to native Mac/Linux/Windows password APIs",
-  "version": "7.2.4-beta",
+  "version": "7.2.5-beta",
   "license": "MIT",
   "repository": {
     "type": "git",
