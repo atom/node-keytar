@@ -34,7 +34,9 @@ jobs:
 
     # Setup dependencies (and build native modules from source)
     - name: Install dependencies
-      run: npm install
+      run: |
+        npm install
+        npm run build
 
     # Run code analysis
     - name: Perform CodeQL Analysis
