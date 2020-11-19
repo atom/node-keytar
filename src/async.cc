@@ -36,10 +36,12 @@ void SetPasswordWorker::Execute() {
 }
 
 void SetPasswordWorker::OnOK() {
+  Napi::HandleScope scope(Env());
   deferred.Resolve(Env().Undefined());
 }
 
 void SetPasswordWorker::OnError(Napi::Error const &error) {
+  Napi::HandleScope scope(Env());
   deferred.Reject(error.Value());
 }
 
@@ -75,6 +77,7 @@ void GetPasswordWorker::Execute() {
 }
 
 void GetPasswordWorker::OnOK() {
+  Napi::HandleScope scope(Env());
   Napi::Value val = Env().Null();
   if (success) {
     val = Napi::String::New(Env(), password.data(),
@@ -84,6 +87,7 @@ void GetPasswordWorker::OnOK() {
 }
 
 void GetPasswordWorker::OnError(Napi::Error const &error) {
+  Napi::HandleScope scope(Env());
   deferred.Reject(error.Value());
 }
 
@@ -115,10 +119,12 @@ void DeletePasswordWorker::Execute() {
 }
 
 void DeletePasswordWorker::OnOK() {
+  Napi::HandleScope scope(Env());
   deferred.Resolve(Napi::Boolean::New(Env(), success));
 }
 
 void DeletePasswordWorker::OnError(Napi::Error const &error) {
+  Napi::HandleScope scope(Env());
   deferred.Reject(error.Value());
 }
 
@@ -150,6 +156,7 @@ void FindPasswordWorker::Execute() {
 }
 
 void FindPasswordWorker::OnOK() {
+  Napi::HandleScope scope(Env());
   Napi::Value val = Env().Null();
   if (success) {
     val = Napi::String::New(Env(), password.data(),
@@ -159,6 +166,7 @@ void FindPasswordWorker::OnOK() {
 }
 
 void FindPasswordWorker::OnError(Napi::Error const &error) {
+  Napi::HandleScope scope(Env());
   deferred.Reject(error.Value());
 }
 
@@ -190,6 +198,7 @@ void FindCredentialsWorker::Execute() {
 }
 
 void FindCredentialsWorker::OnOK() {
+  Napi::HandleScope scope(Env());
   Napi::Env env = Env();
 
   if (success) {
@@ -228,5 +237,6 @@ void FindCredentialsWorker::OnOK() {
 }
 
 void FindCredentialsWorker::OnError(Napi::Error const &error) {
+  Napi::HandleScope scope(Env());
   deferred.Reject(error.Value());
 }
