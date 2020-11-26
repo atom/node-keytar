@@ -13,9 +13,9 @@ class SetPasswordWorker : public Napi::AsyncWorker {
 
     ~SetPasswordWorker();
 
-    void Execute();
-    void OnOK();
-    void OnError(Napi::Error const &error);
+    void Execute() override;
+    void OnOK() override;
+    void OnError(Napi::Error const &error) override;
     Napi::Promise Promise();
 
   private:
@@ -32,16 +32,16 @@ class GetPasswordWorker : public Napi::AsyncWorker {
 
     ~GetPasswordWorker();
 
-    void Execute();
-    void OnOK();
-    void OnError(Napi::Error const &error);
+    void Execute() override;
+    void OnOK() override;
+    void OnError(Napi::Error const &error) override;
     Napi::Promise Promise();
 
   private:
     const std::string service;
     const std::string account;
     std::string password;
-    bool success;
+    bool success = false;
     const Napi::Promise::Deferred deferred;
 };
 
@@ -52,15 +52,15 @@ class DeletePasswordWorker : public Napi::AsyncWorker {
 
     ~DeletePasswordWorker();
 
-    void Execute();
-    void OnOK();
-    void OnError(Napi::Error const &error);
+    void Execute() override;
+    void OnOK() override;
+    void OnError(Napi::Error const &error) override;
     Napi::Promise Promise();
 
   private:
     const std::string service;
     const std::string account;
-    bool success;
+    bool success = false;
     Napi::Promise::Deferred deferred;
 };
 
@@ -70,15 +70,15 @@ class FindPasswordWorker : public Napi::AsyncWorker {
 
     ~FindPasswordWorker();
 
-    void Execute();
-    void OnOK();
-    void OnError(Napi::Error const &error);
+    void Execute() override;
+    void OnOK() override;
+    void OnError(Napi::Error const &error) override;
     Napi::Promise Promise();
 
   private:
     const std::string service;
     std::string password;
-    bool success;
+    bool success = false;
     const Napi::Promise::Deferred deferred;
 };
 
@@ -88,15 +88,15 @@ class FindCredentialsWorker : public Napi::AsyncWorker {
 
     ~FindCredentialsWorker();
 
-    void Execute();
-    void OnOK();
-    void OnError(Napi::Error const &error);
+    void Execute() override;
+    void OnOK() override;
+    void OnError(Napi::Error const &error) override;
     Napi::Promise Promise();
 
   private:
     const std::string service;
     std::vector<keytar::Credentials> credentials;
-    bool success;
+    bool success = false;
     const Napi::Promise::Deferred deferred;
 };
 

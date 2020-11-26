@@ -7,6 +7,31 @@
 
 using keytar::KEYTAR_OP_RESULT;
 
+/* There is currently no reliable way in Napi to identify if it is safe to
+ * call into Javascript. The crash in https://github.com/microsoft/vscode/issues/111288
+ * occurs because the async worker callbacks are triggered while the node environment
+ * is being freed. In the callbacks we try to resolve Javascript promises and if the promise
+ * resolution fails, node-addon-api tries to throw create Napi::Error object which will
+ * crash.
+ * I have tried the following apis, but none of them provide the signal required
+ * to avoid entering JS
+ * 1) napi_set_instance_data - whose finalizer_cb should be called when env is torn down
+ * 2) napi_add_env_cleanup_hook
+ * 3) Try accessing node_napi_env->can_call_into_js() - but node_napi_env is not exposed
+ * 4) Attempt to check with v8::Isolate::GetCurrentContext()
+ * Finally landed on this simple utility that should fail when the environment is being
+ * destroyed.
+ */
+bool CanCallIntoJS(Napi::Env env) {
+  Napi::HandleScope scope(env);
+  napi_deferred deferred;
+  napi_value promise;
+  napi_status status = napi_create_promise(env, &deferred, &promise);
+  if (status != napi_ok)
+    return false;
+  return true;
+}
+
 SetPasswordWorker::SetPasswordWorker(
   const std::string& service,
   const std::string& account,
@@ -78,16 +103,20 @@ void GetPasswordWorker::Execute() {
 
 void GetPasswordWorker::OnOK() {
   Napi::HandleScope scope(Env());
+  if (!CanCallIntoJS(Env()))
+    return;
   Napi::Value val = Env().Null();
   if (success) {
     val = Napi::String::New(Env(), password.data(),
-                               password.length());
+                            password.length());
   }
   deferred.Resolve(val);
 }
 
 void GetPasswordWorker::OnError(Napi::Error const &error) {
   Napi::HandleScope scope(Env());
+  if (!CanCallIntoJS(Env()))
+    return;
   deferred.Reject(error.Value());
 }
 
@@ -120,11 +149,15 @@ void DeletePasswordWorker::Execute() {
 
 void DeletePasswordWorker::OnOK() {
   Napi::HandleScope scope(Env());
+  if (!CanCallIntoJS(Env()))
+    return;
   deferred.Resolve(Napi::Boolean::New(Env(), success));
 }
 
 void DeletePasswordWorker::OnError(Napi::Error const &error) {
   Napi::HandleScope scope(Env());
+  if (!CanCallIntoJS(Env()))
+    return;
   deferred.Reject(error.Value());
 }
 
@@ -157,6 +190,8 @@ void FindPasswordWorker::Execute() {
 
 void FindPasswordWorker::OnOK() {
   Napi::HandleScope scope(Env());
+  if (!CanCallIntoJS(Env()))
+    return;
   Napi::Value val = Env().Null();
   if (success) {
     val = Napi::String::New(Env(), password.data(),
@@ -167,6 +202,8 @@ void FindPasswordWorker::OnOK() {
 
 void FindPasswordWorker::OnError(Napi::Error const &error) {
   Napi::HandleScope scope(Env());
+  if (!CanCallIntoJS(Env()))
+    return;
   deferred.Reject(error.Value());
 }
 
@@ -199,6 +236,8 @@ void FindCredentialsWorker::Execute() {
 
 void FindCredentialsWorker::OnOK() {
   Napi::HandleScope scope(Env());
+  if (!CanCallIntoJS(Env()))
+    return;
   Napi::Env env = Env();
 
   if (success) {
@@ -238,5 +277,7 @@ void FindCredentialsWorker::OnOK() {
 
 void FindCredentialsWorker::OnError(Napi::Error const &error) {
   Napi::HandleScope scope(Env());
+  if (!CanCallIntoJS(Env()))
+    return;
   deferred.Reject(error.Value());
 }
