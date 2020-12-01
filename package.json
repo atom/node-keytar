@@ -3,7 +3,7 @@
   "typings": "keytar.d.ts",
   "name": "keytar",
   "description": "Bindings to native Mac/Linux/Windows password APIs",
-  "version": "7.0.0",
+  "version": "7.2.0",
   "license": "MIT",
   "repository": {
     "type": "git",
@@ -30,15 +30,17 @@
   ],
   "types": "./keytar.d.ts",
   "scripts": {
-    "install": "prebuild-install || node-gyp rebuild",
+    "install": "prebuild-install || npm run build",
+    "build": "node-gyp rebuild",
     "lint": "npm run cpplint",
     "cpplint": "node-cpplint --filters legal-copyright,build-include,build-namespaces src/*.cc",
     "test": "npm run lint && npm rebuild && mocha --require babel-core/register spec/",
     "prebuild-node": "prebuild -t 8.9.0 -t 9.4.0 -t 10.11.0 -t 11.9.0 -t 12.0.0 -t 13.0.0 -t 14.0.0 -t 15.0.0 --strip",
     "prebuild-node-ia32": "prebuild -t 8.9.0 -t 9.4.0 -a ia32 --strip",
-    "prebuild-electron": "prebuild -t 7.0.0 -t 8.0.0 -t 9.0.0 -t 10.0.0 -r electron --strip",
-    "prebuild-electron-arm64": "prebuild -t 7.0.0 -t 8.0.0 -t 9.0.0 -t 10.0.0 -r electron -a arm64 --strip",
-    "prebuild-electron-ia32": "prebuild -t 7.0.0 -t 8.0.0 -t 9.0.0 -t 10.0.0 -r electron -a ia32 --strip",
+    "prebuild-electron": "prebuild -t 7.0.0 -t 8.0.0 -t 9.0.0 -t 10.0.0 -t 11.0.0 -r electron --strip",
+    "prebuild-electron-arm64": "prebuild -t 7.0.0 -t 8.0.0 -t 9.0.0 -t 10.0.0 -t 11.0.0 -r electron -a arm64 --strip",
+    "prebuild-electron-arm64-mac": "prebuild -t 11.0.0 -r electron -a arm64 --strip",
+    "prebuild-electron-ia32": "prebuild -t 7.0.0 -t 8.0.0 -t 9.0.0 -t 10.0.0 -t 11.0.0 -r electron -a ia32 --strip",
     "upload": "node ./script/upload.js",
     "postpublish": "git push --follow-tags"
   },
@@ -47,13 +49,13 @@
     "babel-plugin-transform-async-to-generator": "^6.24.1",
     "chai": "^4.2.0",
     "mocha": "^8.2.1",
-    "node-abi": "^2.19.1",
-    "node-cpplint": "~0.4.0",
     "node-gyp": "^7.1.2",
+    "node-abi": "^2.19.3",
+    "node-cpplint": "~0.4.0",
     "prebuild": "^10.0.1"
   },
   "dependencies": {
     "node-addon-api": "^3.0.2",
-    "prebuild-install": "6.0.0"
+    "prebuild-install": "^6.0.0"
   }
 }
