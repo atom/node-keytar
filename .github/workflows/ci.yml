@@ -74,10 +74,6 @@ jobs:
       if: ${{ matrix.os != 'macos-latest' }}
       name: Prebuild for Electron (ARM64)
 
-    - run: npm run prebuild-electron-arm64-mac
-      if: ${{ matrix.os == 'macos-latest' }}
-      name: Prebuild for Electron MacOS (ARM64)
-
     - run: |
         docker build -t node-keytar/i386 docker/i386
         docker run --rm -v ${PWD}:/project node-keytar/i386 /bin/bash -c "cd /project && npm run prebuild-node-ia32 && npm run prebuild-electron-ia32"

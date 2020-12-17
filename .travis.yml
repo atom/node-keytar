@@ -52,6 +52,5 @@ script:
   - if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then npm test; fi
   - npm run prebuild-node
   - npm run prebuild-electron
-  - if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then npm run prebuild-electron-arm64-mac; fi
   - if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then docker build -t node-keytar/i386 docker/i386 && docker run --rm -v ${PWD}:/project node-keytar/i386 /bin/bash -c "cd /project && npm run prebuild-node-ia32 && npm run prebuild-electron-ia32 && npm run prebuild-electron-arm64"; fi
   - if [[ -n "$TRAVIS_TAG" ]]; then npm run upload; fi
