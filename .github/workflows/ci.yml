@@ -101,31 +101,8 @@ jobs:
       env:
         GITHUB_AUTH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
-  npm-publish:
-    needs: build
-    name: Publish to NPM
-    runs-on: ubuntu-16.04
-    if: github.event_name == 'push' && contains(github.ref, 'refs/tags/')
-
-    steps:
-    - uses: actions/checkout@v2
-    - name: Use Node.js 15
-      uses: actions/setup-node@v1
-      with:
-        node-version: 15.x
-        registry-url: 'https://registry.npmjs.org'
-    - run: |
-        sudo apt-get install xvfb \
-                             gnome-keyring \
-                             libsecret-1-dev \
-                             dbus-x11 \
-                             python-gnomekeyring
-      name: Install additional dependencies
-
-    - run: npm install
-      name: Setup environment
-
-    - name: Upload to NPM
+    - name: Publish to NPM
+      if: github.event_name == 'push' && contains(github.ref, 'refs/tags/') && success() && matrix.os == 'ubuntu-16.04'
       run: npm publish --access public
       env:
         NODE_AUTH_TOKEN: ${{ secrets.NPM_AUTH_TOKEN }}
