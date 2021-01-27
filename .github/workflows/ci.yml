@@ -72,21 +72,20 @@ jobs:
         npm run prebuild-electron
       name: Prebuild (x64)
 
-    - run: npm run prebuild-electron-arm64
-      if: ${{ matrix.os != 'macos-latest' }}
-      name: Prebuild for Electron (ARM64)
-
     - run: |
         docker build -t node-keytar/i386 docker/i386
         docker run --rm -v ${PWD}:/project node-keytar/i386 /bin/bash -c "cd /project && npm run prebuild-node-ia32 && npm run prebuild-electron-ia32"
+        docker build -t node-keytar/arm64v8 docker/arm64v8
+        docker run --rm -v ${PWD}:/project node-keytar/arm64v8 /bin/bash -c "cd /project && npm run prebuild-electron-arm64"
       if: ${{ matrix.os == 'ubuntu-16.04' }}
-      name: Prebuild (x86)
+      name: Prebuild Linux (x86 and arm64)
 
     - run: |
         npm run prebuild-node-ia32
         npm run prebuild-electron-ia32
+        npm run prebuild-electron-arm64
       if: ${{ matrix.os == 'windows-latest' }}
-      name: Prebuild (x86)
+      name: Prebuild Windows (x86 and arm64)
 
     - run: |
         ls prebuilds/
