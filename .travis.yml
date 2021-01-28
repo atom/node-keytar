@@ -57,6 +57,6 @@ script:
       docker build -t node-keytar/i386 docker/i386
       docker run --rm -v ${PWD}:/project node-keytar/i386 /bin/bash -c "cd /project && npm run prebuild-node-ia32 && npm run prebuild-electron-ia32"
       docker build -t node-keytar/arm64-cross-compile docker/arm64-cross-compile
-      docker run --rm -v ${PWD}:/project node-keytar/arm-64-cross-compile /bin/bash -c "cd /project && npm run prebuild-electron-arm64"
+      docker run --rm -v ${PWD}:/project node-keytar/arm64-cross-compile /bin/bash -c "cd /project && npm run prebuild-electron-arm64"
     fi
   - if [[ -n "$TRAVIS_TAG" ]]; then npm run upload; fi
