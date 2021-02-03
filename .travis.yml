@@ -1,9 +1,12 @@
 language: node_js
 sudo: required
 dist: trusty
-os:
-  - linux
-  - osx
+  - os: osx
+    osx_image: xcode12.4
+    language: node_js
+  - os: linux
+    dist: focal
+    language: node_js
 node_js: 15
 
 env:
