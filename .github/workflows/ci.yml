@@ -97,9 +97,37 @@ jobs:
       env:
         GITHUB_AUTH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
+  alpine-build:
+    runs-on: ubuntu-latest
+    container: node:15-alpine3.12
+    steps:
+    - uses: actions/checkout@v2
+    - name: install additional dependencies
+      run: |
+        apk add g++ make python2 libsecret-dev
+
+    - run: npm install
+      name: Setup environment
+
+    - run: |
+        npm run prebuild-node
+        npm run prebuild-electron
+        npm run prebuild-electron-arm64
+      name: Prebuild
+
+    - run: |
+        ls prebuilds/
+      name: List prebuilds
+
+    - name: Upload prebuilds to GitHub
+      run: npm run upload
+      if: github.event_name == 'push' && contains(github.ref, 'refs/tags/')
+      env:
+        GITHUB_AUTH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
   # Separate step for publishing to NPM so we're sure that generating + uploading prebuilds worked on all platforms
   npm-publish:
-    needs: build
+    needs: [build, alpine-build]
     name: Publish to NPM
     runs-on: ubuntu-20.04
     if: github.event_name == 'push' && contains(github.ref, 'refs/tags/')
