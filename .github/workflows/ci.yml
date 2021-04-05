@@ -42,7 +42,7 @@ jobs:
                              gnome-keyring \
                              libsecret-1-dev \
                              dbus-x11 \
-                             python-gnomekeyring \
+                             python3-keyring \
                              python3
       if: ${{ matrix.os == 'ubuntu-18.04' }}
       name: Install additional dependencies
@@ -60,7 +60,7 @@ jobs:
         eval $(echo -n "" | /usr/bin/gnome-keyring-daemon --login)
         eval $(/usr/bin/gnome-keyring-daemon --components=secrets --start)
         echo "Create a test key using script..."
-        python -c "import gnomekeyring;gnomekeyring.create_sync('login', '');"
+        python -c "import keyring;keyring.set_password('login', '');"
         npm test
       if: ${{ matrix.os == 'ubuntu-18.04' }}
       name: Run tests (Linux)
