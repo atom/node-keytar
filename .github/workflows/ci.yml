@@ -20,9 +20,9 @@ jobs:
     strategy:
       matrix:
         node-version: [15.x]
-        os: [ubuntu-16.04, windows-latest, macos-latest]
+        os: [ubuntu-18.04, windows-latest, macos-latest]
         include:
-          - os: ubuntu-16.04
+          - os: ubuntu-18.04
             friendlyName: Ubuntu
           - os: windows-latest
             friendlyName: Windows
@@ -44,7 +44,7 @@ jobs:
                              dbus-x11 \
                              python-gnomekeyring \
                              python3
-      if: ${{ matrix.os == 'ubuntu-16.04' }}
+      if: ${{ matrix.os == 'ubuntu-18.04' }}
       name: Install additional dependencies
 
     - name: Setup environment
@@ -62,11 +62,11 @@ jobs:
         echo "Create a test key using script..."
         python -c "import gnomekeyring;gnomekeyring.create_sync('login', '');"
         npm test
-      if: ${{ matrix.os == 'ubuntu-16.04' }}
+      if: ${{ matrix.os == 'ubuntu-18.04' }}
       name: Run tests (Linux)
 
     - run: npm test
-      if: ${{ matrix.os != 'ubuntu-16.04' }}
+      if: ${{ matrix.os != 'ubuntu-18.04' }}
       name: Run tests (Windows/macOS)
 
     - run: |
@@ -86,7 +86,7 @@ jobs:
         docker run --rm -v ${PWD}:/project node-keytar/i386 /bin/bash -c "cd /project && npm run prebuild-electron-ia32 && rm -rf build"
         docker build -t node-keytar/arm64-cross-compile docker/arm64-cross-compile
         docker run --rm -v ${PWD}:/project node-keytar/arm64-cross-compile /bin/bash -c "cd /project && npm run prebuild-electron-arm64"
-      if: ${{ matrix.os == 'ubuntu-16.04' }}
+      if: ${{ matrix.os == 'ubuntu-18.04' }}
       name: Prebuild (Linux x86 + ARM64)
 
     - run: |
