@@ -138,7 +138,7 @@ jobs:
       with:
         node-version: 15.x
         registry-url: 'https://registry.npmjs.org'
-        
+
     - run: sudo apt-get install libsecret-1-dev
       name: Install additional dependencies
 
@@ -146,6 +146,6 @@ jobs:
       name: Setup environment
 
     - run: npm publish --access public
-      name: Upload to NPM      
+      name: Upload to NPM
       env:
         NODE_AUTH_TOKEN: ${{ secrets.NPM_AUTH_TOKEN }}
