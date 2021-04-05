@@ -46,15 +46,15 @@
   "devDependencies": {
     "babel-core": "^6.26.3",
     "babel-plugin-transform-async-to-generator": "^6.24.1",
-    "chai": "^4.2.0",
-    "mocha": "^8.2.1",
-    "node-abi": "^2.19.3",
+    "chai": "^4.3.4",
+    "mocha": "^8.3.2",
+    "node-abi": "^2.21.0",
     "node-cpplint": "~0.4.0",
-    "node-gyp": "^7.1.2",
+    "node-gyp": "^8.0.0",
     "prebuild": "^10.0.1"
   },
   "dependencies": {
     "node-addon-api": "^3.1.0",
-    "prebuild-install": "^6.0.0"
+    "prebuild-install": "^6.1.1"
   }
 }
