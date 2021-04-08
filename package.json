@@ -38,6 +38,7 @@
     "prebuild-node": "prebuild -t 10.11.0 -t 11.9.0 -t 12.0.0 -t 13.0.0 -t 14.0.0 -t 15.0.0 --strip",
     "prebuild-electron": "prebuild -t 10.0.0 -t 11.0.0 -t 12.0.0 -r electron --strip",
     "prebuild-electron-arm64": "prebuild -t 10.0.0 -t 11.0.0 -t 12.0.0 -r electron -a arm64 --strip",
+    "prebuild-electron-arm64-mac": "prebuild -t 12.0.0 -r electron -a arm64 --strip",
     "prebuild-electron-ia32": "prebuild -t 10.0.0 -t 11.0.0  -t 12.0.0 -r electron -a ia32 --strip",
     "upload": "node ./script/upload.js"
   },
