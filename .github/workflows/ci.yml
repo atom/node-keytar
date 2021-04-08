@@ -52,7 +52,7 @@ jobs:
     # https://github.com/nodejs/build/issues/2450#issuecomment-705853342
     - run: |
         $NodeVersion = (node --version) -replace '^.'
-        $NodeFallbackVersion = "15.2.1"
+        $NodeFallbackVersion = "15.8.0"
         & .\script\download-node-lib-win-arm64.ps1 $NodeVersion $NodeFallbackVersion
       if: ${{ matrix.os == 'windows-latest' }}
       name: Install Windows arm64 node.lib
