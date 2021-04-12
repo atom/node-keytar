@@ -120,9 +120,8 @@ jobs:
       name: Setup environment
 
     - run: |
-        npm run prebuild-node
-        npm run prebuild-electron
-        npm run prebuild-electron-arm64
+        npm run prebuild-napi-x64
+        npm run prebuild-napi-arm64
       name: Prebuild
 
     - run: |
