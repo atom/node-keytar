@@ -35,10 +35,9 @@
     "lint": "npm run cpplint",
     "cpplint": "node-cpplint --filters legal-copyright,build-include,build-namespaces src/*.cc",
     "test": "npm run lint && npm rebuild && mocha --require babel-core/register spec/",
-    "prebuild-node": "prebuild -t 10.11.0 -t 11.9.0 -t 12.0.0 -t 13.0.0 -t 14.0.0 -t 15.0.0 --strip",
-    "prebuild-electron": "prebuild -t 10.0.0 -t 11.0.0 -t 12.0.0 -r electron --strip",
-    "prebuild-electron-arm64": "prebuild -t 10.0.0 -t 11.0.0 -t 12.0.0 -r electron -a arm64 --strip",
-    "prebuild-electron-ia32": "prebuild -t 10.0.0 -t 11.0.0  -t 12.0.0 -r electron -a ia32 --strip",
+    "prebuild-napi-x64": "prebuild -t 3 -r napi -a x64 --strip",
+    "prebuild-napi-ia32": "prebuild -t 3 -r napi -a ia32 --strip",
+    "prebuild-napi-arm64": "prebuild -t 3 -r napi -a arm64 --strip",
     "upload": "node ./script/upload.js"
   },
   "devDependencies": {
@@ -46,7 +45,6 @@
     "babel-plugin-transform-async-to-generator": "^6.24.1",
     "chai": "^4.2.0",
     "mocha": "^8.0.1",
-    "node-abi": "^2.19.3",
     "node-cpplint": "~0.4.0",
     "node-gyp": "^7.0.0",
     "prebuild": "^10.0.1"
@@ -54,5 +52,14 @@
   "dependencies": {
     "node-addon-api": "^3.0.0",
     "prebuild-install": "^6.0.0"
+  },
+  "binary": {
+    "napi_versions": [
+      3
+    ]
+  },
+  "config": {
+    "runtime": "napi",
+    "target": 3
   }
 }
