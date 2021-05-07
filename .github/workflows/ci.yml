@@ -123,6 +123,9 @@ jobs:
     - run: npm install
       name: Setup environment
 
+    - run: npm run build
+      name: Build native module from source
+
     - run: |
         npm run prebuild-napi-x64
         npm run prebuild-napi-arm64
