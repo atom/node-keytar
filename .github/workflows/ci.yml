@@ -60,6 +60,9 @@ jobs:
     - run: npm install
       name: Setup environment
 
+    - run: npm run build
+      name: Build native module from source
+
     - run: |
         echo "Initialize dbus..."
         export NO_AT_BRIDGE=1;
