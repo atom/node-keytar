@@ -3,7 +3,8 @@ name: CI
 on:
   push:
     branches: [ master ]
-    # run when tag received matching version format
+    tags:
+      - v*.*.*
   pull_request:
     branches: [ master ]
 
@@ -15,6 +16,8 @@ jobs:
       CC: "clang"
       CXX: "clang++"
       npm_config_clang: "1"
+      # Needed until macos-11.0 hosted runners are available
+      SDKROOT: "/Library/Developer/CommandLineTools/SDKs/MacOSX11.1.sdk"
 
     strategy:
       matrix:
@@ -45,8 +48,20 @@ jobs:
       if: ${{ matrix.os == 'ubuntu-16.04' }}
       name: Install additional dependencies
 
+    # This step can be removed as soon as official Windows arm64 builds are published:
+    # https://github.com/nodejs/build/issues/2450#issuecomment-705853342
+    - run: |
+        $NodeVersion = (node --version) -replace '^.'
+        $NodeFallbackVersion = "15.8.0"
+        & .\script\download-node-lib-win-arm64.ps1 $NodeVersion $NodeFallbackVersion
+      if: ${{ matrix.os == 'windows-latest' }}
+      name: Install Windows arm64 node.lib
+
     - run: npm install
       name: Setup environment
+
+    - run: npm run build
+      name: Build native module from source
 
     - run: |
         echo "Initialize dbus..."
@@ -65,30 +80,85 @@ jobs:
       if: ${{ matrix.os != 'ubuntu-16.04' }}
       name: Run tests (Windows/macOS)
 
-    - run: |
-        npm run prebuild-node
-        npm run prebuild-electron
+    - run: npm run prebuild-napi-x64
       name: Prebuild (x64)
 
-    - run: npm run prebuild-electron-arm64
-      if: ${{ matrix.os != 'macos-latest' }}
-      name: Prebuild for Electron (ARM64)
+    - run: npm run prebuild-napi-arm64
+      name: Prebuild (arm64)
+      if: ${{ matrix.os != 'ubuntu-16.04' }}
 
-    - run: |
-        docker build -t node-keytar/i386 docker/i386
-        docker run --rm -v ${PWD}:/project node-keytar/i386 /bin/bash -c "cd /project && npm run prebuild-node-ia32 && npm run prebuild-electron-ia32"
-      if: ${{ matrix.os == 'ubuntu-16.04' }}
-      name: Prebuild (x86)
-
-    - run: |
-        npm run prebuild-node-ia32
-        npm run prebuild-electron-ia32
+    - run: npm run prebuild-napi-ia32
       if: ${{ matrix.os == 'windows-latest' }}
-      name: Prebuild (x86)
+      name: Prebuild (Windows x86)
+
+    - run: |
+        mkdir -p prebuilds && chmod 777 prebuilds
+        docker build -t node-keytar/i386 docker/i386
+        docker run --rm -v ${PWD}:/project node-keytar/i386 /bin/bash -c "cd /project && npm run prebuild-napi-ia32 && rm -rf build"
+        docker build -t node-keytar/arm64-cross-compile docker/arm64-cross-compile
+        docker run --rm -v ${PWD}:/project node-keytar/arm64-cross-compile /bin/bash -c "cd /project && npm run prebuild-napi-arm64"
+      if: ${{ matrix.os == 'ubuntu-16.04' }}
+      name: Prebuild (Linux x86 + ARM64)
 
     - run: |
         ls prebuilds/
       name: List prebuilds
 
-    # only if tag found for release
-    #- if defined APPVEYOR_REPO_TAG_NAME (npm run upload)
+    - name: Upload prebuilds to GitHub
+      run: npm run upload
+      if: github.event_name == 'push' && contains(github.ref, 'refs/tags/')
+      env:
+        GITHUB_AUTH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+  alpine-build:
+    runs-on: ubuntu-latest
+    container: node:15-alpine3.12
+    steps:
+    - uses: actions/checkout@v2
+    - name: install additional dependencies
+      run: |
+        apk add g++ make python2 libsecret-dev
+
+    - run: npm install
+      name: Setup environment
+
+    - run: |
+        npm run prebuild-napi-x64
+        npm run prebuild-napi-arm64
+      name: Prebuild
+
+    - run: |
+        ls prebuilds/
+      name: List prebuilds
+
+    - name: Upload prebuilds to GitHub
+      run: npm run upload
+      if: github.event_name == 'push' && contains(github.ref, 'refs/tags/')
+      env:
+        GITHUB_AUTH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+  # Separate step for publishing to NPM so we're sure that generating + uploading prebuilds worked on all platforms
+  npm-publish:
+    needs: [build, alpine-build]
+    name: Publish to NPM
+    runs-on: ubuntu-20.04
+    if: github.event_name == 'push' && contains(github.ref, 'refs/tags/')
+
+    steps:
+    - uses: actions/checkout@v2
+    - name: Use Node.js 15
+      uses: actions/setup-node@v1
+      with:
+        node-version: 15.x
+        registry-url: 'https://registry.npmjs.org'
+
+    - run: sudo apt-get install libsecret-1-dev
+      name: Install additional dependencies
+
+    - run: npm install
+      name: Setup environment
+
+    - run: npm publish --access public
+      name: Upload to NPM
+      env:
+        NODE_AUTH_TOKEN: ${{ secrets.NPM_AUTH_TOKEN }}

@@ -3,7 +3,6 @@
 /build
 *.log
 *~
-.node-version
 .tags
 iojs-*/
 8.*/
