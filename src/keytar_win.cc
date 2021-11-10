@@ -228,6 +228,10 @@ KEYTAR_OP_RESULT FindCredentials(const std::string& service,
                                  std::vector<Credentials>* credentials,
                                  std::string* errStr) {
   LPWSTR filter = utf8ToWideChar(service + "*");
+  if (filter == NULL) {
+    *errStr = "Error generating credential filter";
+    return FAIL_ERROR;
+  }
 
   DWORD count;
   CREDENTIAL **creds;
