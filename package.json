@@ -50,7 +50,7 @@
     "prebuild": "^11.0.2"
   },
   "dependencies": {
-    "node-addon-api": "^3.0.0",
+    "node-addon-api": "^4.3.0",
     "prebuild-install": "^7.0.1"
   },
   "binary": {
