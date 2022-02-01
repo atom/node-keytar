@@ -16,8 +16,6 @@ jobs:
       CC: "clang"
       CXX: "clang++"
       npm_config_clang: "1"
-      # Needed until macos-11.0 hosted runners are available
-      SDKROOT: "/Library/Developer/CommandLineTools/SDKs/MacOSX11.1.sdk"
 
     strategy:
       matrix:
