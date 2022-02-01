@@ -46,7 +46,7 @@
     "chai": "^4.2.0",
     "mocha": "^9.2.0",
     "node-cpplint": "~0.4.0",
-    "node-gyp": "^7.0.0",
+    "node-gyp": "^8.4.1",
     "prebuild": "^11.0.2"
   },
   "dependencies": {
