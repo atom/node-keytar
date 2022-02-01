@@ -43,7 +43,7 @@ jobs:
                              libsecret-1-dev \
                              dbus-x11 \
                              python-gnomekeyring
-      if: ${{ matrix.os == 'ubuntu-16.04' }}
+      if: ${{ matrix.os == 'ubuntu-20.04' }}
       name: Install additional dependencies
 
     # This step can be removed as soon as official Windows arm64 builds are published:
@@ -71,11 +71,11 @@ jobs:
         echo "Create a test key using script..."
         python -c "import gnomekeyring;gnomekeyring.create_sync('login', '');"
         npm test
-      if: ${{ matrix.os == 'ubuntu-16.04' }}
+      if: ${{ matrix.os == 'ubuntu-20.04' }}
       name: Run tests (Linux)
 
     - run: npm test
-      if: ${{ matrix.os != 'ubuntu-16.04' }}
+      if: ${{ matrix.os != 'ubuntu-20.04' }}
       name: Run tests (Windows/macOS)
 
     - run: npm run prebuild-napi-x64
@@ -83,7 +83,7 @@ jobs:
 
     - run: npm run prebuild-napi-arm64
       name: Prebuild (arm64)
-      if: ${{ matrix.os != 'ubuntu-16.04' }}
+      if: ${{ matrix.os != 'ubuntu-20.04' }}
 
     - run: npm run prebuild-napi-ia32
       if: ${{ matrix.os == 'windows-latest' }}
@@ -95,7 +95,7 @@ jobs:
         docker run --rm -v ${PWD}:/project node-keytar/i386 /bin/bash -c "cd /project && npm run prebuild-napi-ia32 && rm -rf build"
         docker build -t node-keytar/arm64-cross-compile docker/arm64-cross-compile
         docker run --rm -v ${PWD}:/project node-keytar/arm64-cross-compile /bin/bash -c "cd /project && npm run prebuild-napi-arm64"
-      if: ${{ matrix.os == 'ubuntu-16.04' }}
+      if: ${{ matrix.os == 'ubuntu-20.04' }}
       name: Prebuild (Linux x86 + ARM64)
 
     - run: |
