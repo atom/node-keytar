@@ -66,6 +66,7 @@ jobs:
         eval $(dbus-launch -- sh);
         echo "Unlocking the keyring..."
         eval $(echo -n "" | /usr/bin/gnome-keyring-daemon --unlock)
+        eval $(/usr/bin/gnome-keyring-daemon --components=secrets --start)
         echo "Create a test key using script..."
         python -c "import keyring;keyring.set_password('system', 'login', '');"
         npm test
