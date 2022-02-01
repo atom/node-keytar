@@ -42,7 +42,6 @@ jobs:
                              gnome-keyring \
                              libsecret-1-dev \
                              dbus-x11 \
-                             python3-venv \
                              python3-dev
       if: ${{ matrix.os == 'ubuntu-20.04' }}
       name: Install additional dependencies
@@ -63,10 +62,10 @@ jobs:
       name: Build native module from source
 
     - run: |
-        python3 -m venv venv
-        source venv/bin/activate
+        echo "Install keyring..."
         pip3 install --upgrade pip
         pip3 install keyring
+        echo "Prepare D-Bus session..."
         eval $(dbus-launch --sh-syntax);
         eval $(echo 'somecredstorepass' | gnome-keyring-daemon --unlock)
         echo "Create a test key using script..."
