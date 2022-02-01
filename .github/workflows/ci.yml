@@ -12,7 +12,6 @@ jobs:
   build:
     name: ${{ matrix.friendlyName }}
     env:
-      DISPLAY: ":99.0"
       CC: "clang"
       CXX: "clang++"
       npm_config_clang: "1"
@@ -38,8 +37,7 @@ jobs:
       with:
         node-version: ${{ matrix.node-version }}
     - run: |
-        sudo apt-get install xvfb \
-                             gnome-keyring \
+        sudo apt-get install gnome-keyring \
                              libsecret-1-dev \
                              dbus-x11 \
                              python3-dev
