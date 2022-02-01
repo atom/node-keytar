@@ -20,9 +20,9 @@ jobs:
     strategy:
       matrix:
         node-version: [15.x]
-        os: [ubuntu-20.04, windows-latest, macos-latest]
+        os: [ubuntu-18.04, windows-latest, macos-latest]
         include:
-          - os: ubuntu-20.04
+          - os: ubuntu-18.04
             friendlyName: Ubuntu
           - os: windows-latest
             friendlyName: Windows
@@ -42,8 +42,8 @@ jobs:
                              gnome-keyring \
                              libsecret-1-dev \
                              dbus-x11 \
-                             python-keyring
-      if: ${{ matrix.os == 'ubuntu-20.04' }}
+                             python-gnomekeyring
+      if: ${{ matrix.os == 'ubuntu-18.04' }}
       name: Install additional dependencies
 
     # This step can be removed as soon as official Windows arm64 builds are published:
@@ -63,18 +63,19 @@ jobs:
 
     - run: |
         echo "Initialize dbus..."
-        eval $(dbus-run-session -- sh);
+        export NO_AT_BRIDGE=1;
+        eval $(dbus-launch --sh-syntax);
         echo "Unlocking the keyring..."
-        eval $(echo -n "" | /usr/bin/gnome-keyring-daemon --unlock)
+        eval $(echo -n "" | /usr/bin/gnome-keyring-daemon --login)
         eval $(/usr/bin/gnome-keyring-daemon --components=secrets --start)
         echo "Create a test key using script..."
-        python -c "import keyring;keyring.set_password('system', 'login', '');"
+        python -c "import gnomekeyring;gnomekeyring.create_sync('login', '');"
         npm test
-      if: ${{ matrix.os == 'ubuntu-20.04' }}
+      if: ${{ matrix.os == 'ubuntu-18.04' }}
       name: Run tests (Linux)
 
     - run: npm test
-      if: ${{ matrix.os != 'ubuntu-20.04' }}
+      if: ${{ matrix.os != 'ubuntu-18.04' }}
       name: Run tests (Windows/macOS)
 
     - run: npm run prebuild-napi-x64
@@ -82,7 +83,7 @@ jobs:
 
     - run: npm run prebuild-napi-arm64
       name: Prebuild (arm64)
-      if: ${{ matrix.os != 'ubuntu-20.04' }}
+      if: ${{ matrix.os != 'ubuntu-18.04' }}
 
     - run: npm run prebuild-napi-ia32
       if: ${{ matrix.os == 'windows-latest' }}
@@ -94,7 +95,7 @@ jobs:
         docker run --rm -v ${PWD}:/project node-keytar/i386 /bin/bash -c "cd /project && npm run prebuild-napi-ia32 && rm -rf build"
         docker build -t node-keytar/arm64-cross-compile docker/arm64-cross-compile
         docker run --rm -v ${PWD}:/project node-keytar/arm64-cross-compile /bin/bash -c "cd /project && npm run prebuild-napi-arm64"
-      if: ${{ matrix.os == 'ubuntu-20.04' }}
+      if: ${{ matrix.os == 'ubuntu-18.04' }}
       name: Prebuild (Linux x86 + ARM64)
 
     - run: |
