@@ -63,7 +63,7 @@ jobs:
 
     - run: |
         echo "Initialize dbus..."
-        eval $(dbus-launch -- sh);
+        eval $(dbus-run-session -- sh);
         echo "Unlocking the keyring..."
         eval $(echo -n "" | /usr/bin/gnome-keyring-daemon --unlock)
         eval $(/usr/bin/gnome-keyring-daemon --components=secrets --start)
