@@ -15,15 +15,15 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
   libsecret-1-dev:armhf \
   curl
 
-ENV AS=/usr/bin/arm-linux-gnu-as \
-  STRIP=/usr/bin/arm-linux-gnu-strip \
-  AR=/usr/bin/arm-linux-gnu-ar \
-  CC=/usr/bin/arm-linux-gnu-gcc \
-  CPP=/usr/bin/arm-linux-gnu-cpp \
-  CXX=/usr/bin/arm-linux-gnu-g++ \
-  LD=/usr/bin/arm-linux-gnu-ld \
-  FC=/usr/bin/arm-linux-gnu-gfortran \
-  PKG_CONFIG_PATH=/usr/lib/arm-linux-gnu/pkgconfig
+ENV AS=/usr/bin/arm-linux-gnueabihf-as \
+  STRIP=/usr/bin/arm-linux-gnueabihf-strip \
+  AR=/usr/bin/arm-linux-gnueabihf-ar \
+  CC=/usr/bin/arm-linux-gnueabihf-gcc \
+  CPP=/usr/bin/arm-linux-gnueabihf-cpp \
+  CXX=/usr/bin/arm-linux-gnueabihf-g++ \
+  LD=/usr/bin/arm-linux-gnueabihf-ld \
+  FC=/usr/bin/arm-linux-gnueabihf-gfortran \
+  PKG_CONFIG_PATH=/usr/lib/arm-linux-gnueabihf/pkgconfig
 
 RUN curl -sL https://deb.nodesource.com/setup_15.x | bash -
 RUN apt-get install -y nodejs
