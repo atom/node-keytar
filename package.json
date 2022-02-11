@@ -38,6 +38,7 @@
     "prebuild-napi-x64": "prebuild -t 3 -r napi -a x64 --strip",
     "prebuild-napi-ia32": "prebuild -t 3 -r napi -a ia32 --strip",
     "prebuild-napi-arm64": "prebuild -t 3 -r napi -a arm64 --strip",
+    "prebuild-napi-armv7l": "prebuild -t 3 -r napi -a armv7l --strip",
     "upload": "node ./script/upload.js"
   },
   "devDependencies": {
