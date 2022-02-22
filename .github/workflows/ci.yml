@@ -19,11 +19,11 @@ jobs:
     strategy:
       matrix:
         node-version: [15.x]
-        os: [ubuntu-20.04, windows-latest, macos-latest]
+        os: [ubuntu-20.04, windows-2019, macos-latest]
         include:
           - os: ubuntu-20.04
             friendlyName: Ubuntu
-          - os: windows-latest
+          - os: windows-2019
             friendlyName: Windows
           - os: macos-latest
             friendlyName: macOS
@@ -50,7 +50,7 @@ jobs:
         $NodeVersion = (node --version) -replace '^.'
         $NodeFallbackVersion = "15.8.0"
         & .\script\download-node-lib-win-arm64.ps1 $NodeVersion $NodeFallbackVersion
-      if: ${{ matrix.os == 'windows-latest' }}
+      if: ${{ matrix.os == 'windows-2019' }}
       name: Install Windows arm64 node.lib
 
     - run: npm install
@@ -84,7 +84,7 @@ jobs:
       if: ${{ matrix.os != 'ubuntu-20.04' }}
 
     - run: npm run prebuild-napi-ia32
-      if: ${{ matrix.os == 'windows-latest' }}
+      if: ${{ matrix.os == 'windows-2019' }}
       name: Prebuild (Windows x86)
 
     - run: |
