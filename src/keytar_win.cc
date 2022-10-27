@@ -108,7 +108,7 @@ std::string getErrorMessage(DWORD errorCode) {
   LPWSTR errBuffer;
   ::FormatMessage(FORMAT_MESSAGE_ALLOCATE_BUFFER | FORMAT_MESSAGE_FROM_SYSTEM,
                   NULL, errorCode, 0, (LPWSTR) &errBuffer, 0, NULL);
-  std::string errMsg = wideCharToAnsi(errBuffer);
+  std::string errMsg = wideCharToUtf8(errBuffer);
   LocalFree(errBuffer);
   return errMsg;
 }
